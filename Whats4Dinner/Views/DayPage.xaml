@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 x:Class="Whats4Dinner.Views.DayPage"
+			 Title="{Binding Title}">
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="baseLabelStyle" TargetType="Label">
+				<Setter Property="FontFamily" Value="Arial"/>
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
+			</Style>
+			<Style x:Key="ListItemTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="20"/>
+			</Style>
+			<Style x:Key="ListItemDetailTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="14"/>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<ListView x:Name="Meals"
+				HasUnevenRows="True"
+				VerticalOptions="FillAndExpand"
+				Margin="5, 5, 5, 5"
+				ItemsSource="{Binding DisplayMeals}"
+				ItemTapped="Handle_ItemTapped"
+				CachingStrategy="RecycleElement">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<StackLayout>
+						<Label Text="{Binding Key}" Style="{DynamicResource ListItemTextStyle}"/>
+						<Label Text="{Binding Value}"/>
+					</StackLayout>
+				</ViewCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
+</ContentPage>

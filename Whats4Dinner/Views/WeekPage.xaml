@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:Whats4Dinner.ViewModels"
+			 mc:Ignorable="d"
+			 x:Class="Whats4Dinner.Views.WeekPage"
+			 Title="{Binding Title}">
+	<ContentPage.BindingContext>
+		<vm:WeekViewModel/>
+	</ContentPage.BindingContext>
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="baseLabelStyle" TargetType="Label">
+				<Setter Property="FontFamily" Value="Arial"/>
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
+			</Style>
+			<Style x:Key="ListItemTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="20"/>
+			</Style>
+			<Style x:Key="ListItemDetailTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="14"/>
+			</Style>
+			<Style x:Key="checkBoxStyle" TargetType="CheckBox">
+				<Setter Property="IsEnabled" Value="False"></Setter>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	
+	<ListView x:Name="Days"
+			  HasUnevenRows="True"
+			  VerticalOptions="FillAndExpand"
+			  Margin="5, 5, 5, 5"
+			  ItemsSource="{Binding DisplayDays}"
+			  ItemTapped="Handle_ItemTapped"
+			  CachingStrategy="RecycleElement">
+		
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<StackLayout Margin="10, 8, 10, 7">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="3*"/>
+								<ColumnDefinition Width="2*"/>
+							</Grid.ColumnDefinitions>
+							
+							<!-- Day of the week -->
+							<Label Text="{Binding DisplayDayOfWeek}"
+								   Grid.Row="0"
+								   Grid.Column="0"
+								   Style="{DynamicResource ListItemTextStyle}"/>
+							
+							<!-- exact date -->
+							<Label Text="{Binding DisplayDate}"
+								   Grid.Row="0"
+								   Grid.Column="1"
+								   Style="{DynamicResource ListItemTextStyle}"/>
+							
+							<!-- indicate whether each meal is added to day -->
+							<Grid Grid.Row="1"
+								  Grid.Column="0"
+								  Grid.ColumnSpan="2">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="5*"/>
+									<ColumnDefinition Width="14*"/>
+									<ColumnDefinition Width="5*"/>
+									<ColumnDefinition Width="10*"/>
+									<ColumnDefinition Width="5*"/>
+									<ColumnDefinition Width="10*"/>
+									<ColumnDefinition Width="5*"/>
+									<ColumnDefinition Width="10*"/>
+								</Grid.ColumnDefinitions>
+								<CheckBox Grid.Column="0" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding BreakfastCheck}"/>
+								<Label Grid.Column="1" Text="Breakfast" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<CheckBox Grid.Column="2" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding LunchCheck}"/>
+								<Label Grid.Column="3" Text="Lunch" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<CheckBox Grid.Column="4" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding DinnerCheck}"/>
+								<Label Grid.Column="5" Text="Dinner" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<CheckBox Grid.Column="6" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding OtherCheck}"/>
+								<Label Grid.Column="7" Text="Other" Style="{DynamicResource ListItemDetailTextStyle}"/>
+							</Grid>
+						</Grid>
+					</StackLayout>
+				</ViewCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+		
+	</ListView>
+</ContentPage>
