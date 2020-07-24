@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Whats4Dinner.Models;
 
 namespace Whats4Dinner.ViewModels
@@ -13,6 +17,8 @@ namespace Whats4Dinner.ViewModels
 	/// </summary>
 	public class WeekViewModel : BaseViewModel
 	{
+		private string sampleFileName = "SampleDays.json";
+
 		private ObservableCollection<Day> displayDays;
 
 		/// <summary>
@@ -28,14 +34,101 @@ namespace Whats4Dinner.ViewModels
 			}
 		}
 
-		private void CreateJSON()
+		/// <summary>
+		/// create a sample json file for testing
+		/// </summary>
+		private void CreateSampleFile()
 		{
 			// create the object to save to JSON
-			ObservableCollection<Day> sample = new ObservableCollection<Day>
+			List<Day> sampleDays = new List<Day>
 			{
 				new Day(DateTime.Today.AddDays(1)),
 				new Day(DateTime.Today.AddDays(3))
 			};
+
+			sampleDays[0].AddMeal(Meal.MealType.Breakfast);
+			sampleDays[0].Meals[Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", Dish.DishCategory.Grains);
+
+			sampleDays[1].AddMeal(Meal.MealType.Lunch);
+			sampleDays[1].Meals[Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
+
+			WriteToJSON(sampleDays);
+		}
+
+		/// <summary>
+		/// sort, and then write user's data to JSON file
+		/// </summary>
+		/// <param name="days"></param>
+		private void WriteToJSON(List<Day> days)
+		{
+			// sort first
+			days = days.OrderBy(day => day.ThisDate).ToList();
+
+			// save to file
+			string jsonString = JsonSerializer.Serialize((object)days);
+			File.WriteAllText(sampleFileName, jsonString);
+		}
+
+		/// <summary>
+		/// read user's data from JSON file
+		/// </summary>
+		/// <param name="fileName"></param>
+		/// <returns>List<Day> object read from user's data file</Day></returns>
+		private List<Day> ReadFromJSON(string fileName)
+		{
+			string jsonString = File.ReadAllText(fileName);
+			List<Day> result = JsonSerializer.Deserialize<List<Day>>(jsonString);
+
+			return result;
+		}
+
+		/// <summary>
+		/// Fill the DisplayDays from user data read from file
+		/// </summary>
+		/// <param name="dataFromFile"></param>
+		private void FillDisplayDays(List<Day> dataFromFile)
+		{
+			DateTime today = DateTime.Today;
+			int i = 0, j = 0;
+
+			while (i < 7)
+			{
+				DateTime fileDate = dataFromFile[j].ThisDate, currentDate = today.AddDays(i);
+
+				// if we run out of data from file, fill days with blanks
+				if (j >= dataFromFile.Count)
+				{
+					DisplayDays.Add(new Day(currentDate));
+					i++;
+				}
+				// skip until today
+				else if (fileDate < currentDate)
+				{
+					j++;
+				}
+				// use the day if date matches
+				else if (fileDate == currentDate)
+				{
+					DisplayDays.Add(dataFromFile[j]);
+					j++;
+					i++;
+				}
+				// fill the between days with empty day
+				else if (fileDate <= currentDate.AddDays(6))
+				{
+					int emptyDays = (fileDate - currentDate).Days;
+					for (int k = 0; k < emptyDays; k++)
+					{
+						DisplayDays.Add(new Day(currentDate));
+						i++;
+					}
+				}
+				// ignore all dates after the 7 days
+				else
+				{
+					j = dataFromFile.Count;
+				}
+			}
 		}
 
 		public WeekViewModel()
@@ -45,11 +138,14 @@ namespace Whats4Dinner.ViewModels
 			// populate the list with 7 days, starting today
 			DisplayDays = new ObservableCollection<Day>();
 
-			for (int i = 0; i < 7; i++)
-			{
-				DisplayDays.Add(new Day(DateTime.Today.AddDays(i)));
-			}
-		}
+			// create a sample file
+			CreateSampleFile();
 
+			// read user's data from JSON file
+			List<Day> dataFromFile = ReadFromJSON(sampleFileName);
+
+			// fill the week with days
+			FillDisplayDays(dataFromFile);
+		}
 	}
 }

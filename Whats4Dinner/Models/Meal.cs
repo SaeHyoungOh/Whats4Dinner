@@ -50,6 +50,11 @@ namespace Whats4Dinner.Models
 			}
 		}
 
+		/// <summary>
+		/// add a dish to the list of dishes in the dish category
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="cat"></param>
 		public void AddDish(string name, DishCategory cat)
 		{
 			Dishes[cat].Add(new Dish(name, cat));

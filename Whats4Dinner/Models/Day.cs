@@ -56,14 +56,9 @@ namespace Whats4Dinner.Models
 			}
 			private set
 			{
-				DisplayDayOfWeek = value;
+				DisplayDate = value;
 			}
 		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		//public ObservableCollection<string> DisplayMealTypes = new ObservableCollection<string>(Meal.MealTypes);
 
 		/// <summary>
 		/// list of meals in this day
@@ -74,18 +69,6 @@ namespace Whats4Dinner.Models
 		public bool LunchCheck { get; private set; }
 		public bool DinnerCheck { get; private set; }
 		public bool OtherCheck { get; private set; }
-
-		//public ObservableCollection<string> DisplayMeals
-		//{
-		//	get
-		//	{
-		//		ObservableCollection<string> toReturn = new ObservableCollection<string>();
-
-
-
-		//		return toReturn;
-		//	}
-		//}
 
 		/// <summary>
 		/// constructor for Day
@@ -104,8 +87,19 @@ namespace Whats4Dinner.Models
 			}
 		}
 
+		/// <summary>
+		/// add a new meal (value) to the meal type (key)
+		/// </summary>
+		/// <param name="mealType"></param>
 		public void AddMeal(MealType mealType)
 		{
+			if (BreakfastCheck && mealType == MealType.Breakfast ||
+				LunchCheck && mealType == MealType.Lunch ||
+				DinnerCheck && mealType == MealType.Dinner ||
+				OtherCheck && mealType == MealType.Other)
+			{
+				return;
+			}
 			switch (mealType)
 			{
 				case MealType.Breakfast: BreakfastCheck = true;
@@ -116,10 +110,8 @@ namespace Whats4Dinner.Models
 					break;
 				case MealType.Other: OtherCheck = true;
 					break;
-				default:
-					Meals[mealType] = new Meal(mealType);
-					break;
 			}
+			Meals[mealType] = new Meal(mealType);
 		}
 	}
 }
