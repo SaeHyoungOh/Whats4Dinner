@@ -17,7 +17,6 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// List of categories a dish can have
 		/// </summary>
-		//public static string[] DishCategories = { "Grains", "Veggies", "Proteins", "Condiments", "Drinks", "Other" };
 		public enum DishCategory
 		{
 			Grains,

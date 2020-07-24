@@ -15,7 +15,6 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// List of types a dish can have
 		/// </summary>
-		//public static string[] MealType = { "Breakfast", "Lunch", "Dinner", "Other" };
 		public enum MealType
 		{
 			Breakfast,

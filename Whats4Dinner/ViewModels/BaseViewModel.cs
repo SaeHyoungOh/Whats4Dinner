@@ -14,6 +14,8 @@ namespace Whats4Dinner.ViewModels
 	{
 		public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
+		protected static string FilePath { get; set; }
+
 		private bool isBusy = false;
 		/// <summary>
 		/// 

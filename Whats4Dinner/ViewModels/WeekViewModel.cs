@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Whats4Dinner.Models;
+using Xamarin.Forms;
 
 namespace Whats4Dinner.ViewModels
 {
@@ -17,7 +19,7 @@ namespace Whats4Dinner.ViewModels
 	/// </summary>
 	public class WeekViewModel : BaseViewModel
 	{
-		private string sampleFileName = "SampleDays.json";
+		private string sampleFilePath = "SampleDays.json";
 
 		private ObservableCollection<Day> displayDays;
 
@@ -65,8 +67,8 @@ namespace Whats4Dinner.ViewModels
 			days = days.OrderBy(day => day.ThisDate).ToList();
 
 			// save to file
-			string jsonString = JsonSerializer.Serialize((object)days);
-			File.WriteAllText(sampleFileName, jsonString);
+			string jsonString = JsonConvert.SerializeObject(days);
+			File.WriteAllText(FilePath, jsonString);
 		}
 
 		/// <summary>
@@ -74,10 +76,11 @@ namespace Whats4Dinner.ViewModels
 		/// </summary>
 		/// <param name="fileName"></param>
 		/// <returns>List<Day> object read from user's data file</Day></returns>
-		private List<Day> ReadFromJSON(string fileName)
+		private List<Day> ReadFromJSON()
 		{
-			string jsonString = File.ReadAllText(fileName);
-			List<Day> result = JsonSerializer.Deserialize<List<Day>>(jsonString);
+			string jsonString = File.ReadAllText(FilePath);
+			List<Day> result = JsonConvert.DeserializeObject<List<Day>>(jsonString);
+			//List<Day> result = System.Text.Json.JsonSerializer.Deserialize<List<Day>>(jsonString);
 
 			return result;
 		}
@@ -96,7 +99,7 @@ namespace Whats4Dinner.ViewModels
 				DateTime fileDate = dataFromFile[j].ThisDate, currentDate = today.AddDays(i);
 
 				// if we run out of data from file, fill days with blanks
-				if (j >= dataFromFile.Count)
+				if (j >= dataFromFile.Count - 1)
 				{
 					DisplayDays.Add(new Day(currentDate));
 					i++;
@@ -126,7 +129,12 @@ namespace Whats4Dinner.ViewModels
 				// ignore all dates after the 7 days
 				else
 				{
-					j = dataFromFile.Count;
+					j = dataFromFile.Count - 1;
+				}
+				// prevent j from going out of bounds
+				if (j > dataFromFile.Count - 1)
+				{
+					j = dataFromFile.Count - 1;
 				}
 			}
 		}
@@ -135,6 +143,10 @@ namespace Whats4Dinner.ViewModels
 		{
 			Title = "Week View";
 
+			// build file path
+			string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			FilePath = Path.Combine(documentsPath, sampleFilePath);
+
 			// populate the list with 7 days, starting today
 			DisplayDays = new ObservableCollection<Day>();
 
@@ -142,7 +154,7 @@ namespace Whats4Dinner.ViewModels
 			CreateSampleFile();
 
 			// read user's data from JSON file
-			List<Day> dataFromFile = ReadFromJSON(sampleFileName);
+			List<Day> dataFromFile = ReadFromJSON();
 
 			// fill the week with days
 			FillDisplayDays(dataFromFile);
