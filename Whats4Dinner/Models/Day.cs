@@ -14,7 +14,7 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// the date of this day
 		/// </summary>
-		public DateTime ThisDate { get; private set; }
+		public DateTime ThisDate { get; set; }
 
 		/// <summary>
 		/// Date to display on View as a string
@@ -63,12 +63,12 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// list of meals in this day
 		/// </summary>
-		public Dictionary<MealType, Meal> Meals { get; private set; }
+		public Dictionary<MealType, Meal> Meals { get; set; }
 
-		public bool BreakfastCheck { get; private set; }
-		public bool LunchCheck { get; private set; }
-		public bool DinnerCheck { get; private set; }
-		public bool OtherCheck { get; private set; }
+		public bool BreakfastCheck { get; set; }
+		public bool LunchCheck { get; set; }
+		public bool DinnerCheck { get; set; }
+		public bool OtherCheck { get; set; }
 
 		/// <summary>
 		/// constructor for Day

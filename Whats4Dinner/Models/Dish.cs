@@ -12,7 +12,7 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Name of the Dish
 		/// </summary>
-		public string Name { get; private set; }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// List of categories a dish can have
@@ -30,7 +30,7 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Category of the Dish, as listed in Dish.Categories
 		/// </summary>
-		public DishCategory ThisDishCategory { get; private set; }
+		public DishCategory ThisDishCategory { get; set; }
 
 		/// <summary>
 		/// constructor for Dish class

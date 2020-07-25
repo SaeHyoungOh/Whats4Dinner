@@ -36,44 +36,6 @@ namespace Whats4Dinner.ViewModels
 			{
 				DisplayMeals.Add(item);
 			}
-
-			// build Display strings from meals object
-			//foreach (Meal meal in selected.Meals.Values)
-			//{
-			//	string displayMeal = "";
-
-			//	foreach (var dishCategory in meal.Dishes)
-			//	{
-			//		displayMeal += dishCategory.Key.ToString() + ": ";
-			//		foreach (Dish dish in dishCategory.Value)
-			//		{
-			//			displayMeal += dish.Name;
-			//			if (dish != dishCategory.Value.Last())
-			//			{
-			//				displayMeal += ", ";
-			//			}
-			//		}
-
-			//		displayMeal += "\n";
-			//	}
-
-			//	// assign the temp string to display string
-			//	switch (meal.ThisMealType)
-			//	{
-			//		case MealType.Breakfast:
-			//			DisplayBreakfast = displayMeal;
-			//			break;
-			//		case MealType.Lunch:
-			//			DisplayLunch = displayMeal;
-			//			break;
-			//		case MealType.Dinner:
-			//			DisplayDinner = displayMeal;
-			//			break;
-			//		case MealType.Other:
-			//			DisplayOther = displayMeal;
-			//			break;
-			//	}
-			//}
 		}
 	}
 }

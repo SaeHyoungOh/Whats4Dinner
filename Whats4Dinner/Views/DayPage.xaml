@@ -37,7 +37,7 @@
 				<ViewCell>
 					<StackLayout Margin="10, 8, 10, 7">
 						<Label Text="{Binding Key}" Style="{DynamicResource ListItemTextStyle}"/>
-						<Label Text="{Binding Value}"/>
+						<Label Text="{Binding Value.Dishes}" Style="{DynamicResource ListItemDetailTextStyle}"/>
 					</StackLayout>
 				</ViewCell>
 			</DataTemplate>

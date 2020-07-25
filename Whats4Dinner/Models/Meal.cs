@@ -26,12 +26,12 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Type of the Meal, such as breakfast, lunch, dinner, etc.
 		/// </summary>
-		public MealType ThisMealType { get; private set; }
+		public MealType ThisMealType { get; set; }
 
 		/// <summary>
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
-		public Dictionary<DishCategory, List<Dish>> Dishes { get; private set; }
+		public Dictionary<DishCategory, List<Dish>> Dishes { get; set; }
 		
 		/// <summary>
 		/// constructor for Meal class

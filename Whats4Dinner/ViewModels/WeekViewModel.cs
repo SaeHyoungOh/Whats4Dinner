@@ -45,7 +45,8 @@ namespace Whats4Dinner.ViewModels
 			List<Day> sampleDays = new List<Day>
 			{
 				new Day(DateTime.Today.AddDays(1)),
-				new Day(DateTime.Today.AddDays(3))
+				new Day(DateTime.Today.AddDays(3)),
+				new Day(DateTime.Today.AddDays(5))
 			};
 
 			sampleDays[0].AddMeal(Meal.MealType.Breakfast);
@@ -53,6 +54,9 @@ namespace Whats4Dinner.ViewModels
 
 			sampleDays[1].AddMeal(Meal.MealType.Lunch);
 			sampleDays[1].Meals[Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
+
+			sampleDays[2].AddMeal(Meal.MealType.Dinner);
+			sampleDays[2].Meals[Meal.MealType.Dinner].AddDish("Green Salad", Dish.DishCategory.Veggies);
 
 			WriteToJSON(sampleDays);
 		}
@@ -96,10 +100,20 @@ namespace Whats4Dinner.ViewModels
 
 			while (i < 7)
 			{
-				DateTime fileDate = dataFromFile[j].ThisDate, currentDate = today.AddDays(i);
+				DateTime fileDate, currentDate = today.AddDays(i);
+
+				// prevent j from going out of bounds
+				if (j < dataFromFile.Count)
+				{
+					fileDate = dataFromFile[j].ThisDate;
+				}
+				else
+				{
+					fileDate = today.AddDays(7);
+				}
 
 				// if we run out of data from file, fill days with blanks
-				if (j >= dataFromFile.Count - 1)
+				if (j > dataFromFile.Count - 1)
 				{
 					DisplayDays.Add(new Day(currentDate));
 					i++;
@@ -131,24 +145,17 @@ namespace Whats4Dinner.ViewModels
 				{
 					j = dataFromFile.Count - 1;
 				}
-				// prevent j from going out of bounds
-				if (j > dataFromFile.Count - 1)
-				{
-					j = dataFromFile.Count - 1;
-				}
 			}
 		}
 
 		public WeekViewModel()
 		{
 			Title = "Week View";
+			DisplayDays = new ObservableCollection<Day>();
 
 			// build file path
 			string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			FilePath = Path.Combine(documentsPath, sampleFilePath);
-
-			// populate the list with 7 days, starting today
-			DisplayDays = new ObservableCollection<Day>();
 
 			// create a sample file
 			CreateSampleFile();
