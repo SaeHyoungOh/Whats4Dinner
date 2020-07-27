@@ -85,6 +85,10 @@ namespace Whats4Dinner.Models
 			}
 		}
 
+		/// <summary>
+		/// parameterless constructor for JSON deserialization
+		/// </summary>
+		public Day() { }
 
 		/// <summary>
 		/// constructor for Day

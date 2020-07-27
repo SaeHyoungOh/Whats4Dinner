@@ -28,6 +28,7 @@ namespace Whats4Dinner.ViewModels
 	public class WeekViewModel : BaseViewModel
 	{
 		private string sampleFileName = "SampleDays.json";
+		private JsonSerializerOptions serializeOptions = new JsonSerializerOptions();
 
 		private ObservableCollection<Day> displayDays;
 
@@ -79,9 +80,10 @@ namespace Whats4Dinner.ViewModels
 		{
 			// sort first
 			days = days.OrderBy(day => day.ThisDate).ToList();
-			
+
 			// save to file
-			string jsonString = JsonConvert.SerializeObject(days);
+			string jsonString = System.Text.Json.JsonSerializer.Serialize(days, serializeOptions);
+			//string jsonString = JsonConvert.SerializeObject(days, Formatting.Indented);
 			File.WriteAllText(FilePath, jsonString);
 		}
 
@@ -93,7 +95,8 @@ namespace Whats4Dinner.ViewModels
 		private List<Day> ReadFromJSON()
 		{
 			string jsonString = File.ReadAllText(FilePath);
-			List<Day> result = JsonConvert.DeserializeObject<List<Day>>(jsonString);
+			List<Day> result = System.Text.Json.JsonSerializer.Deserialize<List<Day>>(jsonString, serializeOptions);
+			//List<Day> result = JsonConvert.DeserializeObject<List<Day>>(jsonString);
 
 			return result;
 		}
@@ -169,6 +172,7 @@ namespace Whats4Dinner.ViewModels
 			//FilePath = Path.Combine(documentsPath, sampleFileName);
 
 			// create a sample file
+			serializeOptions.Converters.Add(new DictionaryTKeyEnumTValueConverter());
 			CreateSampleFile();
 
 			// read user's data from JSON file

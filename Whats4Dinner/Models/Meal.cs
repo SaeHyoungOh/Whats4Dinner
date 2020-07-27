@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Whats4Dinner.Models
 {
 	public class DishList : List<Dish>
 	{
+		[JsonProperty]
 		public DishCategory ThisDishCategory { get; set; }
-
 
 		public string DisplayDishCategory
 		{
@@ -19,6 +20,7 @@ namespace Whats4Dinner.Models
 				return ThisDishCategory.ToString();
 			}
 		}
+
 		public List<Dish> Dishes => this;
 
 		/// <summary>
@@ -60,13 +62,15 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
-		public List<DishList> Dishes { get; set; }
+		public Dictionary<DishCategory, List<Dish>> Dishes { get; set; }
+		//public List<DishList> Dishes { get; set; }
 
 		public bool HasDishes
 		{
 			get
 			{
-				foreach (DishList dishList in Dishes)
+				foreach (List<Dish> dishList in Dishes.Values)
+				//foreach (DishList dishList in Dishes)
 				{
 					if (dishList.Count != 0)
 					{
@@ -88,20 +92,25 @@ namespace Whats4Dinner.Models
 				string mealString = "";
 
 				// for each dish category
-				foreach (DishList dishList in Dishes)
+				foreach (KeyValuePair<DishCategory, List<Dish>> dishCategories in Dishes)
+				//foreach (DishList dishList in Dishes)
 				{
 					// only add the categories with dishes in it
-					if (dishList.Count == 0)
+					if (dishCategories.Value.Count == 0)
+					//if (dishCategories.Count == 0)
 					{
 						continue;
 					}
-					mealString += dishList.ThisDishCategory + ": ";
+					mealString += dishCategories.Key.ToString() + ": ";
+					//mealString += dishList.ThisDishCategory + ": ";
 
 					// for each dish
-					foreach (Dish dish in dishList)
+					foreach (Dish dish in dishCategories.Value)
+					//foreach (Dish dish in dishCategories)
 					{
 						mealString += dish.Name;
-						if (dish != dishList.Last())
+						if (dish != dishCategories.Value.Last())
+						//if (dish != dishCategories.Last())
 						{
 							mealString += ", ";
 						}
@@ -111,7 +120,12 @@ namespace Whats4Dinner.Models
 				return mealString;
 			}
 		}
-		
+
+		/// <summary>
+		/// parameterless constructor for JSON deserialization
+		/// </summary>
+		public Meal() { }
+
 		/// <summary>
 		/// constructor for Meal class
 		/// </summary>
@@ -119,12 +133,14 @@ namespace Whats4Dinner.Models
 		public Meal(MealType mealType)
 		{
 			ThisMealType = mealType;
-			Dishes = new List<DishList>();
+			Dishes = new Dictionary<DishCategory, List<Dish>>();
+			//Dishes = new List<DishList>();
 
 			// add category names to the Dishes
 			foreach (DishCategory cat in (DishCategory[])Enum.GetValues(typeof(DishCategory)))
 			{
-				Dishes.Add(new DishList(cat));
+				Dishes.Add(cat, new List<Dish>());
+				//Dishes.Add(new DishList(cat));
 			}
 		}
 
@@ -135,14 +151,15 @@ namespace Whats4Dinner.Models
 		/// <param name="cat"></param>
 		public void AddDish(string name, DishCategory cat)
 		{
-			foreach (DishList dishList in Dishes)
-			{
-				if (dishList.ThisDishCategory == cat)
-				{
-					dishList.Add(new Dish(name, cat));
-					break;
-				}
-			}
+			Dishes[cat].Add(new Dish(name, cat));
+			//foreach (DishList dishList in Dishes)
+			//{
+			//	if (dishList.ThisDishCategory == cat)
+			//	{
+			//		dishList.Add(new Dish(name, cat));
+			//		break;
+			//	}
+			//}
 		}
 	}
 }

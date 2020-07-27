@@ -33,6 +33,11 @@ namespace Whats4Dinner.Models
 		public DishCategory ThisDishCategory { get; set; }
 
 		/// <summary>
+		/// parameterless constructor for JSON deserialization
+		/// </summary>
+		public Dish() { }
+
+		/// <summary>
 		/// constructor for Dish class
 		/// </summary>
 		/// <param name="name">Name of the Dish</param>
