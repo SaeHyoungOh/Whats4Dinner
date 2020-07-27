@@ -23,7 +23,8 @@ namespace Whats4Dinner.Views
 			if (e.Item == null)
 				return;
 
-			await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
+			Meal selected = (Meal)((ListView)sender).SelectedItem;
+			await Navigation.PushModalAsync(new NavigationPage(new MealPage(selected)));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;
