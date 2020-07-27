@@ -24,7 +24,7 @@ namespace Whats4Dinner.Views
 				return;
 
 			Meal selected = (Meal)((ListView)sender).SelectedItem;
-			await Navigation.PushModalAsync(new NavigationPage(new MealPage(selected)));
+			await Navigation.PushModalAsync(new NavigationPage(new MealPage(selected, Title)));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;

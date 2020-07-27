@@ -7,6 +7,35 @@ using static Whats4Dinner.Models.Dish;
 
 namespace Whats4Dinner.Models
 {
+	public class DishList : List<Dish>
+	{
+		public DishCategory ThisDishCategory { get; set; }
+
+
+		public string DisplayDishCategory
+		{
+			get
+			{
+				return ThisDishCategory.ToString();
+			}
+		}
+		public List<Dish> Dishes => this;
+
+		/// <summary>
+		/// default constructor for deserialization
+		/// </summary>
+		public DishList() { }
+
+		/// <summary>
+		/// constructor to initialize ThisDishCategory
+		/// </summary>
+		/// <param name="cat"></param>
+		public DishList(DishCategory cat)
+		{
+			ThisDishCategory = cat;
+		}
+	}
+
 	/// <summary>
 	/// A meal with Id, Type, and a list of Dishes
 	/// </summary>
@@ -31,7 +60,57 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
-		public Dictionary<DishCategory, List<Dish>> Dishes { get; set; }
+		public List<DishList> Dishes { get; set; }
+
+		public bool HasDishes
+		{
+			get
+			{
+				foreach (DishList dishList in Dishes)
+				{
+					if (dishList.Count != 0)
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
+		}
+
+		/// <summary>
+		/// list of dishes for display in view
+		/// </summary>
+		public string DisplayDishes
+		{
+			get
+			{
+				string mealString = "";
+
+				// for each dish category
+				foreach (DishList dishList in Dishes)
+				{
+					// only add the categories with dishes in it
+					if (dishList.Count == 0)
+					{
+						continue;
+					}
+					mealString += dishList.ThisDishCategory + ": ";
+
+					// for each dish
+					foreach (Dish dish in dishList)
+					{
+						mealString += dish.Name;
+						if (dish != dishList.Last())
+						{
+							mealString += ", ";
+						}
+					}
+					mealString += "\n";
+				}
+				return mealString;
+			}
+		}
 		
 		/// <summary>
 		/// constructor for Meal class
@@ -40,12 +119,12 @@ namespace Whats4Dinner.Models
 		public Meal(MealType mealType)
 		{
 			ThisMealType = mealType;
-			Dishes = new Dictionary<DishCategory, List<Dish>>();
+			Dishes = new List<DishList>();
 
 			// add category names to the Dishes
 			foreach (DishCategory cat in (DishCategory[])Enum.GetValues(typeof(DishCategory)))
 			{
-				Dishes.Add(cat, new List<Dish>());
+				Dishes.Add(new DishList(cat));
 			}
 		}
 
@@ -56,7 +135,14 @@ namespace Whats4Dinner.Models
 		/// <param name="cat"></param>
 		public void AddDish(string name, DishCategory cat)
 		{
-			Dishes[cat].Add(new Dish(name, cat));
+			foreach (DishList dishList in Dishes)
+			{
+				if (dishList.ThisDishCategory == cat)
+				{
+					dishList.Add(new Dish(name, cat));
+					break;
+				}
+			}
 		}
 	}
 }

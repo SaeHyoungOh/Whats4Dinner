@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\ItemDetailViewModel.cs" />
     <Compile Remove="ViewModels\ItemsViewModel.cs" />
     <Compile Remove="Views\ItemDetailPage.xaml.cs" />
     <Compile Remove="Views\ItemsPage.xaml.cs" />

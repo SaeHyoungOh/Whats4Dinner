@@ -6,9 +6,23 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Whats4Dinner.ViewModels;
+using System.IO;
+using Xamarin.Forms;
 
+[assembly: Dependency(typeof(Whats4Dinner.Droid.FilePathService))]
 namespace Whats4Dinner.Droid
 {
+	public class FilePathService : IFilePathService
+	{
+		public string GetFilePath(string fileName)
+		{
+			string fullPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), fileName);
+
+			return fullPath;
+		}
+	}
+
     [Activity(Label = "Whats4Dinner", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {

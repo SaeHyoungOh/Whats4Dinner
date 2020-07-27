@@ -15,11 +15,19 @@ using Xamarin.Forms;
 namespace Whats4Dinner.ViewModels
 {
 	/// <summary>
+	/// File Path interface to be implemented in each platform for dependency service
+	/// </summary>
+	public interface IFilePathService
+	{
+		string GetFilePath(string fileName);
+	}
+
+	/// <summary>
 	/// viewmodel to help display WeeklyPage, with a list of days
 	/// </summary>
 	public class WeekViewModel : BaseViewModel
 	{
-		private string sampleFilePath = "SampleDays.json";
+		private string sampleFileName = "SampleDays.json";
 
 		private ObservableCollection<Day> displayDays;
 
@@ -46,17 +54,19 @@ namespace Whats4Dinner.ViewModels
 			{
 				new Day(DateTime.Today.AddDays(1)),
 				new Day(DateTime.Today.AddDays(3)),
-				new Day(DateTime.Today.AddDays(5))
+				new Day(DateTime.Today.AddDays(5)),
+				new Day(DateTime.Today.AddDays(6))
 			};
-
-			sampleDays[0].AddMeal(Meal.MealType.Breakfast);
+			
 			sampleDays[0].Meals[Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", Dish.DishCategory.Grains);
 
-			sampleDays[1].AddMeal(Meal.MealType.Lunch);
 			sampleDays[1].Meals[Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
 
-			sampleDays[2].AddMeal(Meal.MealType.Dinner);
 			sampleDays[2].Meals[Meal.MealType.Dinner].AddDish("Green Salad", Dish.DishCategory.Veggies);
+
+			sampleDays[3].Meals[Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", Dish.DishCategory.Grains);
+			sampleDays[3].Meals[Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
+			sampleDays[3].Meals[Meal.MealType.Dinner].AddDish("Green Salad", Dish.DishCategory.Veggies);
 
 			WriteToJSON(sampleDays);
 		}
@@ -69,7 +79,7 @@ namespace Whats4Dinner.ViewModels
 		{
 			// sort first
 			days = days.OrderBy(day => day.ThisDate).ToList();
-
+			
 			// save to file
 			string jsonString = JsonConvert.SerializeObject(days);
 			File.WriteAllText(FilePath, jsonString);
@@ -84,7 +94,6 @@ namespace Whats4Dinner.ViewModels
 		{
 			string jsonString = File.ReadAllText(FilePath);
 			List<Day> result = JsonConvert.DeserializeObject<List<Day>>(jsonString);
-			//List<Day> result = System.Text.Json.JsonSerializer.Deserialize<List<Day>>(jsonString);
 
 			return result;
 		}
@@ -154,8 +163,10 @@ namespace Whats4Dinner.ViewModels
 			DisplayDays = new ObservableCollection<Day>();
 
 			// build file path
-			string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			FilePath = Path.Combine(documentsPath, sampleFilePath);
+			IFilePathService service = DependencyService.Get<IFilePathService>();
+			FilePath = service.GetFilePath(sampleFileName);
+			//string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			//FilePath = Path.Combine(documentsPath, sampleFileName);
 
 			// create a sample file
 			CreateSampleFile();

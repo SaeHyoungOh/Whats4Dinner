@@ -35,10 +35,6 @@ namespace Whats4Dinner.Models
 
 				return dayString;
 			}
-			private set
-			{
-				DisplayDayOfWeek = value;
-			}
 		}
 
 		/// <summary>
@@ -48,15 +44,7 @@ namespace Whats4Dinner.Models
 		{
 			get
 			{
-				string dateString;
-
-				dateString = ThisDate.Date.ToString("MM/dd/yyyy");
-
-				return dateString;
-			}
-			private set
-			{
-				DisplayDate = value;
+				return ThisDate.Date.ToString("MM/dd/yyyy");
 			}
 		}
 
@@ -65,10 +53,38 @@ namespace Whats4Dinner.Models
 		/// </summary>
 		public Dictionary<MealType, Meal> Meals { get; set; }
 
-		public bool BreakfastCheck { get; set; }
-		public bool LunchCheck { get; set; }
-		public bool DinnerCheck { get; set; }
-		public bool OtherCheck { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public bool BreakfastCheck
+		{
+			get
+			{
+				return Meals[MealType.Breakfast].HasDishes;
+			}
+		}
+		public bool LunchCheck
+		{
+			get
+			{
+				return Meals[MealType.Lunch].HasDishes;
+			}
+		}
+		public bool DinnerCheck
+		{
+			get
+			{
+				return Meals[MealType.Dinner].HasDishes;
+			}
+		}
+		public bool OtherCheck
+		{
+			get
+			{
+				return Meals[MealType.Other].HasDishes;
+			}
+		}
+
 
 		/// <summary>
 		/// constructor for Day
@@ -77,41 +93,13 @@ namespace Whats4Dinner.Models
 		public Day(DateTime date)
 		{
 			ThisDate = date;
-			BreakfastCheck = LunchCheck = DinnerCheck = OtherCheck = false;
 			Meals = new Dictionary<MealType, Meal>();
 
 			// add type names to the Meals
 			foreach (MealType mealType in (MealType[])Enum.GetValues(typeof(MealType)))
 			{
-				Meals.Add(mealType, null);
+				Meals.Add(mealType, new Meal(mealType));
 			}
-		}
-
-		/// <summary>
-		/// add a new meal (value) to the meal type (key)
-		/// </summary>
-		/// <param name="mealType"></param>
-		public void AddMeal(MealType mealType)
-		{
-			if (BreakfastCheck && mealType == MealType.Breakfast ||
-				LunchCheck && mealType == MealType.Lunch ||
-				DinnerCheck && mealType == MealType.Dinner ||
-				OtherCheck && mealType == MealType.Other)
-			{
-				return;
-			}
-			switch (mealType)
-			{
-				case MealType.Breakfast: BreakfastCheck = true;
-					break;
-				case MealType.Lunch: LunchCheck = true;
-					break;
-				case MealType.Dinner: DinnerCheck = true;
-					break;
-				case MealType.Other: OtherCheck = true;
-					break;
-			}
-			Meals[mealType] = new Meal(mealType);
 		}
 	}
 }
