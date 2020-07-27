@@ -27,10 +27,6 @@ namespace Whats4Dinner.Views
 			Day selected = (Day)((ListView)sender).SelectedItem;
 			await Navigation.PushModalAsync(new NavigationPage(new DayPage(selected)));
 
-			//RootPage.Detail = new NavigationPage(new DailyPage());
-
-			//await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
-
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;
 		}

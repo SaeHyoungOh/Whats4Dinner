@@ -25,10 +25,9 @@
 			<Style x:Key="ListItemDetailTextStyle"
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
-				<Setter Property="FontSize" Value="14"/>
-			</Style>
-			<Style x:Key="checkBoxStyle" TargetType="CheckBox">
-				<Setter Property="IsEnabled" Value="False"></Setter>
+				<Setter Property="FontSize" Value="16"/>
+				<Setter Property="Margin" Value="10, 0, 0, 0"/>
+				<Setter Property="TextColor" Value="LightGray"/>
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
@@ -72,23 +71,27 @@
 								  Grid.Column="0"
 								  Grid.ColumnSpan="2">
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="5*"/>
 									<ColumnDefinition Width="14*"/>
-									<ColumnDefinition Width="5*"/>
 									<ColumnDefinition Width="10*"/>
-									<ColumnDefinition Width="5*"/>
 									<ColumnDefinition Width="10*"/>
-									<ColumnDefinition Width="5*"/>
 									<ColumnDefinition Width="10*"/>
 								</Grid.ColumnDefinitions>
-								<CheckBox Grid.Column="0" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding BreakfastCheck}"/>
-								<Label Grid.Column="1" Text="Breakfast" Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<CheckBox Grid.Column="2" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding LunchCheck}"/>
-								<Label Grid.Column="3" Text="Lunch" Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<CheckBox Grid.Column="4" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding DinnerCheck}"/>
-								<Label Grid.Column="5" Text="Dinner" Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<CheckBox Grid.Column="6" Style="{StaticResource checkBoxStyle}" IsChecked="{Binding OtherCheck}"/>
-								<Label Grid.Column="7" Text="Other" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<Label Text="Breakfast" 
+									   Grid.Column="0" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<Label Text="Breakfast" 
+									   Grid.Column="0" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding BreakfastCheck}"/>
+								<Label Text="Lunch" 
+									   Grid.Column="1" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<Label Text="Lunch" 
+									   Grid.Column="1" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding LunchCheck}"/>
+								<Label Text="Dinner" 
+									   Grid.Column="2" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<Label Text="Dinner" 
+									   Grid.Column="2" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding DinnerCheck}"/>
+								<Label Text="Other" 
+									   Grid.Column="3" Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<Label Text="Other" 
+									   Grid.Column="3" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding OtherCheck}"/>
 							</Grid>
 						</Grid>
 					</StackLayout>

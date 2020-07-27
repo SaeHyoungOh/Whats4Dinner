@@ -36,8 +36,12 @@
 			<DataTemplate>
 				<ViewCell>
 					<StackLayout Margin="10, 8, 10, 7">
-						<Label Text="{Binding Key}" Style="{DynamicResource ListItemTextStyle}"/>
-						<Label Text="{Binding Value.Dishes}" Style="{DynamicResource ListItemDetailTextStyle}"/>
+						<Label Text="{Binding Item1}"
+								Grid.Row="0" Grid.Column="0"
+								Style="{DynamicResource ListItemTextStyle}"/>
+						<Label Text="{Binding Item2}"
+								Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+								Style="{DynamicResource ListItemDetailTextStyle}"/>
 					</StackLayout>
 				</ViewCell>
 			</DataTemplate>

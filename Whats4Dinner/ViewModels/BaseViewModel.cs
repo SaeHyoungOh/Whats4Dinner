@@ -12,19 +12,7 @@ namespace Whats4Dinner.ViewModels
 {
 	public class BaseViewModel : INotifyPropertyChanged
 	{
-		public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-
 		protected static string FilePath { get; set; }
-
-		private bool isBusy = false;
-		/// <summary>
-		/// 
-		/// </summary>
-		public bool IsBusy
-		{
-			get { return isBusy; }
-			set { SetProperty(ref isBusy, value); }
-		}
 
 		string title = string.Empty;
 		/// <summary>

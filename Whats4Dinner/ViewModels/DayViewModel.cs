@@ -10,16 +10,14 @@ namespace Whats4Dinner.ViewModels
 {
 	class DayViewModel : BaseViewModel
 	{
-		public string DisplayBreakfast { get; private set; }
-		public string DisplayLunch { get; private set; }
-		public string DisplayDinner { get; private set; }
-		public string DisplayOther { get; private set; }
-
-		private ObservableCollection<KeyValuePair<MealType, Meal>> displayMeals;
-		public ObservableCollection<KeyValuePair<MealType, Meal>> DisplayMeals
+		private ObservableCollection<Tuple<MealType, string>> displayMeals;
+		/// <summary>
+		/// detail of the meals to display on view
+		/// </summary>
+		public ObservableCollection<Tuple<MealType, string>> DisplayMeals
 		{
 			get => displayMeals;
-			private set
+			set
 			{
 				displayMeals = value;
 				OnPropertyChanged();
@@ -30,11 +28,37 @@ namespace Whats4Dinner.ViewModels
 		{
 			Title = selected.DisplayDayOfWeek + ", " + selected.DisplayDate;
 
-			DisplayMeals = new ObservableCollection<KeyValuePair<MealType, Meal>>();
+			DisplayMeals = new ObservableCollection<Tuple<MealType, string>>();
 
-			foreach (var item in selected.Meals)
+			// build the display string for each meal
+			foreach (KeyValuePair<MealType, Meal> mealType in selected.Meals)
 			{
-				DisplayMeals.Add(item);
+				string mealString = "";
+
+				// skip empty meals
+				if (mealType.Value == null)
+				{
+					DisplayMeals.Add(new Tuple<MealType, string>(mealType.Key, null));
+					continue;
+				}
+
+				// for each dish category
+				foreach (KeyValuePair<Dish.DishCategory, List<Dish>> dishCategory in mealType.Value.Dishes)
+				{
+					mealString += dishCategory.Key + ": ";
+
+					// for each dish
+					foreach (Dish dish in dishCategory.Value)
+					{
+						mealString += dish.Name;
+						if (dish != dishCategory.Value.Last())
+						{
+							mealString += ", ";
+						}
+					}
+					mealString += "\n";
+				}
+				DisplayMeals.Add(new Tuple<MealType, string>(mealType.Key, mealString));
 			}
 		}
 	}
