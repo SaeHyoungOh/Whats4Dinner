@@ -10,10 +10,10 @@ namespace Whats4Dinner.ViewModels
 {
 	class MealViewModel : BaseViewModel
 	{
-		private ObservableCollection<KeyValuePair<DishCategory, List<Dish>>> displayDishLists;
-		//private ObservableCollection<DishList> displayDishLists;
-		public ObservableCollection<KeyValuePair<DishCategory, List<Dish>>> DisplayDishLists
-		//public ObservableCollection<DishList> DisplayDishLists
+		//private ObservableCollection<KeyValuePair<DishCategory, List<Dish>>> displayDishLists;
+		private ObservableCollection<DishList> displayDishLists;
+		//public ObservableCollection<KeyValuePair<DishCategory, List<Dish>>> DisplayDishLists
+		public ObservableCollection<DishList> DisplayDishLists
 		{
 			get => displayDishLists;
 			set
@@ -26,12 +26,12 @@ namespace Whats4Dinner.ViewModels
 		{
 			Title = selected.ThisMealType.ToString() + ", " + previousTitle.Replace(",", "");
 
-			DisplayDishLists = new ObservableCollection<KeyValuePair<DishCategory, List<Dish>>>();
-			//DisplayDishLists = new ObservableCollection<DishList>();
+			//DisplayDishLists = new ObservableCollection<KeyValuePair<DishCategory, List<Dish>>>();
+			DisplayDishLists = new ObservableCollection<DishList>();
 
 			// set the display dish categories
-			foreach (KeyValuePair<DishCategory, List<Dish>> dishList in selected.Dishes)
-			//foreach (DishList dishList in selected.Dishes)
+			//foreach (KeyValuePair<DishCategory, List<Dish>> dishList in selected.Dishes)
+			foreach (DishList dishList in selected.Dishes)
 			{
 				DisplayDishLists.Add(dishList);
 			}

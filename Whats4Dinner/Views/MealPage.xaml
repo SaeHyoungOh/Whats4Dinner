@@ -30,27 +30,14 @@
 				  VerticalOptions="FillAndExpand"
 				  Margin="5, 5, 5, 5"
 				  ItemsSource="{Binding DisplayDishLists}"
+				  GroupDisplayBinding="{Binding ThisDishCategory}"
+				  IsGroupingEnabled="True"
 				  CachingStrategy="RecycleElement">
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
 						<StackLayout Margin="10, 8, 10, 7">
-							<Label Text="{Binding Key}" Style="{DynamicResource ListItemTextStyle}"/>
-							<ListView x:Name="Dishes"
-									  Margin="5, 5, 5, 5"
-									  ItemsSource="{Binding Value}"
-									  CachingStrategy="RecycleElement">
-								<ListView.ItemTemplate>
-									<DataTemplate>
-										<ViewCell>
-											<StackLayout>
-												<Label Text="{Binding Name}" Style="{DynamicResource ListItemDetailTextStyle}"/>
-											</StackLayout>
-										</ViewCell>
-									</DataTemplate>
-								</ListView.ItemTemplate>
-							</ListView>
-							<!--<Label Text="{Binding Value}" Style="{DynamicResource ListItemDetailTextStyle}"/>-->
+							<Label Text="{Binding Name}" Style="{DynamicResource ListItemDetailTextStyle}"/>
 						</StackLayout>
 					</ViewCell>
 				</DataTemplate>
