@@ -81,6 +81,19 @@ namespace Whats4Dinner.ViewModels
 			// sort first
 			days = days.OrderBy(day => day.ThisDate).ToList();
 
+			// convert DishGroup to DishGroupForJSON
+			foreach (Day day in days)
+			{
+				foreach (Meal meal in day.Meals.Values)
+				{
+					meal.DishesJSON.Clear();
+					foreach (DishGroup dishGroup in meal.Dishes)
+					{
+						meal.DishesJSON.Add(new DishGroupForJSON(dishGroup.DishGroupCategory, dishGroup));
+					}
+				}
+			}
+
 			// save to file
 			string jsonString = System.Text.Json.JsonSerializer.Serialize(days, serializeOptions);
 			//string jsonString = JsonConvert.SerializeObject(days, Formatting.Indented);
@@ -97,6 +110,19 @@ namespace Whats4Dinner.ViewModels
 			string jsonString = File.ReadAllText(FilePath);
 			List<Day> result = System.Text.Json.JsonSerializer.Deserialize<List<Day>>(jsonString, serializeOptions);
 			//List<Day> result = JsonConvert.DeserializeObject<List<Day>>(jsonString);
+
+			// convert DishGroupForJSON to DishGroup
+			foreach (Day day in result)
+			{
+				foreach (Meal meal in day.Meals.Values)
+				{
+					meal.Dishes.Clear();
+					foreach (DishGroupForJSON dishGroupForJSON in meal.DishesJSON)
+					{
+						meal.Dishes.Add(new DishGroup(dishGroupForJSON.DishGroupCategory, dishGroupForJSON.DishList));
+					}
+				}
+			}
 
 			return result;
 		}

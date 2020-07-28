@@ -8,35 +8,6 @@ using static Whats4Dinner.Models.Dish;
 
 namespace Whats4Dinner.Models
 {
-	public class DishList : List<Dish>
-	{
-		public DishCategory ThisDishCategory { get; set; }
-
-		public string DisplayDishCategory
-		{
-			get
-			{
-				return ThisDishCategory.ToString();
-			}
-		}
-
-		public List<Dish> Dishes => this;
-
-		/// <summary>
-		/// default constructor for deserialization
-		/// </summary>
-		public DishList() { }
-
-		/// <summary>
-		/// constructor to initialize ThisDishCategory
-		/// </summary>
-		/// <param name="cat"></param>
-		public DishList(DishCategory cat)
-		{
-			ThisDishCategory = cat;
-		}
-	}
-
 	/// <summary>
 	/// A meal with Id, Type, and a list of Dishes
 	/// </summary>
@@ -62,14 +33,15 @@ namespace Whats4Dinner.Models
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
 		//public Dictionary<DishCategory, List<Dish>> Dishes { get; set; }
-		public List<DishList> Dishes { get; set; }
+		public List<DishGroup> Dishes { get; set; }
+		public List<DishGroupForJSON> DishesJSON { get; set; }
 
 		public bool HasDishes
 		{
 			get
 			{
 				//foreach (List<Dish> dishList in Dishes.Values)
-				foreach (DishList dishList in Dishes)
+				foreach (DishGroup dishList in Dishes)
 				{
 					if (dishList.Count != 0)
 					{
@@ -92,7 +64,7 @@ namespace Whats4Dinner.Models
 
 				// for each dish category
 				//foreach (KeyValuePair<DishCategory, List<Dish>> dishCategories in Dishes)
-				foreach (DishList dishCategories in Dishes)
+				foreach (DishGroup dishCategories in Dishes)
 				{
 					// only add the categories with dishes in it
 					//if (dishCategories.Value.Count == 0)
@@ -101,7 +73,7 @@ namespace Whats4Dinner.Models
 						continue;
 					}
 					//mealString += dishCategories.Key.ToString() + ": ";
-					mealString += dishCategories.ThisDishCategory + ": ";
+					mealString += dishCategories.DishGroupCategory + ": ";
 
 					// for each dish
 					//foreach (Dish dish in dishCategories.Value)
@@ -133,13 +105,14 @@ namespace Whats4Dinner.Models
 		{
 			ThisMealType = mealType;
 			//Dishes = new Dictionary<DishCategory, List<Dish>>();
-			Dishes = new List<DishList>();
+			Dishes = new List<DishGroup>();
+			DishesJSON = new List<DishGroupForJSON>();
 
 			// add category names to the Dishes
 			foreach (DishCategory cat in (DishCategory[])Enum.GetValues(typeof(DishCategory)))
 			{
 				//Dishes.Add(cat, new List<Dish>());
-				Dishes.Add(new DishList(cat));
+				Dishes.Add(new DishGroup(cat));
 			}
 		}
 
@@ -151,9 +124,9 @@ namespace Whats4Dinner.Models
 		public void AddDish(string name, DishCategory cat)
 		{
 			//Dishes[cat].Add(new Dish(name, cat));
-			foreach (DishList dishList in Dishes)
+			foreach (DishGroup dishList in Dishes)
 			{
-				if (dishList.ThisDishCategory == cat)
+				if (dishList.DishGroupCategory == cat)
 				{
 					dishList.Add(new Dish(name, cat));
 					break;
