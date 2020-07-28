@@ -18,5 +18,25 @@ namespace Whats4Dinner.Views
 			InitializeComponent();
 			BindingContext = new MealViewModel(selected, previousTitle);
 		}
+
+		private void AddItem_Clicked(object sender, EventArgs e)
+		{
+			//if (e.Item == null)
+			//	return;
+
+			//Meal selected = (Meal)((ListView)sender).SelectedItem;
+			//await Navigation.PushModalAsync(new NavigationPage(new MealPage(selected, Title)));
+			DisplayAlert("AddItem_Clicked", "AddItem_Clicked was clicked", "Ok");
+
+			//Deselect Item
+			//((ListView)sender).SelectedItem = null;
+		}
+
+		//private void DeleteItem_Clicked(object sender, EventArgs e)
+		//{
+		//	Dish selected = (Dish)((Button)sender).CommandParameter;
+		//	string dishname = selected.Name;
+		//	DisplayAlert("DeleteItem_Clicked", dishname + " was clicked", "Ok");
+		//}
 	}
 }

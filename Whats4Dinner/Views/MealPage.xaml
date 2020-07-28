@@ -6,6 +6,11 @@
 			 mc:Ignorable="d"
 			 x:Class="Whats4Dinner.Views.MealPage"
 			 Title="{Binding Title}">
+
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+	</ContentPage.ToolbarItems>
+
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<Style x:Key="baseLabelStyle" TargetType="Label">
@@ -30,14 +35,35 @@
 				  VerticalOptions="FillAndExpand"
 				  Margin="5, 5, 5, 5"
 				  ItemsSource="{Binding DisplayDishLists}"
-				  GroupDisplayBinding="{Binding ThisDishCategory}"
 				  IsGroupingEnabled="True"
 				  CachingStrategy="RecycleElement">
+			<ListView.GroupHeaderTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<Label Text="{Binding DishGroupCategory}" Style="{DynamicResource ListItemTextStyle}"/>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.GroupHeaderTemplate>
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
 						<StackLayout Margin="10, 8, 10, 7">
-							<Label Text="{Binding Name}" Style="{DynamicResource ListItemDetailTextStyle}"/>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="7*"/>
+									<ColumnDefinition Width="1*"/>
+								</Grid.ColumnDefinitions>
+								<Label Text="{Binding Name}"
+									   Grid.Row="0" Grid.Column="0"
+									   Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<Button Text="X"
+										Grid.Row="0" Grid.Column="1"
+										Command="{Binding Path=BindingContext.DeleteClick, Source={x:Reference DishCategories}}"
+										CommandParameter="{Binding .}"/>
+							</Grid>
 						</StackLayout>
 					</ViewCell>
 				</DataTemplate>

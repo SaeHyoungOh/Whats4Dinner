@@ -11,6 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Xamarin_Forms___ListView_Grouping - Copy\**" />
+    <Compile Remove="Xamarin_Forms___ListView_Grouping\**" />
+    <EmbeddedResource Remove="Xamarin_Forms___ListView_Grouping - Copy\**" />
+    <EmbeddedResource Remove="Xamarin_Forms___ListView_Grouping\**" />
+    <None Remove="Xamarin_Forms___ListView_Grouping - Copy\**" />
+    <None Remove="Xamarin_Forms___ListView_Grouping\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="ViewModels\ItemDetailViewModel.cs" />
     <Compile Remove="ViewModels\ItemsViewModel.cs" />
     <Compile Remove="Views\ItemDetailPage.xaml.cs" />
@@ -26,6 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Prism.Core" Version="7.2.0.1422" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.1179" />
