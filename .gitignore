@@ -352,3 +352,7 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 Whats4Dinner/Whats4Dinner.csproj
+Whats4Dinner.Android/
+Whats4Dinner.iOS/
+Whats4Dinner.UWP/
+Whats4Dinner.Web/
