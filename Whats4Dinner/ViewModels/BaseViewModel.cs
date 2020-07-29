@@ -1,17 +1,19 @@
-﻿using System;
+﻿using Prism.Commands;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-using Xamarin.Forms;
-
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Whats4Dinner.Models;
-using Whats4Dinner.Services;
+using Whats4Dinner.ViewModels.DataStructure;
 
 namespace Whats4Dinner.ViewModels
 {
-	public class BaseViewModel : INotifyPropertyChanged
+	public class BaseViewModel : BaseModel
 	{
+		private string title = string.Empty;
+		private bool isBusy = false;
+
 		/// <summary>
 		/// title of the page
 		/// </summary>
@@ -20,39 +22,113 @@ namespace Whats4Dinner.ViewModels
 			get { return title; }
 			set { SetProperty(ref title, value); }
 		}
-		string title = string.Empty;
-
-		/// <summary>
-		/// a replacement for the default "set" method for class property
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="backingStore">the property in question</param>
-		/// <param name="value">new value for the property</param>
-		/// <param name="propertyName">property name in view</param>
-		/// <param name="onChanged"></param>
-		/// <returns>whether the property has changed</returns>
-		protected bool SetProperty<T>(ref T backingStore, T value,
-			[CallerMemberName] string propertyName = "",
-			Action onChanged = null)
+		public bool IsBusy
 		{
-			if (EqualityComparer<T>.Default.Equals(backingStore, value))
-				return false;
-
-			backingStore = value;
-			onChanged?.Invoke();
-			OnPropertyChanged(propertyName);
-			return true;
+			get { return isBusy; }
+			set { SetProperty(ref isBusy, value); }
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		protected readonly string fileName = "UserData.json";
+		protected FileIO UserDataIO;
 
 		/// <summary>
-		/// helper method to update View using PropertyChanged
+		/// list of all the Days
 		/// </summary>
-		/// <param name="propertyName"></param>
-		protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+		public ObservableCollection<Day> DisplayDays
 		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			get => displayDays;
+			set
+			{
+				SetProperty(ref displayDays, value);
+			}
+		}
+		private ObservableCollection<Day> displayDays;
+		public DelegateCommand LoadItemsCommand { get; set; }
+
+		/// <summary>
+		/// Fill the DisplayDays from user data read from file
+		/// </summary>
+		/// <param name="dataFromFile"></param>
+		protected void FillDisplayDays(List<Day> dataFromFile)
+		{
+			DateTime today = DateTime.Today;
+			int i = 0, j = 0;
+
+			while (i < 7)
+			{
+				DateTime fileDate, currentDate = today.AddDays(i);
+
+				// prevent j from going out of bounds
+				if (j < dataFromFile.Count)
+				{
+					fileDate = dataFromFile[j].ThisDate;
+				}
+				else
+				{
+					fileDate = today.AddDays(7);
+				}
+
+				// if we run out of data from file, fill days with blanks
+				if (j > dataFromFile.Count - 1)
+				{
+					DisplayDays.Add(new Day(currentDate));
+					i++;
+				}
+				// skip until today
+				else if (fileDate < currentDate)
+				{
+					j++;
+				}
+				// use the day if date matches
+				else if (fileDate == currentDate)
+				{
+					DisplayDays.Add(dataFromFile[j]);
+					j++;
+					i++;
+				}
+				// fill the between days with empty day
+				else if (fileDate <= currentDate.AddDays(6))
+				{
+					int emptyDays = (fileDate - currentDate).Days;
+					for (int k = 0; k < emptyDays; k++)
+					{
+						DisplayDays.Add(new Day(currentDate));
+						i++;
+					}
+				}
+				// ignore all dates after the 7 days
+				else
+				{
+					j = dataFromFile.Count - 1;
+				}
+			}
+		}
+
+		/// <summary>
+		/// to be made asyncronous when using database
+		/// </summary>
+		protected void ExecuteLoadItemsCommand()
+		{
+			IsBusy = true;
+
+			try
+			{
+				DisplayDays.Clear();
+
+				// read user's data from JSON file
+				List<Day> dataFromFile = UserDataIO.ReadFromJSON();
+
+				// fill the week with days
+				FillDisplayDays(dataFromFile);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
+			finally
+			{
+				IsBusy = false;
+			}
 		}
 	}
 }

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace Whats4Dinner.Models
+namespace Whats4Dinner.ViewModels
 {
 	public class BaseModel : INotifyPropertyChanged
 	{

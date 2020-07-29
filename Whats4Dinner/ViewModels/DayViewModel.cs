@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Prism.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using Whats4Dinner.Models;
-using static Whats4Dinner.Models.Meal;
+using Whats4Dinner.ViewModels.DataStructure;
 
 namespace Whats4Dinner.ViewModels
 {
@@ -13,6 +10,9 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// detail of the meals to display on view
 		/// </summary>
+		private ObservableCollection<Meal> displayMeals;
+		private Day selectedDay;
+
 		public ObservableCollection<Meal> DisplayMeals
 		{
 			get => displayMeals;
@@ -21,18 +21,31 @@ namespace Whats4Dinner.ViewModels
 				SetProperty(ref displayMeals, value);
 			}
 		}
-		private ObservableCollection<Meal> displayMeals;
-
-		public DayViewModel(Day selected)
+		public Day SelectedDay
 		{
-			Title = selected.DisplayDayOfWeek + ", " + selected.DisplayDate;
-
-			DisplayMeals = new ObservableCollection<Meal>();
-
-			foreach (Meal meal in selected.Meals.Values)
+			get => selectedDay;
+			set
 			{
-				DisplayMeals.Add(meal);
+				SetProperty(ref selectedDay, value);
 			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="DisplayDays"></param>
+		/// <param name="dayIndex"></param>
+		public DayViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay)
+		{
+			this.DisplayDays = DisplayDays;
+			this.SelectedDay = SelectedDay;
+
+			Title = SelectedDay.DisplayDayOfWeek + ", " + SelectedDay.DisplayDate;
+
+			DisplayMeals = SelectedDay.Meals;
+
+			// for refreshing
+			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);
 		}
 	}
 }

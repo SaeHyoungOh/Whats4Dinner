@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Whats4Dinner.Models;
+using System.Collections.ObjectModel;
 using Whats4Dinner.ViewModels;
+using Whats4Dinner.ViewModels.DataStructure;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,13 +10,18 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MealPage : ContentPage
 	{
-		//Meal ThisMeal;
+		ObservableCollection<Day> DisplayDays;
+		Day SelectedDay;
+		Meal SelectedMeal;
 
-		public MealPage(Meal selected, string previousTitle)
+		public MealPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
 		{
+			this.DisplayDays = DisplayDays;
+			this.SelectedDay = SelectedDay;
+			this.SelectedMeal = SelectedMeal;
+
 			InitializeComponent();
-			//ThisMeal = selected;
-			BindingContext = new MealViewModel(selected, previousTitle);
+			BindingContext = new MealViewModel(DisplayDays, SelectedDay, SelectedMeal);
 		}
 
 		private void AddItem_Clicked(object sender, EventArgs e)

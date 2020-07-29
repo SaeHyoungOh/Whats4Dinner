@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Whats4Dinner.Models;
+﻿using System.Collections.ObjectModel;
+using Whats4Dinner.ViewModels.DataStructure;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -23,9 +19,11 @@ namespace Whats4Dinner.Views
 		{
 			if (e.Item == null)
 				return;
+			// get the DisplayDays and the day index
+			ObservableCollection<Day> DisplayDays = (ObservableCollection<Day>)((ListView)sender).ItemsSource;
+			Day SelectedDay = (Day)((ListView)sender).SelectedItem;
 
-			Day selected = (Day)((ListView)sender).SelectedItem;
-			await Navigation.PushModalAsync(new NavigationPage(new DayPage(selected)));
+			await Navigation.PushModalAsync(new NavigationPage(new DayPage(DisplayDays, SelectedDay)));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;

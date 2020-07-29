@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using static Whats4Dinner.Models.Meal;
+using static Whats4Dinner.ViewModels.DataStructure.Meal;
 
-namespace Whats4Dinner.Models
+namespace Whats4Dinner.ViewModels.DataStructure
 {
 	/// <summary>
 	/// A Day with Date and a list of Meals
@@ -14,7 +13,7 @@ namespace Whats4Dinner.Models
 		private DateTime thisDate;
 		private string displayDayOfWeek;
 		private string displayDate;
-		private Dictionary<MealType, Meal> meals;
+		private ObservableCollection<Meal> meals;
 		private bool breakfastCheck;
 		private bool lunchCheck;
 		private bool dinnerCheck;
@@ -78,7 +77,7 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// list of meals in this day
 		/// </summary>
-		public Dictionary<MealType, Meal> Meals
+		public ObservableCollection<Meal> Meals
 		{
 			get => meals;
 			set
@@ -94,7 +93,10 @@ namespace Whats4Dinner.Models
 		{
 			get
 			{
-				SetProperty(ref breakfastCheck, Meals[MealType.Breakfast].HasDishes);
+				if (Meals.Count > (int)MealType.Breakfast)
+				{
+					SetProperty(ref breakfastCheck, Meals[(int)MealType.Breakfast].HasDishes);
+				}
 
 				return breakfastCheck;
 			}
@@ -107,7 +109,10 @@ namespace Whats4Dinner.Models
 		{
 			get
 			{
-				SetProperty(ref lunchCheck, Meals[MealType.Lunch].HasDishes);
+				if (Meals.Count > (int)MealType.Lunch)
+				{
+					SetProperty(ref lunchCheck, Meals[(int)MealType.Lunch].HasDishes);
+				}
 
 				return lunchCheck;
 			}
@@ -120,7 +125,10 @@ namespace Whats4Dinner.Models
 		{
 			get
 			{
-				SetProperty(ref dinnerCheck, Meals[MealType.Dinner].HasDishes);
+				if (Meals.Count > (int)MealType.Dinner)
+				{
+					SetProperty(ref dinnerCheck, Meals[(int)MealType.Dinner].HasDishes);
+				}
 
 				return dinnerCheck;
 			}
@@ -133,7 +141,10 @@ namespace Whats4Dinner.Models
 		{
 			get
 			{
-				SetProperty(ref otherCheck, Meals[MealType.Other].HasDishes);
+				if (Meals.Count > (int)MealType.Other)
+				{
+					SetProperty(ref otherCheck, Meals[(int)MealType.Other].HasDishes);
+				}
 
 				return otherCheck;
 			}
@@ -155,12 +166,12 @@ namespace Whats4Dinner.Models
 		public Day(DateTime date)
 		{
 			ThisDate = date;
-			Meals = new Dictionary<MealType, Meal>();
+			Meals = new ObservableCollection<Meal>();
 
 			// add type names to the Meals
 			foreach (MealType mealType in (MealType[])Enum.GetValues(typeof(MealType)))
 			{
-				Meals.Add(mealType, new Meal(mealType));
+				Meals.Add(new Meal(mealType));
 			}
 		}
 	}

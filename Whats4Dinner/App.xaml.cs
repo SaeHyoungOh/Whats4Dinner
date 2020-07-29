@@ -2,7 +2,6 @@
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Whats4Dinner.Services;
 using Whats4Dinner.Views;
 
 namespace Whats4Dinner
@@ -20,10 +19,6 @@ namespace Whats4Dinner
 		{
 			InitializeComponent();
 
-			if (UseMockDataStore)
-				DependencyService.Register<MockDataStore>();
-			else
-				DependencyService.Register<AzureDataStore>();
 			MainPage = new MainPage();
 		}
 

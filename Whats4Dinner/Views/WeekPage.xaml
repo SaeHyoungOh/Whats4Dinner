@@ -31,73 +31,74 @@
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	
-	<ListView x:Name="Days"
+
+	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
+		<ListView x:Name="Days"
 			  HasUnevenRows="True"
 			  VerticalOptions="FillAndExpand"
 			  Margin="5, 5, 5, 5"
 			  ItemsSource="{Binding DisplayDays}"
 			  ItemTapped="Handle_ItemTapped"
 			  CachingStrategy="RecycleElement">
-		
-		<ListView.ItemTemplate>
-			<DataTemplate>
-				<ViewCell>
-					<StackLayout Margin="10, 8, 10, 7">
-						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition/>
-								<RowDefinition/>
-							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="3*"/>
-								<ColumnDefinition Width="2*"/>
-							</Grid.ColumnDefinitions>
-							
-							<!-- Day of the week -->
-							<Label Text="{Binding DisplayDayOfWeek}"
+
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<StackLayout Margin="10, 8, 10, 7">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="3*"/>
+									<ColumnDefinition Width="2*"/>
+								</Grid.ColumnDefinitions>
+
+								<!-- Day of the week -->
+								<Label Text="{Binding DisplayDayOfWeek}"
 								   Grid.Row="0"
 								   Grid.Column="0"
 								   Style="{DynamicResource ListItemTextStyle}"/>
-							
-							<!-- exact date -->
-							<Label Text="{Binding DisplayDate}"
+
+								<!-- exact date -->
+								<Label Text="{Binding DisplayDate}"
 								   Grid.Row="0"
 								   Grid.Column="1"
 								   Style="{DynamicResource ListItemTextStyle}"/>
-							
-							<!-- indicate whether each meal is added to day -->
-							<Grid Grid.Row="1"
+
+								<!-- indicate whether each meal is added to day -->
+								<Grid Grid.Row="1"
 								  Grid.Column="0"
 								  Grid.ColumnSpan="2">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="14*"/>
-									<ColumnDefinition Width="10*"/>
-									<ColumnDefinition Width="10*"/>
-									<ColumnDefinition Width="10*"/>
-								</Grid.ColumnDefinitions>
-								<Label Text="Breakfast" 
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="14*"/>
+										<ColumnDefinition Width="10*"/>
+										<ColumnDefinition Width="10*"/>
+										<ColumnDefinition Width="10*"/>
+									</Grid.ColumnDefinitions>
+									<Label Text="Breakfast" 
 									   Grid.Column="0" Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<Label Text="Breakfast" 
+									<Label Text="Breakfast" 
 									   Grid.Column="0" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding BreakfastCheck}"/>
-								<Label Text="Lunch" 
+									<Label Text="Lunch" 
 									   Grid.Column="1" Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<Label Text="Lunch" 
+									<Label Text="Lunch" 
 									   Grid.Column="1" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding LunchCheck}"/>
-								<Label Text="Dinner" 
+									<Label Text="Dinner" 
 									   Grid.Column="2" Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<Label Text="Dinner" 
+									<Label Text="Dinner" 
 									   Grid.Column="2" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding DinnerCheck}"/>
-								<Label Text="Other" 
+									<Label Text="Other" 
 									   Grid.Column="3" Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<Label Text="Other" 
+									<Label Text="Other" 
 									   Grid.Column="3" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding OtherCheck}"/>
+								</Grid>
 							</Grid>
-						</Grid>
-					</StackLayout>
-				</ViewCell>
-			</DataTemplate>
-		</ListView.ItemTemplate>
-		
-	</ListView>
+						</StackLayout>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</RefreshView>
 </ContentPage>

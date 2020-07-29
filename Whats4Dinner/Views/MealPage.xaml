@@ -30,7 +30,7 @@
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<ContentPage.Content>
+	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 		<ListView x:Name="DishCategories"
 				  HasUnevenRows="True"
 				  VerticalOptions="FillAndExpand"
@@ -68,5 +68,5 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
-	</ContentPage.Content>
+	</RefreshView>
 </ContentPage>

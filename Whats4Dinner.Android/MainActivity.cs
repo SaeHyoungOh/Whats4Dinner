@@ -6,9 +6,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using Whats4Dinner.ViewModels;
 using System.IO;
 using Xamarin.Forms;
+using Whats4Dinner.Models;
 
 [assembly: Dependency(typeof(Whats4Dinner.Droid.FilePathService))]
 namespace Whats4Dinner.Droid

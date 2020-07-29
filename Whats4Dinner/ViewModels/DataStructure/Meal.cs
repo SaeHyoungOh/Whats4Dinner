@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using static Whats4Dinner.Models.Dish;
+using static Whats4Dinner.ViewModels.DataStructure.Dish;
 
-namespace Whats4Dinner.Models
+namespace Whats4Dinner.ViewModels.DataStructure
 {
 	/// <summary>
 	/// A meal with Id, Type, and a list of Dishes
@@ -14,7 +12,7 @@ namespace Whats4Dinner.Models
 	public class Meal : BaseModel
 	{
 		private MealType thisMealType;
-		private List<DishGroup> dishes;
+		private ObservableCollection<DishGroup> dishes;
 		private bool hasDishes;
 		private string displayDishes;
 
@@ -26,7 +24,7 @@ namespace Whats4Dinner.Models
 			Breakfast,
 			Lunch,
 			Dinner,
-			Other = 99
+			Other
 		}
 
 		/// <summary>
@@ -44,7 +42,7 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
-		public List<DishGroup> Dishes
+		public ObservableCollection<DishGroup> Dishes
 		{
 			get => dishes;
 			set
@@ -127,14 +125,12 @@ namespace Whats4Dinner.Models
 		public Meal(MealType mealType)
 		{
 			ThisMealType = mealType;
-			//Dishes = new Dictionary<DishCategory, List<Dish>>();
-			Dishes = new List<DishGroup>();
+			Dishes = new ObservableCollection<DishGroup>();
 			DishesJSON = new List<DishGroupForJSON>();
 
 			// add category names to the Dishes
 			foreach (DishCategory cat in (DishCategory[])Enum.GetValues(typeof(DishCategory)))
 			{
-				//Dishes.Add(cat, new List<Dish>());
 				Dishes.Add(new DishGroup(cat));
 			}
 		}
@@ -146,7 +142,6 @@ namespace Whats4Dinner.Models
 		/// <param name="cat"></param>
 		public void AddDish(string name, DishCategory cat)
 		{
-			//Dishes[cat].Add(new Dish(name, cat));
 			foreach (DishGroup dishList in Dishes)
 			{
 				if (dishList.DishGroupCategory == cat)
