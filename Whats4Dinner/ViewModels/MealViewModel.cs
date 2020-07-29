@@ -19,7 +19,7 @@ namespace Whats4Dinner.ViewModels
 			get => displayDishLists;
 			set
 			{
-				displayDishLists = value;
+				SetProperty(ref displayDishLists, value);
 				OnPropertyChanged();
 			}
 		}
@@ -28,21 +28,30 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// delegate command for "delete" button
 		/// </summary>
+		public DelegateCommand AddClick { get; private set; }
 		public DelegateCommand<Dish> DeleteClick { get; private set; }
 
-		/// <summary>
-		/// button click action for "delete" button
-		/// </summary>
-		/// <param name="content"></param>
 		private void DeleteClickExecute(Dish content)
 		{
 			foreach (DishGroup dishGroup in DisplayDishLists)
 			{
 				if (dishGroup.DishGroupCategory == content.ThisDishCategory)
 				{
-					dishGroup.Remove(content);
+					//dishGroup.Remove(content);
+					dishGroup.Add(new Dish("test delete", DishCategory.Condiments));
+					OnPropertyChanged("DisplayDishLists");
+					break;
 				}
 			}
+		}
+		/// <summary>
+		/// button click action for "delete" button
+		/// </summary>
+		/// <param name="content"></param>
+		private void AddClickExecute()
+		{
+			DisplayDishLists[3].Add(new Dish("test add", DishCategory.Drinks));
+			OnPropertyChanged("DisplayDishLists");
 		}
 
 		/// <summary>
@@ -83,7 +92,9 @@ namespace Whats4Dinner.ViewModels
 			}
 
 			// assign delegate commands
-			DeleteClick = new DelegateCommand<Dish>(DeleteClickExecute, DeleteClickCanExecute);
+			AddClick = new DelegateCommand(AddClickExecute);
+			DeleteClick = new DelegateCommand<Dish>(DeleteClickExecute);
+			//DeleteClick = new DelegateCommand<Dish>(DeleteClickExecute, DeleteClickCanExecute);
 		}
 	}
 }

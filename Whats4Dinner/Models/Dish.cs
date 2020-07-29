@@ -9,12 +9,22 @@ namespace Whats4Dinner.Models
 	/// <summary>
 	/// A dish with Id, Name, and Category
 	/// </summary>
-	public class Dish
+	public class Dish : BaseModel
 	{
+		private string name;
+		private DishCategory thisDishCategory;
+
 		/// <summary>
 		/// Name of the Dish
 		/// </summary>
-		public string Name { get; set; }
+		public string Name
+		{
+			get => name;
+			set
+			{
+				SetProperty(ref name, value);
+			}
+		}
 
 		/// <summary>
 		/// List of categories a dish can have
@@ -32,7 +42,14 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Category of the Dish, as listed in Dish.Categories
 		/// </summary>
-		public DishCategory ThisDishCategory { get; set; }
+		public DishCategory ThisDishCategory
+		{
+			get => thisDishCategory;
+			set
+			{
+				SetProperty(ref thisDishCategory, value);
+			}
+		}
 
 		/// <summary>
 		/// parameterless constructor for JSON deserialization
@@ -42,12 +59,12 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// constructor for Dish class
 		/// </summary>
-		/// <param name="name">Name of the Dish</param>
-		/// <param name="category">Category of the Dish, as listed in Dish.Categories</param>
-		public Dish(string name, DishCategory category)
+		/// <param name="newName">Name of the Dish</param>
+		/// <param name="cat">Category of the Dish, as listed in Dish.Categories</param>
+		public Dish(string newName, DishCategory cat)
 		{
-			Name = name;
-			ThisDishCategory = category;
+			Name = newName;
+			ThisDishCategory = cat;
 		}
 	}
 

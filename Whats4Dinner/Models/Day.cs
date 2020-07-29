@@ -9,12 +9,28 @@ namespace Whats4Dinner.Models
 	/// <summary>
 	/// A Day with Date and a list of Meals
 	/// </summary>
-	public class Day
+	public class Day : BaseModel
 	{
+		private DateTime thisDate;
+		private string displayDayOfWeek;
+		private string displayDate;
+		private Dictionary<MealType, Meal> meals;
+		private bool breakfastCheck;
+		private bool lunchCheck;
+		private bool dinnerCheck;
+		private bool otherCheck;
+
 		/// <summary>
 		/// the date of this day
 		/// </summary>
-		public DateTime ThisDate { get; set; }
+		public DateTime ThisDate
+		{
+			get => thisDate;
+			set
+			{
+				SetProperty(ref thisDate, value);
+			}
+		}
 
 		/// <summary>
 		/// Date to display on View as a string
@@ -32,8 +48,13 @@ namespace Whats4Dinner.Models
 				{
 					dayString += " (Today)";
 				}
+				SetProperty(ref displayDayOfWeek, dayString);
 
-				return dayString;
+				return displayDayOfWeek;
+			}
+			set
+			{
+				SetProperty(ref displayDayOfWeek, value);
 			}
 		}
 
@@ -44,14 +65,27 @@ namespace Whats4Dinner.Models
 		{
 			get
 			{
-				return ThisDate.Date.ToString("MM/dd/yyyy");
+				SetProperty(ref displayDate, ThisDate.Date.ToString("MM/dd/yyyy"));
+
+				return displayDate;
+			}
+			set
+			{
+				SetProperty(ref displayDate, value);
 			}
 		}
 
 		/// <summary>
 		/// list of meals in this day
 		/// </summary>
-		public Dictionary<MealType, Meal> Meals { get; set; }
+		public Dictionary<MealType, Meal> Meals
+		{
+			get => meals;
+			set
+			{
+				SetProperty(ref meals, value);
+			}
+		}
 
 		/// <summary>
 		/// 
@@ -60,28 +94,52 @@ namespace Whats4Dinner.Models
 		{
 			get
 			{
-				return Meals[MealType.Breakfast].HasDishes;
+				SetProperty(ref breakfastCheck, Meals[MealType.Breakfast].HasDishes);
+
+				return breakfastCheck;
+			}
+			set
+			{
+				SetProperty(ref breakfastCheck, value);
 			}
 		}
 		public bool LunchCheck
 		{
 			get
 			{
-				return Meals[MealType.Lunch].HasDishes;
+				SetProperty(ref lunchCheck, Meals[MealType.Lunch].HasDishes);
+
+				return lunchCheck;
+			}
+			set
+			{
+				SetProperty(ref lunchCheck, value);
 			}
 		}
 		public bool DinnerCheck
 		{
 			get
 			{
-				return Meals[MealType.Dinner].HasDishes;
+				SetProperty(ref dinnerCheck, Meals[MealType.Dinner].HasDishes);
+
+				return dinnerCheck;
+			}
+			set
+			{
+				SetProperty(ref dinnerCheck, value);
 			}
 		}
 		public bool OtherCheck
 		{
 			get
 			{
-				return Meals[MealType.Other].HasDishes;
+				SetProperty(ref otherCheck, Meals[MealType.Other].HasDishes);
+
+				return otherCheck;
+			}
+			set
+			{
+				SetProperty(ref otherCheck, value);
 			}
 		}
 

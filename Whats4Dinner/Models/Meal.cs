@@ -11,8 +11,13 @@ namespace Whats4Dinner.Models
 	/// <summary>
 	/// A meal with Id, Type, and a list of Dishes
 	/// </summary>
-	public class Meal
+	public class Meal : BaseModel
 	{
+		private MealType thisMealType;
+		private List<DishGroup> dishes;
+		private bool hasDishes;
+		private string displayDishes;
+
 		/// <summary>
 		/// List of types a dish can have
 		/// </summary>
@@ -27,29 +32,46 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Type of the Meal, such as breakfast, lunch, dinner, etc.
 		/// </summary>
-		public MealType ThisMealType { get; set; }
+		public MealType ThisMealType
+		{
+			get => thisMealType;
+			set
+			{
+				SetProperty(ref thisMealType, value);
+			}
+		}
 
 		/// <summary>
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
-		//public Dictionary<DishCategory, List<Dish>> Dishes { get; set; }
-		public List<DishGroup> Dishes { get; set; }
+		public List<DishGroup> Dishes
+		{
+			get => dishes;
+			set
+			{
+				SetProperty(ref dishes, value);
+			}
+		}
 		public List<DishGroupForJSON> DishesJSON { get; set; }
 
 		public bool HasDishes
 		{
 			get
 			{
-				//foreach (List<Dish> dishList in Dishes.Values)
 				foreach (DishGroup dishList in Dishes)
 				{
 					if (dishList.Count != 0)
 					{
+						SetProperty(ref hasDishes, true);
 						return true;
 					}
 				}
-
+				SetProperty(ref hasDishes, false);
 				return false;
+			}
+			set
+			{
+				SetProperty(ref hasDishes, value);
 			}
 		}
 
@@ -63,24 +85,19 @@ namespace Whats4Dinner.Models
 				string mealString = "";
 
 				// for each dish category
-				//foreach (KeyValuePair<DishCategory, List<Dish>> dishCategories in Dishes)
 				foreach (DishGroup dishCategories in Dishes)
 				{
 					// only add the categories with dishes in it
-					//if (dishCategories.Value.Count == 0)
 					if (dishCategories.Count == 0)
 					{
 						continue;
 					}
-					//mealString += dishCategories.Key.ToString() + ": ";
 					mealString += dishCategories.DishGroupCategory + ": ";
 
 					// for each dish
-					//foreach (Dish dish in dishCategories.Value)
 					foreach (Dish dish in dishCategories)
 					{
 						mealString += dish.Name;
-						//if (dish != dishCategories.Value.Last())
 						if (dish != dishCategories.Last())
 						{
 							mealString += ", ";
@@ -88,7 +105,13 @@ namespace Whats4Dinner.Models
 					}
 					mealString += "\n";
 				}
-				return mealString;
+				SetProperty(ref displayDishes, mealString);
+
+				return displayDishes;
+			}
+			set
+			{
+				SetProperty(ref displayDishes, value);
 			}
 		}
 
@@ -129,7 +152,20 @@ namespace Whats4Dinner.Models
 				if (dishList.DishGroupCategory == cat)
 				{
 					dishList.Add(new Dish(name, cat));
+					OnPropertyChanged("Dishes");
 					break;
+				}
+			}
+		}
+
+		public void DeleteDish(Dish selected)
+		{
+			foreach (DishGroup dishGroup in Dishes)
+			{
+				if (dishGroup.DishGroupCategory == selected.ThisDishCategory)
+				{
+					dishGroup.Remove(selected);
+					OnPropertyChanged("Dishes");
 				}
 			}
 		}

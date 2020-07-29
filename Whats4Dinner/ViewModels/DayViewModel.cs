@@ -10,7 +10,6 @@ namespace Whats4Dinner.ViewModels
 {
 	class DayViewModel : BaseViewModel
 	{
-		private ObservableCollection<Meal> displayMeals;
 		/// <summary>
 		/// detail of the meals to display on view
 		/// </summary>
@@ -19,10 +18,10 @@ namespace Whats4Dinner.ViewModels
 			get => displayMeals;
 			set
 			{
-				displayMeals = value;
-				OnPropertyChanged();
+				SetProperty(ref displayMeals, value);
 			}
 		}
+		private ObservableCollection<Meal> displayMeals;
 
 		public DayViewModel(Day selected)
 		{

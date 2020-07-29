@@ -27,10 +27,9 @@ namespace Whats4Dinner.ViewModels
 	/// </summary>
 	public class WeekViewModel : BaseViewModel
 	{
+		private static string FilePath { get; set; }
 		private string sampleFileName = "SampleDays.json";
 		private JsonSerializerOptions serializeOptions = new JsonSerializerOptions();
-
-		private ObservableCollection<Day> displayDays;
 
 		/// <summary>
 		/// list of all the Days
@@ -40,10 +39,10 @@ namespace Whats4Dinner.ViewModels
 			get => displayDays;
 			private set
 			{
-				displayDays = value;
-				OnPropertyChanged();
+				SetProperty(ref displayDays, value);
 			}
 		}
+		private ObservableCollection<Day> displayDays;
 
 		/// <summary>
 		/// create a sample json file for testing

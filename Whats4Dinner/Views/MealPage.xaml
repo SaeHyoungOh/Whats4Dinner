@@ -5,10 +5,11 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d"
 			 x:Class="Whats4Dinner.Views.MealPage"
+			 x:Name="ThisPage"
 			 Title="{Binding Title}">
 
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+		<ToolbarItem Text="Add" Command="{Binding AddClick}" />
 	</ContentPage.ToolbarItems>
 
 	<ContentPage.Resources>
@@ -49,9 +50,6 @@
 					<ViewCell>
 						<StackLayout Margin="10, 8, 10, 7">
 							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="7*"/>
 									<ColumnDefinition Width="1*"/>
@@ -61,7 +59,8 @@
 									   Style="{DynamicResource ListItemDetailTextStyle}"/>
 								<Button Text="X"
 										Grid.Row="0" Grid.Column="1"
-										Command="{Binding Path=BindingContext.DeleteClick, Source={x:Reference DishCategories}}"
+										Clicked="DeleteItem_Clicked"
+										Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.DeleteClick}"
 										CommandParameter="{Binding .}"/>
 							</Grid>
 						</StackLayout>

@@ -2,26 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
 
-using Xamarin.Forms;
-
-using Whats4Dinner.Models;
-using Whats4Dinner.Services;
-
-namespace Whats4Dinner.ViewModels
+namespace Whats4Dinner.Models
 {
-	public class BaseViewModel : INotifyPropertyChanged
+	public class BaseModel : INotifyPropertyChanged
 	{
-		/// <summary>
-		/// title of the page
-		/// </summary>
-		public string Title
-		{
-			get { return title; }
-			set { SetProperty(ref title, value); }
-		}
-		string title = string.Empty;
-
 		/// <summary>
 		/// a replacement for the default "set" method for class property
 		/// </summary>
