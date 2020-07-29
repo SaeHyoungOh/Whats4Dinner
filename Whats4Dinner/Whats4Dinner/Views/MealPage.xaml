@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 x:Class="Whats4Dinner.Views.MealPage"
+			 x:Name="ThisPage"
+			 Title="{Binding Title}">
+
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Add" Command="{Binding AddClick}" />
+	</ContentPage.ToolbarItems>
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="baseLabelStyle" TargetType="Label">
+				<Setter Property="FontFamily" Value="Arial"/>
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
+			</Style>
+			<Style x:Key="ListItemTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="20"/>
+			</Style>
+			<Style x:Key="ListItemDetailTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="14"/>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
+		<ListView x:Name="DishCategories"
+				  HasUnevenRows="True"
+				  VerticalOptions="FillAndExpand"
+				  Margin="5, 5, 5, 5"
+				  ItemsSource="{Binding DisplayDishLists}"
+				  IsGroupingEnabled="True"
+				  CachingStrategy="RecycleElement">
+			<ListView.GroupHeaderTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<Label Text="{Binding DishGroupCategory}" Style="{DynamicResource ListItemTextStyle}"/>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.GroupHeaderTemplate>
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<StackLayout Margin="10, 8, 10, 7">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="7*"/>
+									<ColumnDefinition Width="1*"/>
+								</Grid.ColumnDefinitions>
+								<Label Text="{Binding Name}"
+									   Grid.Row="0" Grid.Column="0"
+									   Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<Button Text="X"
+										Grid.Row="0" Grid.Column="1"
+										Clicked="DeleteItem_Clicked"
+										Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.DeleteClick}"
+										CommandParameter="{Binding .}"/>
+							</Grid>
+						</StackLayout>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</RefreshView>
+</ContentPage>
