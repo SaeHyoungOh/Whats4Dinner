@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 mc:Ignorable="d"
-			 x:Class="Whats4Dinner.Views.MealPage"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Whats4Dinner.Views.MealPage"
 			 x:Name="ThisPage"
 			 Title="{Binding Title}">
-
+	
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Text="Add" Command="{Binding AddClick}" />
 	</ContentPage.ToolbarItems>
@@ -30,6 +30,7 @@
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
+
 	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 		<ListView x:Name="DishCategories"
 				  HasUnevenRows="True"
@@ -49,26 +50,24 @@
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
-						<!--<StackLayout Margin="10, 0, 5, 0">-->
-							<!--<Grid>
+						<StackLayout Margin="10, 0, 5, 0">
+							<Grid>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="6*"/>
+									<ColumnDefinition Width="1*"/>
 									<ColumnDefinition Width="1*"/>
 								</Grid.ColumnDefinitions>
 								<Label Text="{Binding Name}"
 									   Grid.Row="0" Grid.Column="0"
-									   Style="{DynamicResource ListItemDetailTextStyle}"/>-->
-								<!--<Button Text="X"
+									   Style="{DynamicResource ListItemDetailTextStyle}"/>
+								<!--<Button x:Name="DeleteButton" Text="before"
 										Grid.Row="0" Grid.Column="1"
-										Clicked="DeleteItem_Clicked"
+										Clicked="DeleteItem_Clicked"/>-->
+								<!--<Button Text="Delete"
+										Grid.Row="0" Grid.Column="1"
 										Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.DeleteClick}"
 										CommandParameter="{Binding .}"/>-->
-						<Button Text="X"
-										Grid.Row="0" Grid.Column="1"
-										Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.DeleteClick}"
-										CommandParameter="{Binding .}"/>
-							<!--</Grid>-->
-						<!--</StackLayout>-->
+							</Grid>
+						</StackLayout>
 					</ViewCell>
 				</DataTemplate>
 			</ListView.ItemTemplate>

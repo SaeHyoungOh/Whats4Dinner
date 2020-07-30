@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 using Whats4Dinner.ViewModels;
 using Whats4Dinner.ViewModels.DataStructure;
 using Xamarin.Forms;
@@ -39,10 +42,7 @@ namespace Whats4Dinner.Views
 
 		private void DeleteItem_Clicked(object sender, EventArgs e)
 		{
-			var x = (Button)sender;
-			x.BackgroundColor = Color.Red;
-
-			DisplayAlert("working", "y u no work", "Ok");
+			DisplayAlert("working?", "y u no work", "Ok");
 			//Dish selected = (Dish)((Button)sender).CommandParameter;
 			//string dishname = selected.Name;
 			//DisplayAlert("DeleteItem_Clicked", dishname + " was clicked", "Ok");

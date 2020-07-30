@@ -33,6 +33,5 @@ namespace Whats4Dinner.Views
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;
 		}
-
 	}
 }
