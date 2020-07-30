@@ -73,6 +73,12 @@ namespace Whats4Dinner.Models
 					meal.DishesJSON.Clear();
 					foreach (DishGroup dishGroup in meal.Dishes)
 					{
+						//// convert the ObservalbeCollection to list
+						//List<Dish> tempDishList = new List<Dish>();
+						//foreach (Dish dish in dishGroup)
+						//{
+						//	tempDishList.Add(dish);
+						//}
 						meal.DishesJSON.Add(new DishGroupForJSON(dishGroup.DishGroupCategory, dishGroup));
 					}
 				}

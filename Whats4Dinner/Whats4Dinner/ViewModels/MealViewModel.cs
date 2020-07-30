@@ -58,7 +58,7 @@ namespace Whats4Dinner.ViewModels
 		}
 		private void DeleteClickExecute(Dish content)
 		{
-			SelectedMeal.AddDish("test delete", DishCategory.Condiments);
+			SelectedMeal.DeleteDish(content);
 			OnPropertyChanged("DisplayDishLists");
 			UserDataIO.WriteToJSON(DisplayDays);
 		}

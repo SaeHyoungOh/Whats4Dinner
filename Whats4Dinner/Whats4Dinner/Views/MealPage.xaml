@@ -37,6 +37,7 @@
 				  Margin="5, 5, 5, 5"
 				  ItemsSource="{Binding DisplayDishLists}"
 				  IsGroupingEnabled="True"
+				  ItemTapped="DishCategories_ItemTapped"
 				  CachingStrategy="RecycleElement">
 			<ListView.GroupHeaderTemplate>
 				<DataTemplate>
@@ -48,22 +49,26 @@
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
-						<StackLayout Margin="10, 8, 10, 7">
-							<Grid>
+						<!--<StackLayout Margin="10, 0, 5, 0">-->
+							<!--<Grid>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="7*"/>
+									<ColumnDefinition Width="6*"/>
 									<ColumnDefinition Width="1*"/>
 								</Grid.ColumnDefinitions>
 								<Label Text="{Binding Name}"
 									   Grid.Row="0" Grid.Column="0"
-									   Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<Button Text="X"
+									   Style="{DynamicResource ListItemDetailTextStyle}"/>-->
+								<!--<Button Text="X"
 										Grid.Row="0" Grid.Column="1"
 										Clicked="DeleteItem_Clicked"
 										Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.DeleteClick}"
+										CommandParameter="{Binding .}"/>-->
+						<Button Text="X"
+										Grid.Row="0" Grid.Column="1"
+										Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.DeleteClick}"
 										CommandParameter="{Binding .}"/>
-							</Grid>
-						</StackLayout>
+							<!--</Grid>-->
+						<!--</StackLayout>-->
 					</ViewCell>
 				</DataTemplate>
 			</ListView.ItemTemplate>

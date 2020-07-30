@@ -4,13 +4,8 @@ namespace Whats4Dinner.ViewModels.DataStructure
 	/// <summary>
 	/// A dish with Id, Name, and Category
 	/// </summary>
-	public class Dish
+	public class Dish : BaseModel
 	{
-		/// <summary>
-		/// Name of the Dish
-		/// </summary>
-		public string Name { get; set; }
-
 		/// <summary>
 		/// List of categories a dish can have
 		/// </summary>
@@ -24,10 +19,32 @@ namespace Whats4Dinner.ViewModels.DataStructure
 			Other
 		}
 
+		private string name;
+		private DishCategory thisDishCategory;
+
+		/// <summary>
+		/// Name of the Dish
+		/// </summary>
+		public string Name
+		{
+			get => name;
+			set
+			{
+				SetProperty(ref name, value);
+			}
+		}
+
 		/// <summary>
 		/// Category of the Dish, as listed in Dish.Categories
 		/// </summary>
-		public DishCategory ThisDishCategory { get; set; }
+		public DishCategory ThisDishCategory
+		{
+			get => thisDishCategory;
+			set
+			{
+				SetProperty(ref thisDishCategory, value);
+			}
+		}
 
 		/// <summary>
 		/// parameterless constructor for JSON deserialization

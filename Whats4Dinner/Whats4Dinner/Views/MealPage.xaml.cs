@@ -39,10 +39,20 @@ namespace Whats4Dinner.Views
 
 		private void DeleteItem_Clicked(object sender, EventArgs e)
 		{
-			Dish selected = (Dish)((Button)sender).CommandParameter;
-			string dishname = selected.Name;
-			DisplayAlert("DeleteItem_Clicked", dishname + " was clicked", "Ok");
+			var x = (Button)sender;
+			x.BackgroundColor = Color.Red;
+
+			DisplayAlert("working", "y u no work", "Ok");
+			//Dish selected = (Dish)((Button)sender).CommandParameter;
+			//string dishname = selected.Name;
+			//DisplayAlert("DeleteItem_Clicked", dishname + " was clicked", "Ok");
 			//ThisMeal.DeleteDish(selected);
+		}
+
+		private void DishCategories_ItemTapped(object sender, ItemTappedEventArgs e)
+		{
+			//Deselect Item
+			((ListView)sender).SelectedItem = null;
 		}
 	}
 }

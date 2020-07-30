@@ -161,6 +161,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 				{
 					dishGroup.Remove(selected);
 					OnPropertyChanged("Dishes");
+					break;
 				}
 			}
 		}

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using static Whats4Dinner.ViewModels.DataStructure.Dish;
 
 namespace Whats4Dinner.ViewModels.DataStructure
 {
-	public class DishGroup : List<Dish>
+	public class DishGroup : ObservableCollection<Dish>, INotifyPropertyChanged
 	{
 		public DishCategory DishGroupCategory { get; set; }
 
@@ -21,7 +23,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		{
 			DishGroupCategory = cat;
 		}
-		public DishGroup(DishCategory cat, List<Dish> dishes)
+		public DishGroup(DishCategory cat, ObservableCollection<Dish> dishes)
 		{
 			DishGroupCategory = cat;
 			Clear();
@@ -36,11 +38,11 @@ namespace Whats4Dinner.ViewModels.DataStructure
 	{
 		public DishCategory DishGroupCategory { get; set; }
 
-		public List<Dish> DishList { get; set; }
+		public ObservableCollection<Dish> DishList { get; set; }
 
 		public DishGroupForJSON() { }
 
-		public DishGroupForJSON(DishCategory cat, List<Dish> dishes)
+		public DishGroupForJSON(DishCategory cat, ObservableCollection<Dish> dishes)
 		{
 			DishGroupCategory = cat;
 			DishList = dishes;
