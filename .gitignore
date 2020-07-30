@@ -353,10 +353,15 @@ MigrationBackup/
 .ionide/
 
 
-Whats4Dinner.Android/
-Whats4Dinner.iOS/
-Whats4Dinner.UWP/
-Whats4Dinner.Web/
+Whats4Dinner/Whats4Dinner.Android/*
+!Whats4Dinner/Whats4Dinner.Android/MainActivity.cs
+Whats4Dinner/Whats4Dinner.iOS/*
+!Whats4Dinner/Whats4Dinner.iOS/Main.cs
+Whats4Dinner/Whats4Dinner.UWP/*
+!Whats4Dinner/Whats4Dinner.UWP/MainPage.xaml.cs
+Whats4Dinner/Whats4Dinner.Web/*
+!Whats4Dinner/Whats4Dinner.Web/Program.cs
+
 *.sln
 *.config
 *.csproj
