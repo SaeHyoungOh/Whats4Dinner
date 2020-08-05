@@ -20,9 +20,6 @@ namespace Whats4Dinner.Models
 			Other
 		}
 
-		private string name;
-		private DishCategory thisDishCategory;
-
 		/// <summary>
 		/// Name of the Dish
 		/// </summary>

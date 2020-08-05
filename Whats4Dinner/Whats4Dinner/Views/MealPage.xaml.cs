@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels;
 using Whats4Dinner.ViewModels.DataStructure;
 using Xamarin.Forms;
