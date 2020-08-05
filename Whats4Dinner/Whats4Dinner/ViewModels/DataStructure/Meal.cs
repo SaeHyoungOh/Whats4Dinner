@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using static Whats4Dinner.ViewModels.DataStructure.Dish;
+using Whats4Dinner.Models;
+using static Whats4Dinner.Models.Dish;
 
 namespace Whats4Dinner.ViewModels.DataStructure
 {
 	/// <summary>
-	/// A meal with Id, Type, and a list of Dishes
+	/// A meal with MealType, a list of Dishes, a string of dishes to display on View
 	/// </summary>
 	public class Meal : BaseModel
 	{
-		private MealType thisMealType;
-		private ObservableCollection<DishGroup> dishes;
-		private bool hasDishes;
-		private string displayDishes;
-
 		/// <summary>
 		/// List of types a dish can have
 		/// </summary>
@@ -50,8 +46,15 @@ namespace Whats4Dinner.ViewModels.DataStructure
 				SetProperty(ref dishes, value);
 			}
 		}
+
+		/// <summary>
+		/// Converted list of dishes for JSON file I/O
+		/// </summary>
 		public List<DishGroupForJSON> DishesJSON { get; set; }
 
+		/// <summary>
+		/// Whether this meal has any dishes
+		/// </summary>
 		public bool HasDishes
 		{
 			get
@@ -74,7 +77,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// list of dishes for display in view
+		/// List of dishes for display in view
 		/// </summary>
 		public string DisplayDishes
 		{
@@ -113,17 +116,24 @@ namespace Whats4Dinner.ViewModels.DataStructure
 			}
 		}
 
+		// fields for the properties above
+		private MealType thisMealType;
+		private ObservableCollection<DishGroup> dishes;
+		private bool hasDishes;
+		private string displayDishes;
+
 		/// <summary>
-		/// parameterless constructor for JSON deserialization
+		/// Parameterless constructor for JSON deserialization
 		/// </summary>
 		public Meal() { }
 
 		/// <summary>
-		/// constructor for Meal class
+		/// Constructor for Meal class
 		/// </summary>
 		/// <param name="mealType">Type of the Meal, such as breakfast, lunch, dinner, etc.</param>
 		public Meal(MealType mealType)
 		{
+			// initialize properties
 			ThisMealType = mealType;
 			Dishes = new ObservableCollection<DishGroup>();
 			DishesJSON = new List<DishGroupForJSON>();
@@ -136,23 +146,27 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// add a dish to the list of dishes in the dish category
+		/// Add a dish to the list of dishes in the provided dish category
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="cat"></param>
 		public void AddDish(string name, DishCategory cat)
 		{
-			foreach (DishGroup dishList in Dishes)
+			foreach (DishGroup dishGroup in Dishes)
 			{
-				if (dishList.DishGroupCategory == cat)
+				if (dishGroup.DishGroupCategory == cat)
 				{
-					dishList.Add(new Dish(name, cat));
+					dishGroup.Add(new Dish(name, cat));
 					OnPropertyChanged("Dishes");
 					break;
 				}
 			}
 		}
-
+		
+		/// <summary>
+		/// Delete a dish from the list of dishes
+		/// </summary>
+		/// <param name="selected"></param>
 		public void DeleteDish(Dish selected)
 		{
 			foreach (DishGroup dishGroup in Dishes)

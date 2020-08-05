@@ -9,30 +9,42 @@ using Whats4Dinner.ViewModels.DataStructure;
 
 namespace Whats4Dinner.ViewModels
 {
+	/// <summary>
+	/// The base class for all ViewModels which use properties for the Views such as Title, IsBusy, FilIO, etc.
+	/// This also includes the list of Days used throughout the app.
+	/// </summary>
 	public class BaseViewModel : BaseModel
 	{
-		private string title = string.Empty;
-		private bool isBusy = false;
+		/// <summary>
+		/// The file name for storing the user data
+		/// </summary>
+		protected readonly string fileName = "UserData.json";
 
 		/// <summary>
-		/// title of the page
+		/// FilIO object to handle file I/O
+		/// </summary>
+		protected FileIO UserDataIO;
+
+		/// <summary>
+		/// The title of the page
 		/// </summary>
 		public string Title
 		{
 			get { return title; }
 			set { SetProperty(ref title, value); }
 		}
+
+		/// <summary>
+		/// Whether the page is actively refreshing in the RefreshView
+		/// </summary>
 		public bool IsBusy
 		{
 			get { return isBusy; }
 			set { SetProperty(ref isBusy, value); }
 		}
 
-		protected readonly string fileName = "UserData.json";
-		protected FileIO UserDataIO;
-
 		/// <summary>
-		/// list of all the Days
+		/// List of all the Days and their Meals and Dishes
 		/// </summary>
 		public ObservableCollection<Day> DisplayDays
 		{
@@ -42,7 +54,15 @@ namespace Whats4Dinner.ViewModels
 				SetProperty(ref displayDays, value);
 			}
 		}
+
+		// fields for the properties above
+		private string title = string.Empty;
+		private bool isBusy = false;
 		private ObservableCollection<Day> displayDays;
+
+		/// <summary>
+		/// DelegateCommand (from Prism) to use in View when refreshing
+		/// </summary>
 		public DelegateCommand LoadItemsCommand { get; set; }
 
 		/// <summary>
@@ -105,7 +125,8 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
-		/// to be made asyncronous when using database
+		/// Replace the DisplayDays with new data from the file
+		/// (to be made asyncronous when using database)
 		/// </summary>
 		protected void ExecuteLoadItemsCommand()
 		{

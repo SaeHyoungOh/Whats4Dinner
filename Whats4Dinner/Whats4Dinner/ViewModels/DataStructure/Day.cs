@@ -6,21 +6,12 @@ using static Whats4Dinner.ViewModels.DataStructure.Meal;
 namespace Whats4Dinner.ViewModels.DataStructure
 {
 	/// <summary>
-	/// A Day with Date and a list of Meals
+	/// A Day with Date and a list of Meals, and whether each Meal has dishes in it
 	/// </summary>
 	public class Day : BaseModel
 	{
-		private DateTime thisDate;
-		private string displayDayOfWeek;
-		private string displayDate;
-		private ObservableCollection<Meal> meals;
-		private bool breakfastCheck;
-		private bool lunchCheck;
-		private bool dinnerCheck;
-		private bool otherCheck;
-
 		/// <summary>
-		/// the date of this day
+		/// The date of this day
 		/// </summary>
 		public DateTime ThisDate
 		{
@@ -32,7 +23,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// Date to display on View as a string
+		/// Day of the week to display on View as a string
 		/// </summary>
 		public string DisplayDayOfWeek
 		{
@@ -58,7 +49,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// 
+		/// Date to display on View as a string
 		/// </summary>
 		public string DisplayDate
 		{
@@ -75,7 +66,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// list of meals in this day
+		/// List of meals in this day
 		/// </summary>
 		public ObservableCollection<Meal> Meals
 		{
@@ -87,7 +78,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// 
+		/// Whether there are any dishes in Breakfast Meal
 		/// </summary>
 		public bool BreakfastCheck
 		{
@@ -105,6 +96,10 @@ namespace Whats4Dinner.ViewModels.DataStructure
 				SetProperty(ref breakfastCheck, value);
 			}
 		}
+
+		/// <summary>
+		/// Whether there are any dishes in Lunch Meal
+		/// </summary>
 		public bool LunchCheck
 		{
 			get
@@ -121,6 +116,10 @@ namespace Whats4Dinner.ViewModels.DataStructure
 				SetProperty(ref lunchCheck, value);
 			}
 		}
+
+		/// <summary>
+		/// Whether there are any dishes in Dinner Meal
+		/// </summary>
 		public bool DinnerCheck
 		{
 			get
@@ -137,6 +136,10 @@ namespace Whats4Dinner.ViewModels.DataStructure
 				SetProperty(ref dinnerCheck, value);
 			}
 		}
+
+		/// <summary>
+		/// Whether there are any dishes in Other Meal
+		/// </summary>
 		public bool OtherCheck
 		{
 			get
@@ -154,17 +157,28 @@ namespace Whats4Dinner.ViewModels.DataStructure
 			}
 		}
 
+		// fields for the properties above
+		private DateTime thisDate;
+		private string displayDayOfWeek;
+		private string displayDate;
+		private ObservableCollection<Meal> meals;
+		private bool breakfastCheck;
+		private bool lunchCheck;
+		private bool dinnerCheck;
+		private bool otherCheck;
+
 		/// <summary>
-		/// parameterless constructor for JSON deserialization
+		/// Parameterless constructor for JSON deserialization
 		/// </summary>
 		public Day() { }
 
 		/// <summary>
-		/// constructor for Day
+		/// Constructor for Day
 		/// </summary>
 		/// <param name="date"></param>
 		public Day(DateTime date)
 		{
+			// initialize properties
 			ThisDate = date;
 			Meals = new ObservableCollection<Meal>();
 

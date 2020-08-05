@@ -17,13 +17,23 @@ namespace Whats4Dinner.Models
 		string GetFilePath(string fileName);
 	}
 
+	/// <summary>
+	/// Class to handle file I/O of the user data
+	/// </summary>
 	public class FileIO
 	{
+		/// <summary>
+		/// Absolute file path used for file I/O
+		/// </summary>
 		private string FilePath { get; set; }
+
+		/// <summary>
+		/// JSON serializer options to enable usage of Dictionary data structure
+		/// </summary>
 		private JsonSerializerOptions serializeOptions = new JsonSerializerOptions();
 
 		/// <summary>
-		/// create a sample json file for testing
+		/// Create a sample json file for testing
 		/// </summary>
 		public void CreateSampleFile()
 		{
@@ -36,12 +46,10 @@ namespace Whats4Dinner.Models
 				new Day(DateTime.Today.AddDays(6))
 			};
 
+			// list of sample data
 			sampleDays[0].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", Dish.DishCategory.Grains);
-
 			sampleDays[1].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
-
 			sampleDays[2].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", Dish.DishCategory.Veggies);
-
 			sampleDays[3].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", Dish.DishCategory.Grains);
 			sampleDays[3].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
 			sampleDays[3].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", Dish.DishCategory.Veggies);
@@ -50,12 +58,12 @@ namespace Whats4Dinner.Models
 		}
 
 		/// <summary>
-		/// sort, and then write user's data to JSON file
+		/// Sort, convert DishGroup to DishGroupForJSON, and then write user's data to JSON file
 		/// </summary>
 		/// <param name="days"></param>
 		public void WriteToJSON(ObservableCollection<Day> DisplayDays)
 		{
-			// convert ObservalbeCollection to List
+			// convert ObservalbeCollection to List so it can sort
 			List<Day> days = new List<Day>();
 			foreach (Day day in DisplayDays)
 			{
@@ -73,12 +81,6 @@ namespace Whats4Dinner.Models
 					meal.DishesJSON.Clear();
 					foreach (DishGroup dishGroup in meal.Dishes)
 					{
-						//// convert the ObservalbeCollection to list
-						//List<Dish> tempDishList = new List<Dish>();
-						//foreach (Dish dish in dishGroup)
-						//{
-						//	tempDishList.Add(dish);
-						//}
 						meal.DishesJSON.Add(new DishGroupForJSON(dishGroup.DishGroupCategory, dishGroup));
 					}
 				}
@@ -86,12 +88,11 @@ namespace Whats4Dinner.Models
 
 			// save to file
 			string jsonString = JsonSerializer.Serialize(days, serializeOptions);
-			//string jsonString = JsonConvert.SerializeObject(days, Formatting.Indented);
 			File.WriteAllText(FilePath, jsonString);
 		}
 
 		/// <summary>
-		/// read user's data from JSON file
+		/// Read user's data from JSON file, covnert DishGroupForJSON to DishGroup, and return it
 		/// </summary>
 		/// <param name="fileName"></param>
 		/// <returns>List<Day> object read from user's data file</Day></returns>
@@ -116,11 +117,17 @@ namespace Whats4Dinner.Models
 			return result;
 		}
 
+		/// <summary>
+		/// Constructor for FilIO class; calculate and initialize FilePath from provided file name
+		/// </summary>
+		/// <param name="fileName"></param>
 		public FileIO(string fileName)
 		{
 			// build file path
 			IFilePathService service = DependencyService.Get<IFilePathService>();
 			FilePath = service.GetFilePath(fileName);
+
+			// add serializer options to be able to use Dictionary data structure in JSON
 			serializeOptions.Converters.Add(new DictionaryTKeyEnumTValueConverter());
 		}
 	}

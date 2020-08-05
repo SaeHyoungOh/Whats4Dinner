@@ -5,22 +5,15 @@ using Whats4Dinner.ViewModels.DataStructure;
 
 namespace Whats4Dinner.ViewModels
 {
+	/// <summary>
+	/// Viewmodel to display DayPage, with a list of meals
+	/// Derived from BaseViewModel
+	/// </summary>
 	class DayViewModel : BaseViewModel
 	{
 		/// <summary>
-		/// detail of the meals to display on view
+		/// The currently selected Day
 		/// </summary>
-		private ObservableCollection<Meal> displayMeals;
-		private Day selectedDay;
-
-		public ObservableCollection<Meal> DisplayMeals
-		{
-			get => displayMeals;
-			set
-			{
-				SetProperty(ref displayMeals, value);
-			}
-		}
 		public Day SelectedDay
 		{
 			get => selectedDay;
@@ -31,17 +24,32 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
-		/// 
+		/// List of the Meals in the Day to display on View
 		/// </summary>
-		/// <param name="DisplayDays"></param>
-		/// <param name="dayIndex"></param>
+		public ObservableCollection<Meal> DisplayMeals
+		{
+			get => displayMeals;
+			set
+			{
+				SetProperty(ref displayMeals, value);
+			}
+		}
+
+		// fields for the properties above
+		private Day selectedDay;
+		private ObservableCollection<Meal> displayMeals;
+
+		/// <summary>
+		/// Constructor for DayViewModel class
+		/// </summary>
+		/// <param name="DisplayDays">The entirety of the DisplayDays for the week</param>
+		/// <param name="SelectedDay">The currently selected Day</param>
 		public DayViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay)
 		{
+			// initialize the properties
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
-
 			Title = SelectedDay.DisplayDayOfWeek + ", " + SelectedDay.DisplayDate;
-
 			DisplayMeals = SelectedDay.Meals;
 
 			// for refreshing

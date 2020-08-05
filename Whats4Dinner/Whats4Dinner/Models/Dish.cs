@@ -1,10 +1,11 @@
-﻿
-namespace Whats4Dinner.ViewModels.DataStructure
+﻿using System.Dynamic;
+
+namespace Whats4Dinner.Models
 {
 	/// <summary>
 	/// A dish with Id, Name, and Category
 	/// </summary>
-	public class Dish : BaseModel
+	public class Dish
 	{
 		/// <summary>
 		/// List of categories a dish can have
@@ -25,39 +26,26 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		/// <summary>
 		/// Name of the Dish
 		/// </summary>
-		public string Name
-		{
-			get => name;
-			set
-			{
-				SetProperty(ref name, value);
-			}
-		}
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Category of the Dish, as listed in Dish.Categories
 		/// </summary>
-		public DishCategory ThisDishCategory
-		{
-			get => thisDishCategory;
-			set
-			{
-				SetProperty(ref thisDishCategory, value);
-			}
-		}
+		public DishCategory ThisDishCategory { get; set; }
 
 		/// <summary>
-		/// parameterless constructor for JSON deserialization
+		/// Parameterless constructor for JSON deserialization
 		/// </summary>
 		public Dish() { }
 
 		/// <summary>
-		/// constructor for Dish class
+		/// Constructor for Dish class
 		/// </summary>
 		/// <param name="name">Name of the Dish</param>
 		/// <param name="category">Category of the Dish, as listed in Dish.Categories</param>
 		public Dish(string name, DishCategory category)
 		{
+			// initialize properties
 			Name = name;
 			ThisDishCategory = category;
 		}

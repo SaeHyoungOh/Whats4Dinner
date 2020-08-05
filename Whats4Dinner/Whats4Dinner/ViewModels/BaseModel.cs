@@ -5,10 +5,14 @@ using System.Runtime.CompilerServices;
 
 namespace Whats4Dinner.ViewModels
 {
+	/// <summary>
+	/// The base class for all ViewModels which use INotifyPropertyChanged for properties to notify the Views
+	/// </summary>
 	public class BaseModel : INotifyPropertyChanged
 	{
 		/// <summary>
-		/// a replacement for the default "set" method for class property
+		/// A replacement for the default "set" method for class property
+		/// reference: Microsoft Documents
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="backingStore">the property in question</param>
@@ -29,10 +33,13 @@ namespace Whats4Dinner.ViewModels
 			return true;
 		}
 
+		/// <summary>
+		/// Required in INotifyPropertyChanged
+		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		/// <summary>
-		/// helper method to update View using PropertyChanged
+		/// Helper method to update View using PropertyChanged
 		/// </summary>
 		/// <param name="propertyName"></param>
 		protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

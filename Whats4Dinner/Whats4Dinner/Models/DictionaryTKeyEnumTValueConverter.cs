@@ -6,6 +6,10 @@ using System.Text.Json.Serialization;
 
 namespace Whats4Dinner.Models
 {
+	/// <summary>
+	/// Converter to allow use of Dictionary in System.Text.Json; borrowed from Microsoft Documents
+	/// reference: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to#support-dictionary-with-non-string-key
+	/// </summary>
 	public class DictionaryTKeyEnumTValueConverter : JsonConverterFactory
 	{
 		public override bool CanConvert(Type typeToConvert)
