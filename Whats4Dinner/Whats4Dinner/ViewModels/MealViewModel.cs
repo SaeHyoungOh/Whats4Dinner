@@ -1,4 +1,5 @@
 ﻿using Prism.Commands;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels.DataStructure;
@@ -15,12 +16,12 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// List of the Dishes in the Meal to display on View, categorized by DishGroup
 		/// </summary>
-		public ObservableCollection<DishGroup> DisplayDishLists
+		public ObservableCollection<Dish> DisplayDishes
 		{
-			get => displayDishLists;
+			get => displayDishes;
 			set
 			{
-				SetProperty(ref displayDishLists, value);
+				SetProperty(ref displayDishes, value);
 			}
 		}
 
@@ -49,34 +50,14 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		// fields for the properties above
-		private ObservableCollection<DishGroup> displayDishLists;
+		private ObservableCollection<Dish> displayDishes;
 		private Day selectedDay;
 		private Meal selectedMeal;
-
-		/// <summary>
-		/// Delegate command for the "Add" button
-		/// </summary>
-		public DelegateCommand AddClick { get; private set; }
 
 		/// <summary>
 		/// Delegate command for the "x" (Delete) button
 		/// </summary>
 		public DelegateCommand<Dish> DeleteClick { get; private set; }
-
-		/// <summary>
-		/// Button click action for "Add" button
-		/// </summary>
-		/// <param name="content"></param>
-		private void AddClickExecute()
-		{
-			// for test only; delete for production
-			SelectedMeal.AddDish("test add", DishCategory.Drinks);
-
-			// TODO: create "AddPage" to add dishes to the meal, and remove this method
-
-			OnPropertyChanged("DisplayDishLists");
-			UserDataIO.WriteToJSON(DisplayDays);
-		}
 
 		/// <summary>
 		/// Button click action for "x" (Delete) button
@@ -86,7 +67,7 @@ namespace Whats4Dinner.ViewModels
 		{
 			// delete the Dish from the Meal, then update the user data file
 			SelectedMeal.DeleteDish(content);
-			OnPropertyChanged("DisplayDishLists");
+			OnPropertyChanged("DisplayDishes");
 			UserDataIO.WriteToJSON(DisplayDays);
 		}
 
@@ -97,15 +78,9 @@ namespace Whats4Dinner.ViewModels
 		/// <returns></returns>
 		private bool DeleteClickCanExecute(Dish content)
 		{
-			foreach (DishGroup dishGroup in DisplayDishLists)
+			if (content != null && SelectedMeal.Dishes.Contains(content))
 			{
-				if (dishGroup.DishGroupCategory == content.ThisDishCategory)
-				{
-					if (dishGroup.Contains(content))
-					{
-						return true;
-					}
-				}
+				return true;
 			}
 			return false;
 		}
@@ -123,10 +98,9 @@ namespace Whats4Dinner.ViewModels
 			this.SelectedMeal = SelectedMeal;
 			Title = SelectedMeal.ThisMealType.ToString() + ", " + SelectedDay.DisplayDayOfWeek + " " + SelectedDay.DisplayDate;
 			UserDataIO = new FileIO(fileName);
-			DisplayDishLists = SelectedMeal.Dishes;
+			DisplayDishes = SelectedMeal.Dishes;
 
 			// assign delegate commands
-			AddClick = new DelegateCommand(AddClickExecute);
 			DeleteClick = new DelegateCommand<Dish>(DeleteClickExecute, DeleteClickCanExecute);
 
 			// for refreshing

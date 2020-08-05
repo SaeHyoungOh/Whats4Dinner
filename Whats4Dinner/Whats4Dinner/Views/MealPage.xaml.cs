@@ -28,32 +28,25 @@ namespace Whats4Dinner.Views
 			BindingContext = new MealViewModel(DisplayDays, SelectedDay, SelectedMeal);
 		}
 
-		private void AddItem_Clicked(object sender, EventArgs e)
+		private async void AddItem_Clicked(object sender, EventArgs e)
 		{
-			//if (e.Item == null)
-			//	return;
+			await Navigation.PushModalAsync(new NavigationPage(new AddDishPage(DisplayDays, SelectedDay, SelectedMeal)));
 
-			Dish selected = (Dish)((Button)sender).CommandParameter;
-			string dishname = selected.Name;
-			DisplayAlert("AddItem_Clicked", dishname + " was clicked", "Ok");
-
-			//Deselect Item
-			//((ListView)sender).SelectedItem = null;
 		}
 
 		private void DeleteItem_Clicked(object sender, EventArgs e)
 		{
-			DisplayAlert("working?", "y u no work", "Ok");
-			//Dish selected = (Dish)((Button)sender).CommandParameter;
-			//string dishname = selected.Name;
-			//DisplayAlert("DeleteItem_Clicked", dishname + " was clicked", "Ok");
-			//ThisMeal.DeleteDish(selected);
+			Dish selected = (Dish)((ListView)sender).SelectedItem;
+			SelectedMeal.DeleteDish(selected);
 		}
 
 		private void DishCategories_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
-			//Deselect Item
+			// Deselect Item
 			((ListView)sender).SelectedItem = null;
+
+			// delete item
+			DeleteItem_Clicked(sender, e);
 		}
 	}
 }

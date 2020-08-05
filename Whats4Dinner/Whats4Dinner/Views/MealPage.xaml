@@ -9,7 +9,7 @@
 			 Title="{Binding Title}">
 	
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Add" Command="{Binding AddClick}" />
+		<ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
 	</ContentPage.ToolbarItems>
 
 	<ContentPage.Resources>
@@ -36,44 +36,46 @@
 				  HasUnevenRows="True"
 				  VerticalOptions="FillAndExpand"
 				  Margin="5, 5, 5, 5"
-				  ItemsSource="{Binding DisplayDishLists}"
-				  IsGroupingEnabled="True"
+				  ItemsSource="{Binding DisplayDishes}"
 				  ItemTapped="DishCategories_ItemTapped"
 				  CachingStrategy="RecycleElement">
-			<ListView.GroupHeaderTemplate>
-				<DataTemplate>
-					<ViewCell>
-	<!--<Button Text="testing" Clicked="DeleteItem_Clicked"/>-->
-						<Label Text="{Binding DishGroupCategory}" Style="{DynamicResource ListItemTextStyle}"/>
-					</ViewCell>
-				</DataTemplate>
-			</ListView.GroupHeaderTemplate>
+			<ListView.Header>
+				<StackLayout>
+					<Label Text="&#x24D8; Tap on item to edit"
+						   HorizontalTextAlignment="Center"/>
+				</StackLayout>
+			</ListView.Header>
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
-						<StackLayout Margin="10, 0, 5, 0">
+						<StackLayout Margin="10, 5, 5, 5">
 							<Grid>
 								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="15*"/>
+									<ColumnDefinition Width="4*"/>
 									<ColumnDefinition Width="5*"/>
-									<ColumnDefinition Width="1*"/>
+									<ColumnDefinition Width="5*"/>
+									<ColumnDefinition Width="4*"/>
+									<ColumnDefinition Width="4*"/>
 								</Grid.ColumnDefinitions>
 								<Label Text="{Binding Name}"
-									   Grid.Row="0" Grid.Column="0"
+									   Grid.Column="0"
 									   Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<!--<Label Text="Test"
-									   FontSize="Large"
-									   Grid.Row="0" Grid.Column="1">
-									<Label.GestureRecognizers>
-										<TapGestureRecognizer Tapped="DeleteItem_Clicked"/>
-									</Label.GestureRecognizers>
-								</Label>-->
-								<!--<Button x:Name="DeleteButton" Text="before"
-										Grid.Row="0" Grid.Column="1"
-										Clicked="DeleteItem_Clicked"/>-->
-								<Button Text="Delete"
-										Grid.Row="0" Grid.Column="1"
-										Command="{Binding Source={x:Reference Name=ThisPage}, Path=BindingContext.DeleteClick}"
-										CommandParameter="{Binding .}"/>
+								<Label Text="Grain"
+									   Grid.Column="1"
+									   IsEnabled="{Binding HasGrain}"/>
+								<Label Text="Veggie"
+									   Grid.Column="2"
+									   IsEnabled="{Binding HasVeggie}"/>
+								<Label Text="Protein"
+									   Grid.Column="3"
+									   IsEnabled="{Binding HasProtein}"/>
+								<Label Text="Condi"
+									   Grid.Column="4"
+									   IsEnabled="{Binding HasCondiment}"/>
+								<Label Text="Drink"
+									   Grid.Column="5"
+									   IsEnabled="{Binding HasDrink}"/>
 							</Grid>
 						</StackLayout>
 					</ViewCell>

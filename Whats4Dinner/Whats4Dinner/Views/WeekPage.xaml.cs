@@ -8,8 +8,6 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class WeekPage : ContentPage
 	{
-		//MainPage RootPage { get => Application.Current.MainPage as MainPage; }
-
 		public WeekPage()
 		{
 			InitializeComponent();

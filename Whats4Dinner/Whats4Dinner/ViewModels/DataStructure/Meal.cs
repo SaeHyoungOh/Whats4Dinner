@@ -38,7 +38,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		/// <summary>
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
-		public ObservableCollection<DishGroup> Dishes
+		public ObservableCollection<Dish> Dishes
 		{
 			get => dishes;
 			set
@@ -48,24 +48,16 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// Converted list of dishes for JSON file I/O
-		/// </summary>
-		public List<DishGroupForJSON> DishesJSON { get; set; }
-
-		/// <summary>
 		/// Whether this meal has any dishes
 		/// </summary>
 		public bool HasDishes
 		{
 			get
 			{
-				foreach (DishGroup dishList in Dishes)
+				if (Dishes.Count != 0)
 				{
-					if (dishList.Count != 0)
-					{
-						SetProperty(ref hasDishes, true);
-						return true;
-					}
+					SetProperty(ref hasDishes, true);
+					return true;
 				}
 				SetProperty(ref hasDishes, false);
 				return false;
@@ -85,29 +77,23 @@ namespace Whats4Dinner.ViewModels.DataStructure
 			{
 				string mealString = "";
 
-				// for each dish category
-				foreach (DishGroup dishCategories in Dishes)
+				// for each dish
+				foreach (Dish dish in Dishes)
 				{
-					// only add the categories with dishes in it
-					if (dishCategories.Count == 0)
-					{
-						continue;
-					}
-					mealString += dishCategories.DishGroupCategory + ": ";
+					mealString += dish.Name + "(";
 
-					// for each dish
-					foreach (Dish dish in dishCategories)
+					// also add the dish categories
+					foreach (DishCategory dishCategory in dish.DishCategories)
 					{
-						mealString += dish.Name;
-						if (dish != dishCategories.Last())
+						mealString += dishCategory.ToString();
+						if (dishCategory != dish.DishCategories.Last())
 						{
 							mealString += ", ";
 						}
 					}
-					mealString += "\n";
+					mealString += ")\n";
 				}
 				SetProperty(ref displayDishes, mealString);
-
 				return displayDishes;
 			}
 			set
@@ -118,7 +104,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 
 		// fields for the properties above
 		private MealType thisMealType;
-		private ObservableCollection<DishGroup> dishes;
+		private ObservableCollection<Dish> dishes;
 		private bool hasDishes;
 		private string displayDishes;
 
@@ -135,14 +121,8 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		{
 			// initialize properties
 			ThisMealType = mealType;
-			Dishes = new ObservableCollection<DishGroup>();
-			DishesJSON = new List<DishGroupForJSON>();
-
-			// add category names to the Dishes
-			foreach (DishCategory cat in (DishCategory[])Enum.GetValues(typeof(DishCategory)))
-			{
-				Dishes.Add(new DishGroup(cat));
-			}
+			Dishes = new ObservableCollection<Dish>();
+			
 		}
 
 		/// <summary>
@@ -150,17 +130,11 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="cat"></param>
-		public void AddDish(string name, DishCategory cat)
+		public void AddDish(string name, List<DishCategory> cat)
 		{
-			foreach (DishGroup dishGroup in Dishes)
-			{
-				if (dishGroup.DishGroupCategory == cat)
-				{
-					dishGroup.Add(new Dish(name, cat));
-					OnPropertyChanged("Dishes");
-					break;
-				}
-			}
+			Dishes.Add(new Dish(name, cat));
+			OnPropertyChanged("DisplayDishes");
+			OnPropertyChanged("Dishes");
 		}
 		
 		/// <summary>
@@ -169,15 +143,9 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		/// <param name="selected"></param>
 		public void DeleteDish(Dish selected)
 		{
-			foreach (DishGroup dishGroup in Dishes)
-			{
-				if (dishGroup.DishGroupCategory == selected.ThisDishCategory)
-				{
-					dishGroup.Remove(selected);
-					OnPropertyChanged("Dishes");
-					break;
-				}
-			}
+			Dishes.Remove(selected);
+			OnPropertyChanged("DisplayDishes");
+			OnPropertyChanged("Dishes");
 		}
 	}
 }

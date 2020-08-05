@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 x:Class="Whats4Dinner.Views.AddDishPage"
+			 Title="Add a Dish">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="baseLabelStyle" TargetType="Label">
+				<Setter Property="FontFamily" Value="Arial"/>
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
+			</Style>
+			<Style x:Key="ListItemTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="20"/>
+			</Style>
+			<Style x:Key="ListItemDetailTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="14"/>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<ContentPage.Content>
+		<Grid Margin="5, 5, 5, 5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="4*"/>
+				<RowDefinition Height="1*"/>
+			</Grid.RowDefinitions>
+			<StackLayout Grid.Row="0">
+				<Label Text="Dish Name"
+					   Grid.Row="0"
+					   Style="{DynamicResource ListItemTextStyle}"/>
+				<Entry x:Name="newName"
+					   Text="{Binding EntryName}"
+					   Placeholder="e.g. Pancakes"
+					   Grid.Row="1"/>
+			</StackLayout>
+			<StackLayout Grid.Row="1">
+				<Label Text="Dish Category"
+				   Grid.Row="2"
+				   Style="{DynamicResource ListItemTextStyle}"/>
+				<Grid Grid.Row="3">
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="1*"/>
+						<ColumnDefinition Width="8*"/>
+					</Grid.ColumnDefinitions>
+					<CheckBox x:Name="GrainCheckBox"
+							  IsChecked="{Binding GrainCheckBox}"
+							  Grid.Row="0" Grid.Column="0"/>
+					<Label Text="Grain"
+						   Grid.Row="0" Grid.Column="1"/>
+					<CheckBox x:Name="VeggieCheckBox"
+							  IsChecked="{Binding VeggieCheckBox}"
+							  Grid.Row="1" Grid.Column="0"/>
+					<Label Text="Veggie"
+						   Grid.Row="1" Grid.Column="1"/>
+					<CheckBox x:Name="ProteinCheckBox"
+							  IsChecked="{Binding ProteinCheckBox}"
+							  Grid.Row="2" Grid.Column="0"/>
+					<Label Text="Protein"
+						   Grid.Row="2" Grid.Column="1"/>
+					<CheckBox x:Name="CondimentCheckBox"
+							  IsChecked="{Binding CondimentCheckBox}"
+							  Grid.Row="3" Grid.Column="0"/>
+					<Label Text="Condiment"
+						   Grid.Row="3" Grid.Column="1"/>
+					<CheckBox x:Name="DrinkCheckBox"
+							  IsChecked="{Binding DrinkCheckBox}"
+							  Grid.Row="4" Grid.Column="0"/>
+					<Label Text="Drink"
+						   Grid.Row="4" Grid.Column="1"/>
+				</Grid>
+			</StackLayout>
+			<Button Text="Save"
+					Grid.Row="2"
+					Clicked="Save_Clicked"/>
+		</Grid>
+	</ContentPage.Content>
+</ContentPage>

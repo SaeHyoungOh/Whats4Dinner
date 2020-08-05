@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Whats4Dinner.Models
 {
@@ -12,11 +13,11 @@ namespace Whats4Dinner.Models
 		/// </summary>
 		public enum DishCategory
 		{
-			Grains,
-			Veggies,
-			Proteins,
-			Condiments,
-			Drinks,
+			Grain,
+			Veggie,
+			Protein,
+			Condiment,
+			Drink,
 			Other
 		}
 
@@ -28,7 +29,75 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Category of the Dish, as listed in Dish.Categories
 		/// </summary>
-		public DishCategory ThisDishCategory { get; set; }
+		public List<DishCategory> DishCategories { get; set; }
+
+		// whether DishCategories contains each of the DishCategory
+		public bool HasGrain
+		{
+			get
+			{
+				if (DishCategories.Contains(DishCategory.Grain))
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		public bool HasVeggie
+		{
+			get
+			{
+				if (DishCategories.Contains(DishCategory.Veggie))
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		public bool HasProtein
+		{
+			get
+			{
+				if (DishCategories.Contains(DishCategory.Protein))
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		public bool HasCondiment
+		{
+			get
+			{
+				if (DishCategories.Contains(DishCategory.Condiment))
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		public bool HasDrink
+		{
+			get
+			{
+				if (DishCategories.Contains(DishCategory.Drink))
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+		public bool HasOther
+		{
+			get
+			{
+				if (DishCategories.Contains(DishCategory.Other))
+				{
+					return true;
+				}
+				return false;
+			}
+		}
 
 		/// <summary>
 		/// Parameterless constructor for JSON deserialization
@@ -36,15 +105,26 @@ namespace Whats4Dinner.Models
 		public Dish() { }
 
 		/// <summary>
-		/// Constructor for Dish class
+		/// Constructor for Dish class, with name only; it creates a new empty List of DishCategory
 		/// </summary>
-		/// <param name="name">Name of the Dish</param>
-		/// <param name="category">Category of the Dish, as listed in Dish.Categories</param>
-		public Dish(string name, DishCategory category)
+		/// <param name="name"></param>
+		public Dish(string name)
 		{
 			// initialize properties
 			Name = name;
-			ThisDishCategory = category;
+			DishCategories = new List<DishCategory>();
+		}
+
+		/// <summary>
+		/// Constructor for Dish class, with name and a list of dish categories
+		/// </summary>
+		/// <param name="name">Name of the Dish</param>
+		/// <param name="category">Category of the Dish, as listed in Dish.Categories</param>
+		public Dish(string name, List<DishCategory> category)
+		{
+			// initialize properties
+			Name = name;
+			DishCategories = category;
 		}
 	}
 }

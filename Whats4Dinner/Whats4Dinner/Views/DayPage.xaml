@@ -33,6 +33,12 @@
 				ItemsSource="{Binding DisplayMeals}"
 				ItemTapped="Handle_ItemTapped"
 				CachingStrategy="RecycleElement">
+			<ListView.Header>
+				<StackLayout>
+					<Label Text="&#x24D8; Tap on a Meal for detail"
+						   HorizontalTextAlignment="Center"/>
+				</StackLayout>
+			</ListView.Header>
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>

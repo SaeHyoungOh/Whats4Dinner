@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using Whats4Dinner.ViewModels.DataStructure;
 using Xamarin.Forms;
+using static Whats4Dinner.Models.Dish;
 
 namespace Whats4Dinner.Models
 {
@@ -47,12 +48,12 @@ namespace Whats4Dinner.Models
 			};
 
 			// list of sample data
-			sampleDays[0].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", Dish.DishCategory.Grains);
-			sampleDays[1].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
-			sampleDays[2].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", Dish.DishCategory.Veggies);
-			sampleDays[3].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", Dish.DishCategory.Grains);
-			sampleDays[3].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", Dish.DishCategory.Proteins);
-			sampleDays[3].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", Dish.DishCategory.Veggies);
+			sampleDays[0].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", new List<DishCategory> { DishCategory.Grain});
+			sampleDays[1].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", new List<DishCategory> { DishCategory.Protein });
+			sampleDays[2].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", new List<DishCategory> { DishCategory.Veggie });
+			sampleDays[3].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", new List<DishCategory> { DishCategory.Grain });
+			sampleDays[3].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", new List<DishCategory> { DishCategory.Protein });
+			sampleDays[3].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", new List<DishCategory> { DishCategory.Veggie });
 
 			WriteToJSON(sampleDays);
 		}
@@ -73,19 +74,6 @@ namespace Whats4Dinner.Models
 			// sort the list by day
 			days = days.OrderBy(day => day.ThisDate).ToList();
 
-			// convert DishGroup to DishGroupForJSON
-			foreach (Day day in days)
-			{
-				foreach (Meal meal in day.Meals)
-				{
-					meal.DishesJSON.Clear();
-					foreach (DishGroup dishGroup in meal.Dishes)
-					{
-						meal.DishesJSON.Add(new DishGroupForJSON(dishGroup.DishGroupCategory, dishGroup));
-					}
-				}
-			}
-
 			// save to file
 			string jsonString = JsonSerializer.Serialize(days, serializeOptions);
 			File.WriteAllText(FilePath, jsonString);
@@ -101,21 +89,10 @@ namespace Whats4Dinner.Models
 			string jsonString = File.ReadAllText(FilePath);
 			List<Day> result = JsonSerializer.Deserialize<List<Day>>(jsonString, serializeOptions);
 
-			// convert DishGroupForJSON to DishGroup
-			foreach (Day day in result)
-			{
-				foreach (Meal meal in day.Meals)
-				{
-					meal.Dishes.Clear();
-					foreach (DishGroupForJSON dishGroupForJSON in meal.DishesJSON)
-					{
-						meal.Dishes.Add(new DishGroup(dishGroupForJSON.DishGroupCategory, dishGroupForJSON.DishList));
-					}
-				}
-			}
-
 			return result;
 		}
+
+		public FileIO() { }
 
 		/// <summary>
 		/// Constructor for FilIO class; calculate and initialize FilePath from provided file name

@@ -40,7 +40,12 @@
 			  ItemsSource="{Binding DisplayDays}"
 			  ItemTapped="Handle_ItemTapped"
 			  CachingStrategy="RecycleElement">
-
+			<ListView.Header>
+				<StackLayout>
+					<Label Text="&#x24D8; Tap on a Day for detail"
+						   HorizontalTextAlignment="Center"/>
+				</StackLayout>
+			</ListView.Header>
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
