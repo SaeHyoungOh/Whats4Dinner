@@ -16,6 +16,7 @@ namespace Whats4Dinner.ViewModels
 		Dish SelectedDish;
 
 		public DelegateCommand SaveButtonClick;
+		public DelegateCommand DeleteButtonClick;
 		public string EntryName { get; set; }
 		public bool GrainCheckBox { get; set; }
 		public bool VeggieCheckBox { get; set; }
@@ -65,6 +66,32 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
+		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
+		/// It is called by the code behind in AddDishPage View.
+		/// </summary>
+		public void DeleteButtonExecute()
+		{
+			// delete dish from the meal
+			SelectedMeal.DeleteDish(SelectedDish);
+
+			// and save to file
+			UserDataIO.WriteToJSON(DisplayDays);
+		}
+
+		/// <summary>
+		/// Input validation whether to proceed with saving the dish
+		/// </summary>
+		/// <returns></returns>
+		public bool DeleteButtonCanExecute()
+		{
+			if (SelectedDish != null)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
 		/// Constructor for AddDishViewModel class
 		/// </summary>
 		/// <param name="DisplayDays"></param>
@@ -100,6 +127,7 @@ namespace Whats4Dinner.ViewModels
 
 			// initialize commands
 			SaveButtonClick = new DelegateCommand(SaveButtonExecute, SaveButtonCanExecute);
+			DeleteButtonClick = new DelegateCommand(DeleteButtonExecute, DeleteButtonCanExecute);
 		}
 	}
 }

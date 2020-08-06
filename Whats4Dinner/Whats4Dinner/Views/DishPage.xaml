@@ -6,6 +6,11 @@
 			 mc:Ignorable="d"
 			 x:Class="Whats4Dinner.Views.DishPage"
 			 Title="{Binding Title}">
+	
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Delete" Clicked="Delete_Clicked" />
+	</ContentPage.ToolbarItems>
+
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<Style x:Key="baseLabelStyle" TargetType="Label">
