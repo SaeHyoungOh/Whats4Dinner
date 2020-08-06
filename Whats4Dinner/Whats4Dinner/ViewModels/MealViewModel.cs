@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels.DataStructure;
-using static Whats4Dinner.Models.Dish;
 
 namespace Whats4Dinner.ViewModels
 {
@@ -55,37 +54,6 @@ namespace Whats4Dinner.ViewModels
 		private Meal selectedMeal;
 
 		/// <summary>
-		/// Delegate command for the "x" (Delete) button
-		/// </summary>
-		public DelegateCommand<Dish> DeleteClick { get; private set; }
-
-		/// <summary>
-		/// Button click action for "x" (Delete) button
-		/// </summary>
-		/// <param name="content"></param>
-		private void DeleteClickExecute(Dish content)
-		{
-			// delete the Dish from the Meal, then update the user data file
-			SelectedMeal.DeleteDish(content);
-			OnPropertyChanged("DisplayDishes");
-			UserDataIO.WriteToJSON(DisplayDays);
-		}
-
-		/// <summary>
-		/// Check whether the meal includes the passed dish
-		/// </summary>
-		/// <param name="content"></param>
-		/// <returns></returns>
-		private bool DeleteClickCanExecute(Dish content)
-		{
-			if (content != null && SelectedMeal.Dishes.Contains(content))
-			{
-				return true;
-			}
-			return false;
-		}
-
-		/// <summary>
 		/// Constructor for MealViewModel
 		/// </summary>
 		/// <param name="selected">selected Meal from MealPage</param>
@@ -99,9 +67,6 @@ namespace Whats4Dinner.ViewModels
 			Title = SelectedMeal.ThisMealType.ToString() + ", " + SelectedDay.DisplayDayOfWeek + " " + SelectedDay.DisplayDate;
 			UserDataIO = new FileIO(fileName);
 			DisplayDishes = SelectedMeal.Dishes;
-
-			// assign delegate commands
-			DeleteClick = new DelegateCommand<Dish>(DeleteClickExecute, DeleteClickCanExecute);
 
 			// for refreshing
 			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);

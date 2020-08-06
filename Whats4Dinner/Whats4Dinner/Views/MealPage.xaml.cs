@@ -28,25 +28,29 @@ namespace Whats4Dinner.Views
 			BindingContext = new MealViewModel(DisplayDays, SelectedDay, SelectedMeal);
 		}
 
+		/// <summary>
+		/// When the "Add" button is clicked, navigate to a new dish page
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void AddItem_Clicked(object sender, EventArgs e)
 		{
-			await Navigation.PushModalAsync(new NavigationPage(new AddDishPage(DisplayDays, SelectedDay, SelectedMeal)));
+			await Navigation.PushModalAsync(new NavigationPage(new DishPage(DisplayDays, SelectedDay, SelectedMeal)));
 
 		}
 
-		private void DeleteItem_Clicked(object sender, EventArgs e)
+		/// <summary>
+		/// When an item is tapped from the list of dishes, navigate to its edit page
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private async void DishCategories_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
-			Dish selected = (Dish)((ListView)sender).SelectedItem;
-			SelectedMeal.DeleteDish(selected);
-		}
+			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
+			await Navigation.PushModalAsync(new NavigationPage(new DishPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish)));
 
-		private void DishCategories_ItemTapped(object sender, ItemTappedEventArgs e)
-		{
 			// Deselect Item
 			((ListView)sender).SelectedItem = null;
-
-			// delete item
-			DeleteItem_Clicked(sender, e);
 		}
 	}
 }

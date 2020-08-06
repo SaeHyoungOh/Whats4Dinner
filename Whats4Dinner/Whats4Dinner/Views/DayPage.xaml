@@ -46,7 +46,7 @@
 							<Label Text="{Binding ThisMealType}"
 								Grid.Row="0" Grid.Column="0"
 								Style="{DynamicResource ListItemTextStyle}"/>
-							<Label Text="{Binding DisplayDishes}"
+							<Label Text="{Binding DisplayPreviewDishes}"
 								Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
 								Style="{DynamicResource ListItemDetailTextStyle}"/>
 						</StackLayout>

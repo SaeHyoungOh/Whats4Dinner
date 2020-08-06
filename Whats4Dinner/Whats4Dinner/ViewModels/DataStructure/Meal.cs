@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Whats4Dinner.Models;
-using static Whats4Dinner.Models.Dish;
+using static Whats4Dinner.ViewModels.DataStructure.Dish;
 
 namespace Whats4Dinner.ViewModels.DataStructure
 {
@@ -71,7 +70,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		/// <summary>
 		/// List of dishes for display in view
 		/// </summary>
-		public string DisplayDishes
+		public string DisplayPreviewDishes
 		{
 			get
 			{
@@ -93,12 +92,12 @@ namespace Whats4Dinner.ViewModels.DataStructure
 					}
 					mealString += ")\n";
 				}
-				SetProperty(ref displayDishes, mealString);
-				return displayDishes;
+				SetProperty(ref displayPreviewDishes, mealString);
+				return displayPreviewDishes;
 			}
 			set
 			{
-				SetProperty(ref displayDishes, value);
+				SetProperty(ref displayPreviewDishes, value);
 			}
 		}
 
@@ -106,7 +105,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		private MealType thisMealType;
 		private ObservableCollection<Dish> dishes;
 		private bool hasDishes;
-		private string displayDishes;
+		private string displayPreviewDishes;
 
 		/// <summary>
 		/// Parameterless constructor for JSON deserialization
@@ -133,10 +132,14 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		public void AddDish(string name, List<DishCategory> cat)
 		{
 			Dishes.Add(new Dish(name, cat));
-			OnPropertyChanged("DisplayDishes");
-			OnPropertyChanged("Dishes");
 		}
-		
+
+		public void EditDish(Dish dish, string name, List<DishCategory> cat)
+		{
+			dish.Name = name;
+			dish.DishCategories = cat;
+		}
+
 		/// <summary>
 		/// Delete a dish from the list of dishes
 		/// </summary>
@@ -144,8 +147,6 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		public void DeleteDish(Dish selected)
 		{
 			Dishes.Remove(selected);
-			OnPropertyChanged("DisplayDishes");
-			OnPropertyChanged("Dishes");
 		}
 	}
 }

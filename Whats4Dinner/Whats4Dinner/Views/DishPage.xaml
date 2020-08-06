@@ -4,8 +4,8 @@
 			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d"
-			 x:Class="Whats4Dinner.Views.AddDishPage"
-			 Title="Add a Dish">
+			 x:Class="Whats4Dinner.Views.DishPage"
+			 Title="{Binding Title}">
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<Style x:Key="baseLabelStyle" TargetType="Label">

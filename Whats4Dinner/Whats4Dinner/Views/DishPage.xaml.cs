@@ -13,20 +13,32 @@ using Xamarin.Forms.Xaml;
 namespace Whats4Dinner.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AddDishPage : ContentPage
+	public partial class DishPage : ContentPage
 	{
 		ObservableCollection<Day> DisplayDays;
 		Day SelectedDay;
 		Meal SelectedMeal;
+		Dish SelectedDish;
 
-		public AddDishPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
+		public DishPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null)
 		{
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
+			this.SelectedDish = SelectedDish;
 
 			InitializeComponent();
-			BindingContext = new AddDishViewModel(DisplayDays, SelectedDay, SelectedMeal);
+
+			// new dish page
+			if (SelectedDish == null)
+			{
+				BindingContext = new DishViewModel(DisplayDays, SelectedDay, SelectedMeal);
+			}
+			// edit dish page
+			else
+			{
+				BindingContext = new DishViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish);
+			}
 		}
 
 		private void Save_Clicked(object sender, EventArgs e)
@@ -38,12 +50,14 @@ namespace Whats4Dinner.Views
 				return;
 			}
 
-			// call the command and close the page
-			var viewModel = (AddDishViewModel)BindingContext;
+			// call the command
+			var viewModel = (DishViewModel)BindingContext;
 			if (viewModel.SaveButtonClick.CanExecute())
 			{
 				viewModel.SaveButtonClick.Execute();
 			}
+
+			// close the page
 			Navigation.PopModalAsync();
 		}
 	}

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using Whats4Dinner.ViewModels.DataStructure;
 using Xamarin.Forms;
-using static Whats4Dinner.Models.Dish;
+using static Whats4Dinner.ViewModels.DataStructure.Dish;
 
 namespace Whats4Dinner.Models
 {

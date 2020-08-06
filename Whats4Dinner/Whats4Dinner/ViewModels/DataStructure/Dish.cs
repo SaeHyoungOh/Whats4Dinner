@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
 
-namespace Whats4Dinner.Models
+namespace Whats4Dinner.ViewModels.DataStructure
 {
 	/// <summary>
 	/// A dish with Id, Name, and Category
 	/// </summary>
-	public class Dish
+	public class Dish : BaseModel
 	{
 		/// <summary>
 		/// List of categories a dish can have
@@ -24,12 +24,26 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Name of the Dish
 		/// </summary>
-		public string Name { get; set; }
+		public string Name
+		{
+			get => name;
+			set
+			{
+				SetProperty(ref name, value);
+			}
+		}
 
 		/// <summary>
 		/// Category of the Dish, as listed in Dish.Categories
 		/// </summary>
-		public List<DishCategory> DishCategories { get; set; }
+		public List<DishCategory> DishCategories
+		{
+			get => dishCategories;
+			set
+			{
+				SetProperty(ref dishCategories, value);
+			}
+		}
 
 		// whether DishCategories contains each of the DishCategory
 		public bool HasGrain
@@ -38,8 +52,10 @@ namespace Whats4Dinner.Models
 			{
 				if (DishCategories.Contains(DishCategory.Grain))
 				{
+					SetProperty(ref hasGrain, true);
 					return true;
 				}
+				SetProperty(ref hasGrain, false);
 				return false;
 			}
 		}
@@ -49,8 +65,10 @@ namespace Whats4Dinner.Models
 			{
 				if (DishCategories.Contains(DishCategory.Veggie))
 				{
+					SetProperty(ref hasVeggie, true);
 					return true;
 				}
+				SetProperty(ref hasVeggie, false);
 				return false;
 			}
 		}
@@ -60,8 +78,10 @@ namespace Whats4Dinner.Models
 			{
 				if (DishCategories.Contains(DishCategory.Protein))
 				{
+					SetProperty(ref hasProtein, true);
 					return true;
 				}
+				SetProperty(ref hasProtein, false);
 				return false;
 			}
 		}
@@ -71,8 +91,10 @@ namespace Whats4Dinner.Models
 			{
 				if (DishCategories.Contains(DishCategory.Condiment))
 				{
+					SetProperty(ref hasCondiment, true);
 					return true;
 				}
+				SetProperty(ref hasCondiment, false);
 				return false;
 			}
 		}
@@ -82,22 +104,22 @@ namespace Whats4Dinner.Models
 			{
 				if (DishCategories.Contains(DishCategory.Drink))
 				{
+					SetProperty(ref hasDrink, true);
 					return true;
 				}
+				SetProperty(ref hasDrink, false);
 				return false;
 			}
 		}
-		public bool HasOther
-		{
-			get
-			{
-				if (DishCategories.Contains(DishCategory.Other))
-				{
-					return true;
-				}
-				return false;
-			}
-		}
+
+		// fields for the properties above
+		private string name;
+		private List<DishCategory> dishCategories;
+		private bool hasGrain;
+		private bool hasVeggie;
+		private bool hasProtein;
+		private bool hasCondiment;
+		private bool hasDrink;
 
 		/// <summary>
 		/// Parameterless constructor for JSON deserialization
