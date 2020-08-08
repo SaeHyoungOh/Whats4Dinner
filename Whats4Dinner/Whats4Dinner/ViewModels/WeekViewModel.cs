@@ -25,7 +25,7 @@ namespace Whats4Dinner.ViewModels
 			UserDataIO = new FileIO(fileName);
 
 			// create a sample file. delete for production
-			UserDataIO.CreateSampleFile();
+			//UserDataIO.CreateSampleFile();
 
 			// read user's data from JSON file
 			List<Day> dataFromFile = UserDataIO.ReadFromJSON();

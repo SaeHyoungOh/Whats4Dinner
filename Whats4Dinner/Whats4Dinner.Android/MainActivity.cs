@@ -17,7 +17,7 @@ namespace Whats4Dinner.Droid
 	{
 		public string GetFilePath(string fileName)
 		{
-			string fullPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), fileName);
+			string fullPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), fileName);
 
 			return fullPath;
 		}

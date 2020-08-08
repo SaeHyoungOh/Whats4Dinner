@@ -86,8 +86,18 @@ namespace Whats4Dinner.Models
 		/// <returns>List<Day> object read from user's data file</Day></returns>
 		public List<Day> ReadFromJSON()
 		{
-			string jsonString = File.ReadAllText(FilePath);
-			List<Day> result = JsonSerializer.Deserialize<List<Day>>(jsonString, serializeOptions);
+			List<Day> result;
+
+			if (File.Exists(FilePath))
+			{
+				string jsonString = File.ReadAllText(FilePath);
+				result = JsonSerializer.Deserialize<List<Day>>(jsonString, serializeOptions);
+			}
+			// return empty list if file does not exist
+			else
+			{
+				result = new List<Day>();
+			}
 
 			return result;
 		}
