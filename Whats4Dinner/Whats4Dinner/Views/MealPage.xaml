@@ -32,55 +32,63 @@
 	</ContentPage.Resources>
 
 	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
-		<ListView x:Name="DishCategories"
-				  HasUnevenRows="True"
-				  VerticalOptions="FillAndExpand"
-				  Margin="5, 5, 5, 5"
-				  ItemsSource="{Binding DisplayDishes}"
-				  ItemTapped="DishCategories_ItemTapped"
-				  CachingStrategy="RecycleElement">
-			<ListView.Header>
-				<StackLayout>
-					<Label Text="&#x24D8; Tap on item to edit"
-						   HorizontalTextAlignment="Center"/>
-				</StackLayout>
-			</ListView.Header>
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<ViewCell>
-						<StackLayout Margin="10, 5, 5, 5">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="15*"/>
-									<ColumnDefinition Width="4*"/>
-									<ColumnDefinition Width="5*"/>
-									<ColumnDefinition Width="5*"/>
-									<ColumnDefinition Width="4*"/>
-									<ColumnDefinition Width="4*"/>
-								</Grid.ColumnDefinitions>
-								<Label Text="{Binding Name}"
-									   Grid.Column="0"
-									   Style="{DynamicResource ListItemDetailTextStyle}"/>
-								<Label Text="Grain"
-									   Grid.Column="1"
-									   IsEnabled="{Binding HasGrain}"/>
-								<Label Text="Veggie"
-									   Grid.Column="2"
-									   IsEnabled="{Binding HasVeggie}"/>
-								<Label Text="Protein"
-									   Grid.Column="3"
-									   IsEnabled="{Binding HasProtein}"/>
-								<Label Text="Condi"
-									   Grid.Column="4"
-									   IsEnabled="{Binding HasCondiment}"/>
-								<Label Text="Drink"
-									   Grid.Column="5"
-									   IsEnabled="{Binding HasDrink}"/>
-							</Grid>
-						</StackLayout>
-					</ViewCell>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
+		<Grid>
+			<Label Text="(No Dishes to Display)"
+				   Grid.Row="1"
+				   IsVisible="{Binding NoDishes}"
+				   FontSize="20"
+				   HorizontalTextAlignment="Center"/>
+			<ListView x:Name="DishCategories"
+					  HasUnevenRows="True"
+					  VerticalOptions="FillAndExpand"
+					  Margin="5, 5, 5, 5"
+					  ItemsSource="{Binding DisplayDishes}"
+					  ItemTapped="DishCategories_ItemTapped"
+					  CachingStrategy="RecycleElement">
+				<ListView.Header>
+					<StackLayout>
+						<Label Text="&#x24D8; Tap on item to edit"
+							   IsVisible="{Binding HasDishes}"
+							   HorizontalTextAlignment="Center"/>
+					</StackLayout>
+				</ListView.Header>
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout Margin="10, 5, 5, 5">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="15*"/>
+										<ColumnDefinition Width="4*"/>
+										<ColumnDefinition Width="5*"/>
+										<ColumnDefinition Width="5*"/>
+										<ColumnDefinition Width="4*"/>
+										<ColumnDefinition Width="4*"/>
+									</Grid.ColumnDefinitions>
+									<Label Text="{Binding Name}"
+										   Grid.Column="0"
+										   Style="{DynamicResource ListItemDetailTextStyle}"/>
+									<Label Text="Grain"
+										   Grid.Column="1"
+										   IsEnabled="{Binding HasGrain}"/>
+									<Label Text="Veggie"
+										   Grid.Column="2"
+										   IsEnabled="{Binding HasVeggie}"/>
+									<Label Text="Protein"
+										   Grid.Column="3"
+										   IsEnabled="{Binding HasProtein}"/>
+									<Label Text="Condi"
+										   Grid.Column="4"
+										   IsEnabled="{Binding HasCondiment}"/>
+									<Label Text="Drink"
+										   Grid.Column="5"
+										   IsEnabled="{Binding HasDrink}"/>
+								</Grid>
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+		</Grid>
 	</RefreshView>
 </ContentPage>

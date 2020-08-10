@@ -25,6 +25,38 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
+		/// Whether this meal has any dishes
+		/// </summary>
+		public bool HasDishes
+		{
+			get
+			{
+				SetProperty(ref hasDishes, DisplayDishes.Count != 0);
+				return hasDishes;
+			}
+			set
+			{
+				SetProperty(ref hasDishes, value);
+			}
+		}
+
+		/// <summary>
+		/// Whether this meal has no dishes
+		/// </summary>
+		public bool NoDishes
+		{
+			get
+			{
+				SetProperty(ref noDishes, DisplayDishes.Count == 0);
+				return noDishes;
+			}
+			set
+			{
+				SetProperty(ref noDishes, value);
+			}
+		}
+
+		/// <summary>
 		/// The currently selected Day that this meal belongs to
 		/// </summary>
 		public Day SelectedDay
@@ -50,6 +82,8 @@ namespace Whats4Dinner.ViewModels
 
 		// fields for the properties above
 		private ObservableCollection<Dish> displayDishes;
+		private bool hasDishes;
+		private bool noDishes;
 		private Day selectedDay;
 		private Meal selectedMeal;
 

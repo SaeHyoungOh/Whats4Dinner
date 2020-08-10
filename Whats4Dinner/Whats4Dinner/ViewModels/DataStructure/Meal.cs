@@ -53,17 +53,28 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		{
 			get
 			{
-				if (Dishes.Count != 0)
-				{
-					SetProperty(ref hasDishes, true);
-					return true;
-				}
-				SetProperty(ref hasDishes, false);
-				return false;
+				SetProperty(ref hasDishes, Dishes.Count != 0);
+				return hasDishes;
 			}
 			set
 			{
 				SetProperty(ref hasDishes, value);
+			}
+		}
+
+		/// <summary>
+		/// Whether this meal has no dishes
+		/// </summary>
+		public bool NoDishes
+		{
+			get
+			{
+				SetProperty(ref noDishes, Dishes.Count == 0);
+				return noDishes;
+			}
+			set
+			{
+				SetProperty(ref noDishes, value);
 			}
 		}
 
@@ -79,19 +90,30 @@ namespace Whats4Dinner.ViewModels.DataStructure
 				// for each dish
 				foreach (Dish dish in Dishes)
 				{
-					mealString += dish.Name + "(";
+					mealString += dish.Name;
 
 					// also add the dish categories
-					foreach (DishCategory dishCategory in dish.DishCategories)
+					if (dish.DishCategories.Count > 0)
 					{
-						mealString += dishCategory.ToString();
-						if (dishCategory != dish.DishCategories.Last())
+						mealString += " (";
+
+						foreach (DishCategory dishCategory in dish.DishCategories)
 						{
-							mealString += ", ";
+							mealString += dishCategory.ToString();
+							if (dishCategory != dish.DishCategories.Last())
+							{
+								mealString += ", ";
+							}
 						}
+						mealString += ")";
 					}
-					mealString += ")\n";
+
+					if (dish != Dishes.Last())
+					{
+						mealString += ", ";
+					}
 				}
+
 				SetProperty(ref displayPreviewDishes, mealString);
 				return displayPreviewDishes;
 			}
@@ -105,6 +127,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		private MealType thisMealType;
 		private ObservableCollection<Dish> dishes;
 		private bool hasDishes;
+		private bool noDishes;
 		private string displayPreviewDishes;
 
 		/// <summary>

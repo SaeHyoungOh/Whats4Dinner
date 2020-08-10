@@ -22,17 +22,18 @@
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
 				<Setter Property="FontSize" Value="14"/>
+				<Setter Property="Margin" Value="10, 0, 0, 0"/>
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 		<ListView x:Name="Meals"
-				HasUnevenRows="True"
-				VerticalOptions="FillAndExpand"
-				Margin="5, 5, 5, 5"
-				ItemsSource="{Binding DisplayMeals}"
-				ItemTapped="Handle_ItemTapped"
-				CachingStrategy="RecycleElement">
+				  HasUnevenRows="True"
+				  VerticalOptions="FillAndExpand"
+				  Margin="5, 5, 5, 5"
+				  ItemsSource="{Binding DisplayMeals}"
+				  ItemTapped="Handle_ItemTapped"
+				  CachingStrategy="RecycleElement">
 			<ListView.Header>
 				<StackLayout>
 					<Label Text="&#x24D8; Tap on a Meal for detail"
@@ -43,12 +44,23 @@
 				<DataTemplate>
 					<ViewCell>
 						<StackLayout Margin="10, 8, 10, 7">
-							<Label Text="{Binding ThisMealType}"
-								Grid.Row="0" Grid.Column="0"
-								Style="{DynamicResource ListItemTextStyle}"/>
-							<Label Text="{Binding DisplayPreviewDishes}"
-								Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-								Style="{DynamicResource ListItemDetailTextStyle}"/>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+								<Label Text="{Binding ThisMealType}"
+									   Grid.Row="0"
+									   Style="{DynamicResource ListItemTextStyle}"/>
+								<Label Text="(Not planned)"
+									   Grid.Row="1"
+									   IsVisible="{Binding NoDishes}"
+									   Style="{DynamicResource ListItemDetailTextStyle}"
+									   TextColor="LightGray"/>
+								<Label Text="{Binding DisplayPreviewDishes}"
+									   Grid.Row="1"
+									   Style="{DynamicResource ListItemDetailTextStyle}"/>
+							</Grid>
 						</StackLayout>
 					</ViewCell>
 				</DataTemplate>
