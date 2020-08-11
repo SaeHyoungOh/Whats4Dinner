@@ -22,11 +22,13 @@
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
 				<Setter Property="FontSize" Value="20"/>
+				<Setter Property="TextColor" Value="Black"/>
 			</Style>
 			<Style x:Key="ListItemDetailTextStyle"
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
 				<Setter Property="FontSize" Value="14"/>
+				<Setter Property="TextColor" Value="#646464"/>
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>

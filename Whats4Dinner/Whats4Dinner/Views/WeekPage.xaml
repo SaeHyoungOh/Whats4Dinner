@@ -21,25 +21,26 @@
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
 				<Setter Property="FontSize" Value="20"/>
+				<Setter Property="TextColor" Value="Black"/>
 			</Style>
 			<Style x:Key="ListItemDetailTextStyle"
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
-				<Setter Property="FontSize" Value="16"/>
+				<Setter Property="FontSize" Value="14"/>
 				<Setter Property="Margin" Value="10, 0, 0, 0"/>
-				<Setter Property="TextColor" Value="LightGray"/>
+				<Setter Property="TextColor" Value="#646464"/>
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
 	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 		<ListView x:Name="Days"
-			  HasUnevenRows="True"
-			  VerticalOptions="FillAndExpand"
-			  Margin="5, 5, 5, 5"
-			  ItemsSource="{Binding DisplayDays}"
-			  ItemTapped="Handle_ItemTapped"
-			  CachingStrategy="RecycleElement">
+				  HasUnevenRows="True"
+				  VerticalOptions="FillAndExpand"
+				  Margin="5, 5, 5, 5"
+				  ItemsSource="{Binding DisplayDays}"
+				  ItemTapped="Handle_ItemTapped"
+				  CachingStrategy="RecycleElement">
 			<ListView.Header>
 				<StackLayout>
 					<Label Text="&#x24D8; Tap on a Day for detail"
@@ -52,52 +53,52 @@
 						<StackLayout Margin="10, 8, 10, 7">
 							<Grid>
 								<Grid.RowDefinitions>
-									<RowDefinition/>
+									<RowDefinition Height="Auto"/>
 									<RowDefinition/>
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="3*"/>
+									<ColumnDefinition Width="4*"/>
 									<ColumnDefinition Width="2*"/>
 								</Grid.ColumnDefinitions>
 
 								<!-- Day of the week -->
 								<Label Text="{Binding DisplayDayOfWeek}"
-								   Grid.Row="0"
-								   Grid.Column="0"
-								   Style="{DynamicResource ListItemTextStyle}"/>
+									   Grid.Row="0"
+									   Grid.Column="0"
+									   Style="{DynamicResource ListItemTextStyle}"/>
 
 								<!-- exact date -->
 								<Label Text="{Binding DisplayDate}"
-								   Grid.Row="0"
-								   Grid.Column="1"
-								   Style="{DynamicResource ListItemTextStyle}"/>
+									   Grid.Row="0"
+									   Grid.Column="1"
+									   Style="{DynamicResource ListItemTextStyle}"/>
 
-								<!-- indicate whether each meal is added to day -->
+								<!-- list the dishes in each day -->
 								<Grid Grid.Row="1"
-								  Grid.Column="0"
-								  Grid.ColumnSpan="2">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="14*"/>
-										<ColumnDefinition Width="10*"/>
-										<ColumnDefinition Width="10*"/>
-										<ColumnDefinition Width="10*"/>
-									</Grid.ColumnDefinitions>
-									<Label Text="Breakfast" 
-									   Grid.Column="0" Style="{DynamicResource ListItemDetailTextStyle}"/>
-									<Label Text="Breakfast" 
-									   Grid.Column="0" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding BreakfastCheck}"/>
-									<Label Text="Lunch" 
-									   Grid.Column="1" Style="{DynamicResource ListItemDetailTextStyle}"/>
-									<Label Text="Lunch" 
-									   Grid.Column="1" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding LunchCheck}"/>
-									<Label Text="Dinner" 
-									   Grid.Column="2" Style="{DynamicResource ListItemDetailTextStyle}"/>
-									<Label Text="Dinner" 
-									   Grid.Column="2" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding DinnerCheck}"/>
-									<Label Text="Other" 
-									   Grid.Column="3" Style="{DynamicResource ListItemDetailTextStyle}"/>
-									<Label Text="Other" 
-									   Grid.Column="3" Style="{DynamicResource ListItemDetailTextStyle}" TextColor="Black" IsVisible="{Binding OtherCheck}"/>
+									  Grid.Column="0"
+									  Grid.ColumnSpan="2">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+									</Grid.RowDefinitions>
+									<Label Text="{Binding DisplayBreakfast}"
+										   Grid.Row="0"
+										   Style="{DynamicResource ListItemDetailTextStyle}"
+										   IsVisible="{Binding BreakfastCheck}"/>
+									<Label Text="{Binding DisplayLunch}"
+										   Grid.Row="1"
+										   Style="{DynamicResource ListItemDetailTextStyle}"
+										   IsVisible="{Binding LunchCheck}"/>
+									<Label Text="{Binding DisplayDinner}"
+										   Grid.Row="2"
+										   Style="{DynamicResource ListItemDetailTextStyle}"
+										   IsVisible="{Binding DinnerCheck}"/>
+									<Label Text="{Binding DisplayOther}"
+										   Grid.Row="3"
+										   Style="{DynamicResource ListItemDetailTextStyle}"
+										   IsVisible="{Binding OtherCheck}"/>
 								</Grid>
 							</Grid>
 						</StackLayout>

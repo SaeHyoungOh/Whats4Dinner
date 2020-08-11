@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using static Whats4Dinner.ViewModels.DataStructure.Dish;
 using static Whats4Dinner.ViewModels.DataStructure.Meal;
 
 namespace Whats4Dinner.ViewModels.DataStructure
@@ -157,6 +159,157 @@ namespace Whats4Dinner.ViewModels.DataStructure
 			}
 		}
 
+		/// <summary>
+		/// List of Dishes in Breakfast, to be displayed in View
+		/// </summary>
+		public string DisplayBreakfast
+		{
+			get
+			{
+				string mealString = "Breakfast: ";
+
+				if (BreakfastCheck)
+				{
+					ObservableCollection<Dish> dishList = Meals[(int)MealType.Breakfast].Dishes;
+
+					// add each dish to string
+					foreach (Dish dish in dishList)
+					{
+						mealString += dish.Name;
+
+						if (dish != dishList.Last())
+						{
+							mealString += ", ";
+						}
+					}
+				}
+				else
+				{
+					mealString += "(Not planned)";
+				}
+
+				SetProperty(ref displayBreakfast, mealString);
+				return displayBreakfast;
+			}
+			set
+			{
+				SetProperty(ref displayBreakfast, value);
+			}
+		}
+		/// <summary>
+		/// List of Dishes in Lunch, to be displayed in View
+		/// </summary>
+
+		public string DisplayLunch
+		{
+			get
+			{
+				string mealString = "Lunch: ";
+
+				if (LunchCheck)
+				{
+					ObservableCollection<Dish> dishList = Meals[(int)MealType.Lunch].Dishes;
+
+					// add each dish to string
+					foreach (Dish dish in dishList)
+					{
+						mealString += dish.Name;
+
+						if (dish != dishList.Last())
+						{
+							mealString += ", ";
+						}
+					}
+				}
+				else
+				{
+					mealString += "(Not planned)";
+				}
+
+				SetProperty(ref displayLunch, mealString);
+				return displayLunch;
+			}
+			set
+			{
+				SetProperty(ref displayLunch, value);
+			}
+		}
+
+		/// <summary>
+		/// List of Dishes in Dinner, to be displayed in View
+		/// </summary>
+		public string DisplayDinner
+		{
+			get
+			{
+				string mealString = "Dinner: ";
+
+				if (DinnerCheck)
+				{
+					ObservableCollection<Dish> dishList = Meals[(int)MealType.Dinner].Dishes;
+					// add each dish to string
+					foreach (Dish dish in dishList)
+					{
+						mealString += dish.Name;
+
+						if (dish != dishList.Last())
+						{
+							mealString += ", ";
+						}
+					}
+				}
+				else
+				{
+					mealString += "(Not planned)";
+				}
+
+				SetProperty(ref displayDinner, mealString);
+				return displayDinner;
+			}
+			set
+			{
+				SetProperty(ref displayDinner, value);
+			}
+		}
+
+		/// <summary>
+		/// List of Dishes in Other, to be displayed in View
+		/// </summary>
+		public string DisplayOther
+		{
+			get
+			{
+				string mealString = "Other: ";
+
+				if (OtherCheck)
+				{
+					ObservableCollection<Dish> dishList = Meals[(int)MealType.Other].Dishes;
+
+					// add each dish to string
+					foreach (Dish dish in dishList)
+					{
+						mealString += dish.Name;
+
+						if (dish != dishList.Last())
+						{
+							mealString += ", ";
+						}
+					}
+				}
+				else
+				{
+					mealString += "(Not planned)";
+				}
+
+				SetProperty(ref displayOther, mealString);
+				return displayOther;
+			}
+			set
+			{
+				SetProperty(ref displayOther, value);
+			}
+		}
+
 		// fields for the properties above
 		private DateTime thisDate;
 		private string displayDayOfWeek;
@@ -166,6 +319,10 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		private bool lunchCheck;
 		private bool dinnerCheck;
 		private bool otherCheck;
+		private string displayBreakfast;
+		private string displayLunch;
+		private string displayDinner;
+		private string displayOther;
 
 		/// <summary>
 		/// Parameterless constructor for JSON deserialization
