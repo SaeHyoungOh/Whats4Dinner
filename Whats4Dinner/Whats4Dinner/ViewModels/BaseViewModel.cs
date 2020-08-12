@@ -69,7 +69,7 @@ namespace Whats4Dinner.ViewModels
 		/// Fill the DisplayDays from user data read from file
 		/// </summary>
 		/// <param name="dataFromFile"></param>
-		protected void FillDisplayDays(List<Day> dataFromFile)
+		protected void FillDisplayDays(ObservableCollection<Day> dataFromFile)
 		{
 			DateTime today = DateTime.Today;
 			int i = 0, j = 0;
@@ -137,7 +137,7 @@ namespace Whats4Dinner.ViewModels
 				DisplayDays.Clear();
 
 				// read user's data from JSON file
-				List<Day> dataFromFile = UserDataIO.ReadFromJSON();
+				ObservableCollection<Day> dataFromFile = UserDataIO.ReadUserDataFromJSON();
 
 				// fill the week with days
 				FillDisplayDays(dataFromFile);

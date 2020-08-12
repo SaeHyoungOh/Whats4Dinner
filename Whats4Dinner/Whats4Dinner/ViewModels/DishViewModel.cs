@@ -16,7 +16,6 @@ namespace Whats4Dinner.ViewModels
 		Dish SelectedDish;
 
 		public DelegateCommand SaveButtonClick;
-		public DelegateCommand DeleteButtonClick;
 		public string EntryName { get; set; }
 		public bool GrainCheckBox { get; set; }
 		public bool VeggieCheckBox { get; set; }
@@ -49,7 +48,7 @@ namespace Whats4Dinner.ViewModels
 				SelectedMeal.EditDish(SelectedDish, EntryName, inputDishCategory);
 			}
 			// and save to file
-			UserDataIO.WriteToJSON(DisplayDays);
+			UserDataIO.WriteUserDataToJSON(DisplayDays);
 		}
 
 		/// <summary>
@@ -59,32 +58,6 @@ namespace Whats4Dinner.ViewModels
 		public bool SaveButtonCanExecute()
 		{
 			if (EntryName.Length > 0)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
-		/// It is called by the code behind in AddDishPage View.
-		/// </summary>
-		public void DeleteButtonExecute()
-		{
-			// delete dish from the meal
-			SelectedMeal.DeleteDish(SelectedDish);
-
-			// and save to file
-			UserDataIO.WriteToJSON(DisplayDays);
-		}
-
-		/// <summary>
-		/// Input validation whether to proceed with saving the dish
-		/// </summary>
-		/// <returns></returns>
-		public bool DeleteButtonCanExecute()
-		{
-			if (SelectedDish != null)
 			{
 				return true;
 			}
@@ -106,6 +79,10 @@ namespace Whats4Dinner.ViewModels
 			this.SelectedMeal = SelectedMeal;
 			this.SelectedDish = SelectedDish;
 			UserDataIO = new FileIO(fileName);
+
+			// TODO: change the add button to add to the dish database, and ask whether to also add to the meal
+			// TODO: change the edit button to edit the meal, and ask whether to also update the database
+
 			// new dish
 			if (SelectedDish == null)
 			{
@@ -127,7 +104,6 @@ namespace Whats4Dinner.ViewModels
 
 			// initialize commands
 			SaveButtonClick = new DelegateCommand(SaveButtonExecute, SaveButtonCanExecute);
-			DeleteButtonClick = new DelegateCommand(DeleteButtonExecute, DeleteButtonCanExecute);
 		}
 	}
 }

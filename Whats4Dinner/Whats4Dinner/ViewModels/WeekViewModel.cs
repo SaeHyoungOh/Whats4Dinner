@@ -28,7 +28,7 @@ namespace Whats4Dinner.ViewModels
 			//UserDataIO.CreateSampleFile();
 
 			// read user's data from JSON file
-			List<Day> dataFromFile = UserDataIO.ReadFromJSON();
+			ObservableCollection<Day> dataFromFile = UserDataIO.ReadUserDataFromJSON();
 
 			// fill the week with days
 			FillDisplayDays(dataFromFile);

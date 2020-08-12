@@ -148,13 +148,22 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// Add a dish to the list of dishes in the provided dish category
+		/// Add a Dish to the list of Dishes in the provided dish category
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="cat"></param>
 		public void AddDish(string name, List<DishCategory> cat)
 		{
 			Dishes.Add(new Dish(name, cat));
+		}
+
+		/// <summary>
+		/// Add a Dish to the list of Dishes with a provided Dish object
+		/// </summary>
+		/// <param name="dish"></param>
+		public void AddDish(Dish dish)
+		{
+			Dishes.Add(dish);
 		}
 
 		public void EditDish(Dish dish, string name, List<DishCategory> cat)
@@ -164,7 +173,7 @@ namespace Whats4Dinner.ViewModels.DataStructure
 		}
 
 		/// <summary>
-		/// Delete a dish from the list of dishes
+		/// Delete a Dish from the list of Dishes
 		/// </summary>
 		/// <param name="selected"></param>
 		public void DeleteDish(Dish selected)

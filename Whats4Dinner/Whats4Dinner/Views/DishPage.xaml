@@ -7,10 +7,6 @@
 			 x:Class="Whats4Dinner.Views.DishPage"
 			 Title="{Binding Title}">
 	
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Delete" Clicked="Delete_Clicked" />
-	</ContentPage.ToolbarItems>
-
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<Style x:Key="baseLabelStyle" TargetType="Label">
@@ -37,7 +33,7 @@
 				<RowDefinition Height="1*"/>
 			</Grid.RowDefinitions>
 			<StackLayout Grid.Row="0">
-				<Label Text="Dish Name"
+				<Label Text="Enter Dish Name"
 					   Grid.Row="0"
 					   Style="{DynamicResource ListItemTextStyle}"/>
 				<Entry x:Name="newName"
@@ -46,7 +42,7 @@
 					   Grid.Row="1"/>
 			</StackLayout>
 			<StackLayout Grid.Row="1">
-				<Label Text="Dish Category"
+				<Label Text="Choose Dish Categories"
 				   Grid.Row="2"
 				   Style="{DynamicResource ListItemTextStyle}"/>
 				<Grid Grid.Row="3">

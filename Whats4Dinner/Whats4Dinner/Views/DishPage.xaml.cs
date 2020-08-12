@@ -46,12 +46,12 @@ namespace Whats4Dinner.Views
 			// input validation
 			if (newName.Text.Length == 0)
 			{
-				DisplayAlert("", "Please enter a Dish Name.", "Ok");
+				DisplayAlert("Please enter a Dish Name.", null, "Ok");
 				return;
 			}
 
 			// call the command
-			var viewModel = (DishViewModel)BindingContext;
+			DishViewModel viewModel = (DishViewModel)BindingContext;
 			if (viewModel.SaveButtonClick.CanExecute())
 			{
 				viewModel.SaveButtonClick.Execute();
@@ -59,23 +59,6 @@ namespace Whats4Dinner.Views
 
 			// close the page
 			Navigation.PopModalAsync();
-		}
-
-		private async void Delete_Clicked(object sender, EventArgs e)
-		{
-			// confirm delete
-			if (await DisplayAlert("", "Delete this Dish?", "Delete", "Cancel"))
-			{
-				// call the command
-				var viewModel = (DishViewModel)BindingContext;
-				if (viewModel.DeleteButtonClick.CanExecute())
-				{
-					viewModel.DeleteButtonClick.Execute();
-				}
-
-				// close the page
-				await Navigation.PopModalAsync();
-			}
 		}
 	}
 }

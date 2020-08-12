@@ -35,8 +35,8 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private async void AddItem_Clicked(object sender, EventArgs e)
 		{
-			await Navigation.PushModalAsync(new NavigationPage(new DishPage(DisplayDays, SelectedDay, SelectedMeal)));
-
+			// navigate to dish db page
+			await Navigation.PushModalAsync(new NavigationPage(new DishDBPage(DisplayDays, SelectedDay, SelectedMeal)));
 		}
 
 		/// <summary>
@@ -47,7 +47,27 @@ namespace Whats4Dinner.Views
 		private async void DishCategories_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
-			await Navigation.PushModalAsync(new NavigationPage(new DishPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish)));
+
+			// ask for action
+			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", "Remove", "Edit");
+
+			if (action == "Edit")
+			{
+				await Navigation.PushModalAsync(new NavigationPage(new DishPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish)));
+			}
+			else if (action == "Remove")
+			{
+				// confirm delete
+				if (await DisplayAlert("Remove this Dish?", null, "Remove", "Cancel"))
+				{
+					// call the command
+					MealViewModel viewModel = (MealViewModel)BindingContext;
+					if (viewModel.DeleteButtonClick.CanExecute(selectedDish))
+					{
+						viewModel.DeleteButtonClick.Execute(selectedDish);
+					}
+				}
+			}
 
 			// Deselect Item
 			((ListView)sender).SelectedItem = null;

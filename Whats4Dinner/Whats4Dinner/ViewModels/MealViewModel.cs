@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels.DataStructure;
 
@@ -12,6 +14,7 @@ namespace Whats4Dinner.ViewModels
 	/// </summary>
 	class MealViewModel : BaseViewModel
 	{
+
 		/// <summary>
 		/// List of the Dishes in the Meal to display on View, categorized by DishGroup
 		/// </summary>
@@ -87,6 +90,34 @@ namespace Whats4Dinner.ViewModels
 		private Day selectedDay;
 		private Meal selectedMeal;
 
+		public DelegateCommand<Dish> DeleteButtonClick;
+
+		/// <summary>
+		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
+		/// It is called by the code behind in AddDishPage View.
+		/// </summary>
+		public void DeleteButtonExecute(Dish SelectedDish)// TODO: no instance of object error
+		{
+			// delete dish from the meal
+			SelectedMeal.DeleteDish(SelectedDish);
+
+			// and save to file
+			UserDataIO.WriteUserDataToJSON(DisplayDays);
+		}
+
+		/// <summary>
+		/// Input validation whether to proceed with saving the dish
+		/// </summary>
+		/// <returns></returns>
+		public bool DeleteButtonCanExecute(Dish SelectedDish)
+		{
+			if (SelectedDish != null)
+			{
+				return true;
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// Constructor for MealViewModel
 		/// </summary>
@@ -98,12 +129,12 @@ namespace Whats4Dinner.ViewModels
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
-			Title = SelectedMeal.ThisMealType.ToString() + ", " + SelectedDay.DisplayDayOfWeek + " " + SelectedDay.DisplayDate;
-			UserDataIO = new FileIO(fileName);
 			DisplayDishes = SelectedMeal.Dishes;
+			Title = SelectedMeal.ThisMealType.ToString() + ", " + SelectedDay.DisplayDayOfWeek + " " + SelectedDay.DisplayDate;
 
-			// for refreshing
+			// initialize commands
 			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);
+			DeleteButtonClick = new DelegateCommand<Dish>(DeleteButtonExecute, DeleteButtonCanExecute);
 		}
 	}
 }
