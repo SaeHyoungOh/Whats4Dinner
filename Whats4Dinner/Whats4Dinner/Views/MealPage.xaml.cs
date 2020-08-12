@@ -49,7 +49,7 @@ namespace Whats4Dinner.Views
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
 
 			// ask for action
-			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", "Remove", "Edit");
+			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Remove", "Edit");
 
 			if (action == "Edit")
 			{
@@ -58,7 +58,7 @@ namespace Whats4Dinner.Views
 			else if (action == "Remove")
 			{
 				// confirm delete
-				if (await DisplayAlert("Remove this Dish?", null, "Remove", "Cancel"))
+				if (await DisplayAlert(null, "Remove this Dish?", "Remove", "Cancel"))
 				{
 					// call the command
 					MealViewModel viewModel = (MealViewModel)BindingContext;

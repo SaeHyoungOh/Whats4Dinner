@@ -96,7 +96,7 @@ namespace Whats4Dinner.ViewModels
 		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
 		/// It is called by the code behind in AddDishPage View.
 		/// </summary>
-		public void DeleteButtonExecute(Dish SelectedDish)// TODO: no instance of object error
+		public void DeleteButtonExecute(Dish SelectedDish)
 		{
 			// delete dish from the meal
 			SelectedMeal.DeleteDish(SelectedDish);
@@ -111,7 +111,7 @@ namespace Whats4Dinner.ViewModels
 		/// <returns></returns>
 		public bool DeleteButtonCanExecute(Dish SelectedDish)
 		{
-			if (SelectedDish != null)
+			if (SelectedMeal.Dishes.Contains(SelectedDish))
 			{
 				return true;
 			}
@@ -131,6 +131,7 @@ namespace Whats4Dinner.ViewModels
 			this.SelectedMeal = SelectedMeal;
 			DisplayDishes = SelectedMeal.Dishes;
 			Title = SelectedMeal.ThisMealType.ToString() + ", " + SelectedDay.DisplayDayOfWeek + " " + SelectedDay.DisplayDate;
+			UserDataIO = new FileIO(userFileName);
 
 			// initialize commands
 			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);

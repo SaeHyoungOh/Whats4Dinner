@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.Text;
 using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels.DataStructure;
@@ -16,6 +17,8 @@ namespace Whats4Dinner.ViewModels
 		Dish SelectedDish;
 
 		public DelegateCommand SaveButtonClick;
+		public DelegateCommand AddToMealCommand;
+		public DelegateCommand EditDBCommand;
 		public string EntryName { get; set; }
 		public bool GrainCheckBox { get; set; }
 		public bool VeggieCheckBox { get; set; }
@@ -23,45 +26,71 @@ namespace Whats4Dinner.ViewModels
 		public bool CondimentCheckBox { get; set; }
 		public bool DrinkCheckBox { get; set; }
 
+		private List<DishCategory> InputDishCategories { get; set; }
+
+		private Dish BeforeEdit { get; set; }
+
+		public bool IsNew { get; set; }
+
 		/// <summary>
 		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
 		/// It is called by the code behind in AddDishPage View.
 		/// </summary>
-		public void SaveButtonExecute()
+		private void SaveButtonExecute()
 		{
 			// build the dish category list
-			List<DishCategory> inputDishCategory = new List<DishCategory>();
-			if (GrainCheckBox) inputDishCategory.Add(Dish.DishCategory.Grain);
-			if (VeggieCheckBox) inputDishCategory.Add(Dish.DishCategory.Veggie);
-			if (ProteinCheckBox) inputDishCategory.Add(Dish.DishCategory.Protein);
-			if (CondimentCheckBox) inputDishCategory.Add(Dish.DishCategory.Condiment);
-			if (DrinkCheckBox) inputDishCategory.Add(Dish.DishCategory.Drink);
+			InputDishCategories = new List<DishCategory>();
+			if (GrainCheckBox) InputDishCategories.Add(Dish.DishCategory.Grain);
+			if (VeggieCheckBox) InputDishCategories.Add(Dish.DishCategory.Veggie);
+			if (ProteinCheckBox) InputDishCategories.Add(Dish.DishCategory.Protein);
+			if (CondimentCheckBox) InputDishCategories.Add(Dish.DishCategory.Condiment);
+			if (DrinkCheckBox) InputDishCategories.Add(Dish.DishCategory.Drink);
 
-			// add dish to the meal
+			// add dish to the database
 			if (SelectedDish == null)
 			{
-				SelectedMeal.AddDish(EntryName, inputDishCategory);
+				DishDB.Add(new Dish(EntryName, InputDishCategories));
+				DishDBIO.WriteDishesToJSON(DishDB);
 			}
 			// or edit the dish
 			else
 			{
-				SelectedMeal.EditDish(SelectedDish, EntryName, inputDishCategory);
+				BeforeEdit = new Dish(SelectedDish.Name, SelectedDish.DishCategories);
+				SelectedMeal.EditDish(SelectedDish, EntryName, InputDishCategories);
+				UserDataIO.WriteUserDataToJSON(DisplayDays);
 			}
-			// and save to file
-			UserDataIO.WriteUserDataToJSON(DisplayDays);
 		}
 
 		/// <summary>
 		/// Input validation whether to proceed with saving the dish
 		/// </summary>
 		/// <returns></returns>
-		public bool SaveButtonCanExecute()
+		private bool SaveButtonCanExecute()
 		{
 			if (EntryName.Length > 0)
 			{
 				return true;
 			}
 			return false;
+		}
+
+		private void AddToMealExecute()
+		{
+			SelectedMeal.AddDish(EntryName, InputDishCategories);
+			UserDataIO.WriteUserDataToJSON(DisplayDays);
+		}
+
+		private void EditDBExecute()
+		{
+			foreach (Dish dish in DishDB)
+			{
+				if (dish.Name == BeforeEdit.Name)
+				{
+					dish.Name = EntryName;
+					dish.DishCategories = InputDishCategories;
+				}
+			}
+			DishDBIO.WriteDishesToJSON(DishDB);
 		}
 
 		/// <summary>
@@ -78,10 +107,9 @@ namespace Whats4Dinner.ViewModels
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 			this.SelectedDish = SelectedDish;
-			UserDataIO = new FileIO(fileName);
-
-			// TODO: change the add button to add to the dish database, and ask whether to also add to the meal
-			// TODO: change the edit button to edit the meal, and ask whether to also update the database
+			UserDataIO = new FileIO(userFileName);
+			DishDBIO = new FileIO(dishFileName);
+			DishDB = DishDBIO.ReadDishesFromJSON();
 
 			// new dish
 			if (SelectedDish == null)
@@ -89,6 +117,7 @@ namespace Whats4Dinner.ViewModels
 				Title = "Add a Dish";
 				EntryName = "";
 				GrainCheckBox = VeggieCheckBox = ProteinCheckBox = CondimentCheckBox = DrinkCheckBox = false;
+				IsNew = true;
 			}
 			// edit dish
 			else
@@ -100,10 +129,13 @@ namespace Whats4Dinner.ViewModels
 				ProteinCheckBox = SelectedDish.HasProtein;
 				CondimentCheckBox = SelectedDish.HasCondiment;
 				DrinkCheckBox = SelectedDish.HasDrink;
+				IsNew = false;
 			}
 
 			// initialize commands
 			SaveButtonClick = new DelegateCommand(SaveButtonExecute, SaveButtonCanExecute);
+			AddToMealCommand = new DelegateCommand(AddToMealExecute);
+			EditDBCommand = new DelegateCommand(EditDBExecute);
 		}
 	}
 }

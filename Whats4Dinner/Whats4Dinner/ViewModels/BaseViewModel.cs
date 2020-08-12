@@ -18,16 +18,26 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// The file name for storing the user data
 		/// </summary>
-		protected readonly string fileName = "UserData.json";
+		protected readonly string userFileName = "UserData.json";
 
 		/// <summary>
-		/// FilIO object to handle file I/O
+		/// The file name for storing the dish database
+		/// </summary>
+		protected readonly string dishFileName = "DishDB.json";
+
+		/// <summary>
+		/// FilIO object to handle user data I/O
 		/// </summary>
 		protected FileIO UserDataIO;
 
 		/// <summary>
-		/// The title of the page
+		/// FilIO object to handle dish database I/O
 		/// </summary>
+		protected FileIO DishDBIO;
+			
+		/// <summary>
+							/// The title of the page
+							/// </summary>
 		public string Title
 		{
 			get { return title; }
@@ -55,10 +65,23 @@ namespace Whats4Dinner.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// List of Dishes already created before
+		/// </summary>
+		public ObservableCollection<Dish> DishDB
+		{
+			get => dishDB;
+			set
+			{
+				SetProperty(ref dishDB, value);
+			}
+		}
+
 		// fields for the properties above
 		private string title = string.Empty;
 		private bool isBusy = false;
 		private ObservableCollection<Day> displayDays;
+		private ObservableCollection<Dish> dishDB;
 
 		/// <summary>
 		/// DelegateCommand (from Prism) to use in View when refreshing

@@ -11,11 +11,6 @@ namespace Whats4Dinner.ViewModels
 	class DishDBViewModel : BaseViewModel
 	{
 		/// <summary>
-		/// The file name for storing the dish database
-		/// </summary>
-		private readonly string dishFileName = "DishDB.json";
-
-		/// <summary>
 		/// The currently selected Day that this meal belongs to
 		/// </summary>
 		public Day SelectedDay
@@ -39,22 +34,9 @@ namespace Whats4Dinner.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// List of Dishes already created before
-		/// </summary>
-		public ObservableCollection<Dish> DishDB
-		{
-			get => dishDB;
-			set
-			{
-				SetProperty(ref dishDB, value);
-			}
-		}
-
 		// fields for the properties above
 		private Day selectedDay;
 		private Meal selectedMeal;
-		private ObservableCollection<Dish> dishDB;
 
 		/// <summary>
 		/// Command to add a dish to the meal, to be used in the View
@@ -97,11 +79,11 @@ namespace Whats4Dinner.ViewModels
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
-			UserDataIO = new FileIO(fileName);
+			UserDataIO = new FileIO(userFileName);
+			DishDBIO = new FileIO(dishFileName);
 			Title = "Choose a Dish";
 
 			// get the Dish database from file
-			FileIO DishDBIO = new FileIO(dishFileName);
 			DishDB = DishDBIO.ReadDishesFromJSON();
 
 			// initialize commands

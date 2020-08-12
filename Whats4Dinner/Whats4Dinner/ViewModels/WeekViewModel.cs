@@ -22,7 +22,7 @@ namespace Whats4Dinner.ViewModels
 			// initialize properties
 			Title = "Week View";
 			DisplayDays = new ObservableCollection<Day>();
-			UserDataIO = new FileIO(fileName);
+			UserDataIO = new FileIO(userFileName);
 
 			// create a sample file. delete for production
 			//UserDataIO.CreateSampleFile();

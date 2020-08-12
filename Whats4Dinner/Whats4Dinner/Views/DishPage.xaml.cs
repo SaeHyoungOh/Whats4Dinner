@@ -41,12 +41,12 @@ namespace Whats4Dinner.Views
 			}
 		}
 
-		private void Save_Clicked(object sender, EventArgs e)
+		private async void Save_Clicked(object sender, EventArgs e)
 		{
 			// input validation
 			if (newName.Text.Length == 0)
 			{
-				DisplayAlert("Please enter a Dish Name.", null, "Ok");
+				await DisplayAlert(null, "Please enter a Dish Name.", "Ok");
 				return;
 			}
 
@@ -55,10 +55,24 @@ namespace Whats4Dinner.Views
 			if (viewModel.SaveButtonClick.CanExecute())
 			{
 				viewModel.SaveButtonClick.Execute();
+				if (viewModel.IsNew)
+				{
+					if (await DisplayAlert(null, "Also add to your meal?", "Yes", "No"))
+					{
+						viewModel.AddToMealCommand.Execute();
+					}
+				}
+				else
+				{
+					if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
+					{
+						viewModel.EditDBCommand.Execute();
+					}
+				}
 			}
 
 			// close the page
-			Navigation.PopModalAsync();
+			await Navigation.PopModalAsync();
 		}
 	}
 }
