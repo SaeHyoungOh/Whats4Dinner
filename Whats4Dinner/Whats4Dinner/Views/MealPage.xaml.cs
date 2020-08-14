@@ -36,7 +36,7 @@ namespace Whats4Dinner.Views
 		private async void AddItem_Clicked(object sender, EventArgs e)
 		{
 			// navigate to dish db page
-			await Navigation.PushModalAsync(new NavigationPage(new DishDBPage(DisplayDays, SelectedDay, SelectedMeal)));
+			await Navigation.PushAsync(new DishDBPage(DisplayDays, SelectedDay, SelectedMeal));
 		}
 
 		/// <summary>

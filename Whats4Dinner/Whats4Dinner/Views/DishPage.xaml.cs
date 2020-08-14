@@ -55,13 +55,17 @@ namespace Whats4Dinner.Views
 			if (viewModel.SaveButtonClick.CanExecute())
 			{
 				viewModel.SaveButtonClick.Execute();
+
+				// adding a new dish to the database
 				if (viewModel.IsNew)
 				{
 					if (await DisplayAlert(null, "Also add to your meal?", "Yes", "No"))
 					{
 						viewModel.AddToMealCommand.Execute();
+						await Navigation.PopAsync();
 					}
 				}
+				// editing a dish
 				else
 				{
 					if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))

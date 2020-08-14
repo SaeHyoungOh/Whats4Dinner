@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using Whats4Dinner.Models;
+using Whats4Dinner.ViewModels;
 
 namespace Whats4Dinner.Views
 {
@@ -18,6 +19,8 @@ namespace Whats4Dinner.Views
 		public MainPage()
 		{
 			InitializeComponent();
+
+			Detail = new NavigationPage(new WeekPage());
 
 			MasterBehavior = MasterBehavior.Popover;
 

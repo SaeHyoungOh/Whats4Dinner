@@ -67,6 +67,7 @@ namespace Whats4Dinner.ViewModels
 		/// <returns></returns>
 		private bool SaveButtonCanExecute()
 		{
+			// TODO: make sure no duplicate dishes are created
 			if (EntryName.Length > 0)
 			{
 				return true;

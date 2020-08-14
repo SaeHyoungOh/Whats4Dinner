@@ -34,9 +34,8 @@
 	</ContentPage.Resources>
 
 	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
-		<Grid>
+		<StackLayout>
 			<Label Text="(No Dishes to Display)"
-				   Grid.Row="1"
 				   IsVisible="{Binding NoDishes}"
 				   FontSize="20"
 				   HorizontalTextAlignment="Center"/>
@@ -91,6 +90,6 @@
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
-		</Grid>
+		</StackLayout>
 	</RefreshView>
 </ContentPage>

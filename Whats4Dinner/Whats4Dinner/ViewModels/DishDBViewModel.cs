@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels.DataStructure;
+using Xamarin.Forms;
 
 namespace Whats4Dinner.ViewModels
 {
@@ -34,14 +36,28 @@ namespace Whats4Dinner.ViewModels
 			}
 		}
 
+		public ObservableCollection<Dish> SearchResult
+		{
+			get => searchResult;
+			set
+			{
+				SetProperty(ref searchResult, value);
+			}
+		}
+
+		public string Query { get; set; }
+
 		// fields for the properties above
 		private Day selectedDay;
 		private Meal selectedMeal;
+		private ObservableCollection<Dish> searchResult;
 
+		public DelegateCommand LoadDishesCommand { get; set; }
 		/// <summary>
 		/// Command to add a dish to the meal, to be used in the View
 		/// </summary>
 		public DelegateCommand<Dish> AddDishCommand;
+		public DelegateCommand SearchCommand;
 
 		/// <summary>
 		/// Add the selected Dish to the meal and save to file
@@ -67,6 +83,49 @@ namespace Whats4Dinner.ViewModels
 			return false;
 		}
 
+		private void SearchExecute()
+		{
+			// empty query returns the whole database
+			if (Query == "")
+			{
+				SearchResult = DishDB;
+			}
+			// build the search result based on the query string
+			else
+			{
+				SearchResult = new ObservableCollection<Dish>();
+				foreach (Dish dish in DishDB)
+				{
+					if (dish.Name.Contains(Query))
+					{
+						SearchResult.Add(dish);
+					}
+				}
+			}
+		}
+
+		private void ExecuteLoadDishesCommand()
+		{
+			IsBusy = true;
+
+			try
+			{
+				SearchResult.Clear();
+
+				// read dish data from JSON file
+				DishDB = DishDBIO.ReadDishesFromJSON();
+				SearchExecute();
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
+			finally
+			{
+				IsBusy = false;
+			}
+		}
+
 		/// <summary>
 		/// Constructor for DishDBViewModel
 		/// </summary>
@@ -82,13 +141,16 @@ namespace Whats4Dinner.ViewModels
 			UserDataIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
 			Title = "Choose a Dish";
+			Query = "";
 
 			// get the Dish database from file
 			DishDB = DishDBIO.ReadDishesFromJSON();
+			SearchResult = DishDB;
 
 			// initialize commands
-			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);
 			AddDishCommand = new DelegateCommand<Dish>(AddDishExecute, AddDishCanExecute);
+			SearchCommand = new DelegateCommand(SearchExecute);
+			LoadDishesCommand = new DelegateCommand(ExecuteLoadDishesCommand);
 		}
 	}
 }

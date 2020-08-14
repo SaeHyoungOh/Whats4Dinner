@@ -21,7 +21,8 @@ namespace Whats4Dinner.Views
 			ObservableCollection<Day> DisplayDays = (ObservableCollection<Day>)((ListView)sender).ItemsSource;
 			Day SelectedDay = (Day)((ListView)sender).SelectedItem;
 
-			await Navigation.PushModalAsync(new NavigationPage(new DayPage(DisplayDays, SelectedDay)));
+			await Navigation.PushAsync(new DayPage(DisplayDays, SelectedDay));
+
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;

@@ -50,7 +50,18 @@ namespace Whats4Dinner.Views
 			}
 
 			// close page
-			Navigation.PopModalAsync();
+			Navigation.PopAsync();
+		}
+
+		private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			DishDBViewModel viewModel = (DishDBViewModel)BindingContext;
+			viewModel.SearchCommand.Execute();
+		}
+
+		private void Edit_Clicked(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

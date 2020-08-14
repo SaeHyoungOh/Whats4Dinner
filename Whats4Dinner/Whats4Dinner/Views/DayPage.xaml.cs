@@ -28,7 +28,7 @@ namespace Whats4Dinner.Views
 
 			// get the DisplayDays, the day index, and the Meal index
 			Meal SelectedMeal = (Meal)((ListView)sender).SelectedItem;
-			await Navigation.PushModalAsync(new NavigationPage(new MealPage(DisplayDays, SelectedDay, SelectedMeal)));
+			await Navigation.PushAsync(new MealPage(DisplayDays, SelectedDay, SelectedMeal));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;
