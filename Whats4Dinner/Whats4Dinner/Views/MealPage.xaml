@@ -9,7 +9,7 @@
 			 Title="{Binding Title}">
 	
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+		<ToolbarItem Text="View Dishes" Clicked="AddItem_Clicked" />
 	</ContentPage.ToolbarItems>
 
 	<ContentPage.Resources>
@@ -35,61 +35,70 @@
 
 	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 		<StackLayout>
-			<Label Text="(No Dishes to Display)"
-				   IsVisible="{Binding NoDishes}"
-				   FontSize="20"
-				   HorizontalTextAlignment="Center"/>
-			<ListView x:Name="DishCategories"
-					  HasUnevenRows="True"
-					  VerticalOptions="FillAndExpand"
-					  Margin="5, 5, 5, 5"
-					  ItemsSource="{Binding DisplayDishes}"
-					  ItemTapped="DishCategories_ItemTapped"
-					  CachingStrategy="RecycleElement">
-				<ListView.Header>
-					<StackLayout>
-						<Label Text="&#x24D8; Tap on item to edit"
-							   IsVisible="{Binding HasDishes}"
-							   HorizontalTextAlignment="Center"/>
-					</StackLayout>
-				</ListView.Header>
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<ViewCell>
-							<StackLayout Margin="10, 5, 5, 5">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="15*"/>
-										<ColumnDefinition Width="4*"/>
-										<ColumnDefinition Width="5*"/>
-										<ColumnDefinition Width="5*"/>
-										<ColumnDefinition Width="4*"/>
-										<ColumnDefinition Width="4*"/>
-									</Grid.ColumnDefinitions>
-									<Label Text="{Binding Name}"
-										   Grid.Column="0"
-										   Style="{DynamicResource ListItemDetailTextStyle}"/>
-									<Label Text="Grain"
-										   Grid.Column="1"
-										   IsEnabled="{Binding HasGrain}"/>
-									<Label Text="Veggie"
-										   Grid.Column="2"
-										   IsEnabled="{Binding HasVeggie}"/>
-									<Label Text="Protein"
-										   Grid.Column="3"
-										   IsEnabled="{Binding HasProtein}"/>
-									<Label Text="Condi"
-										   Grid.Column="4"
-										   IsEnabled="{Binding HasCondiment}"/>
-									<Label Text="Drink"
-										   Grid.Column="5"
-										   IsEnabled="{Binding HasDrink}"/>
-								</Grid>
-							</StackLayout>
-						</ViewCell>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
+			<Grid>
+				<Grid Grid.Row="0" IsVisible="{Binding NoDishes}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="2*"/>
+						<RowDefinition Height="3*"/>
+					</Grid.RowDefinitions>
+					<Label Text="(No Dishes to Display)"
+						   Grid.Row="1"
+						   HorizontalOptions="Center"
+						   FontSize="20"/>
+				</Grid>
+				<ListView x:Name="DishCategories"
+						  Grid.Row="0"
+						  HasUnevenRows="True"
+						  VerticalOptions="FillAndExpand"
+						  Margin="5, 5, 5, 5"
+						  ItemsSource="{Binding DisplayDishes}"
+						  ItemTapped="DishCategories_ItemTapped"
+						  CachingStrategy="RecycleElement">
+					<ListView.Header>
+						<StackLayout>
+							<Label Text="&#x24D8; Tap on item to edit"
+								   IsVisible="{Binding HasDishes}"
+								   HorizontalTextAlignment="Center"/>
+						</StackLayout>
+					</ListView.Header>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<StackLayout Margin="10, 5, 5, 5">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="15*"/>
+											<ColumnDefinition Width="4*"/>
+											<ColumnDefinition Width="5*"/>
+											<ColumnDefinition Width="5*"/>
+											<ColumnDefinition Width="4*"/>
+											<ColumnDefinition Width="4*"/>
+										</Grid.ColumnDefinitions>
+										<Label Text="{Binding Name}"
+											   Grid.Column="0"
+											   Style="{DynamicResource ListItemDetailTextStyle}"/>
+										<Label Text="Grain"
+											   Grid.Column="1"
+											   IsEnabled="{Binding HasGrain}"/>
+										<Label Text="Veggie"
+											   Grid.Column="2"
+											   IsEnabled="{Binding HasVeggie}"/>
+										<Label Text="Protein"
+											   Grid.Column="3"
+											   IsEnabled="{Binding HasProtein}"/>
+										<Label Text="Condi"
+											   Grid.Column="4"
+											   IsEnabled="{Binding HasCondiment}"/>
+										<Label Text="Drink"
+											   Grid.Column="5"
+											   IsEnabled="{Binding HasDrink}"/>
+									</Grid>
+								</StackLayout>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Grid>
 		</StackLayout>
 	</RefreshView>
 </ContentPage>

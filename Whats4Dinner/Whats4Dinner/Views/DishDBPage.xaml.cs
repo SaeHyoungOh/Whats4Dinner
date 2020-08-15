@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Whats4Dinner.ViewModels;
 using Whats4Dinner.ViewModels.DataStructure;
 using Xamarin.Forms;
@@ -17,6 +21,7 @@ namespace Whats4Dinner.Views
 		ObservableCollection<Day> DisplayDays;
 		Day SelectedDay;
 		Meal SelectedMeal;
+		DishDBViewModel viewModel;
 
 		public DishDBPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
 		{
@@ -25,7 +30,7 @@ namespace Whats4Dinner.Views
 			this.SelectedMeal = SelectedMeal;
 
 			InitializeComponent();
-			BindingContext = new DishDBViewModel(DisplayDays, SelectedDay, SelectedMeal);
+			BindingContext = viewModel = new DishDBViewModel(DisplayDays, SelectedDay, SelectedMeal);
 		}
 
 		/// <summary>
@@ -35,7 +40,7 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private async void CreateItem_Clicked(object sender, EventArgs e)
 		{
-			await Navigation.PushModalAsync(new NavigationPage(new DishPage(DisplayDays, SelectedDay, SelectedMeal)));
+			await Navigation.PushAsync(new DishPage(DisplayDays, SelectedDay, SelectedMeal));
 		}
 
 		private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -43,25 +48,38 @@ namespace Whats4Dinner.Views
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
 
 			// call the command to add dish to meal
-			DishDBViewModel viewModel = (DishDBViewModel)BindingContext;
 			if (viewModel.AddDishCommand.CanExecute(selectedDish))
 			{
 				viewModel.AddDishCommand.Execute(selectedDish);
-			}
 
-			// close page
-			Navigation.PopAsync();
+				// close page
+				Navigation.PopAsync();
+			}
+			else
+			{
+				DisplayAlert(null, selectedDish.Name + " is already included in this meal.", "Ok");
+				((ListView)sender).SelectedItem = null;	// deselect
+			}
 		}
 
 		private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			DishDBViewModel viewModel = (DishDBViewModel)BindingContext;
-			viewModel.SearchCommand.Execute();
+			((DishDBViewModel)BindingContext).SearchCommand.Execute();
 		}
 
-		private void Edit_Clicked(object sender, EventArgs e)
+		private async void DeleteItem_Clicked(object sender, EventArgs e)
 		{
+			Button thisButton = (Button)sender;
+			Dish selectedDish = (Dish)thisButton.BindingContext;
 
+			if (await DisplayAlert(null, "Delete " + selectedDish.Name + " from the database?", "Delete", "Cancel"))
+			{
+				// call the command to delete dish from the meal
+				if (viewModel.DeleteDishCommand.CanExecute(selectedDish))
+				{
+					viewModel.DeleteDishCommand.Execute(selectedDish);
+				}
+			}
 		}
 	}
 }

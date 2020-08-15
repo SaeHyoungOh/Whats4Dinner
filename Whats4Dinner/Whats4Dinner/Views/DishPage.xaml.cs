@@ -43,10 +43,10 @@ namespace Whats4Dinner.Views
 
 		private async void Save_Clicked(object sender, EventArgs e)
 		{
-			// input validation
+			// input validation - empty name
 			if (newName.Text.Length == 0)
 			{
-				await DisplayAlert(null, "Please enter a Dish Name.", "Ok");
+				await DisplayAlert(null, "Please enter a dish Name.", "Ok");
 				return;
 			}
 
@@ -62,7 +62,8 @@ namespace Whats4Dinner.Views
 					if (await DisplayAlert(null, "Also add to your meal?", "Yes", "No"))
 					{
 						viewModel.AddToMealCommand.Execute();
-						await Navigation.PopAsync();
+						// return to the meal page
+						Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
 					}
 				}
 				// editing a dish
@@ -70,13 +71,30 @@ namespace Whats4Dinner.Views
 				{
 					if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
 					{
-						viewModel.EditDBCommand.Execute();
+						if (viewModel.EditDBCommand.CanExecute())
+						{
+							viewModel.EditDBCommand.Execute();
+						}
+						// if the dish no longer exists in the database
+						else
+						{
+							if (await DisplayAlert(null, "The dish does not exist in the database. Add to the database?", "Yes", "No"))
+							{
+								viewModel.SaveButtonClick.Execute();
+							}
+						}
 					}
 				}
 			}
+			// input validation - duplicate name
+			else
+			{
+				await DisplayAlert(null, "The dish name already exists.", "Ok");
+				return;
+			}
 
 			// close the page
-			await Navigation.PopModalAsync();
+			await Navigation.PopAsync();
 		}
 	}
 }

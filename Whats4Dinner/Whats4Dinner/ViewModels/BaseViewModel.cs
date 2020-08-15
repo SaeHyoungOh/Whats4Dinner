@@ -26,12 +26,12 @@ namespace Whats4Dinner.ViewModels
 		protected readonly string dishFileName = "DishDB.json";
 
 		/// <summary>
-		/// FilIO object to handle user data I/O
+		/// FileIO object to handle user data I/O
 		/// </summary>
 		protected FileIO UserDataIO;
 
 		/// <summary>
-		/// FilIO object to handle dish database I/O
+		/// FileIO object to handle dish database I/O
 		/// </summary>
 		protected FileIO DishDBIO;
 			

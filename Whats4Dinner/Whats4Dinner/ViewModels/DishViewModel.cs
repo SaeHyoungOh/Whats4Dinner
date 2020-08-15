@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
+using System.Linq;
 using System.Text;
 using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels.DataStructure;
+using Xamarin.Forms;
 using static Whats4Dinner.ViewModels.DataStructure.Dish;
 
 namespace Whats4Dinner.ViewModels
@@ -28,7 +30,7 @@ namespace Whats4Dinner.ViewModels
 
 		private List<DishCategory> InputDishCategories { get; set; }
 
-		private Dish BeforeEdit { get; set; }
+		private string NameBeforeEdit { get; set; }
 
 		public bool IsNew { get; set; }
 
@@ -55,7 +57,7 @@ namespace Whats4Dinner.ViewModels
 			// or edit the dish
 			else
 			{
-				BeforeEdit = new Dish(SelectedDish.Name, SelectedDish.DishCategories);
+				NameBeforeEdit = string.Copy(SelectedDish.Name);
 				SelectedMeal.EditDish(SelectedDish, EntryName, InputDishCategories);
 				UserDataIO.WriteUserDataToJSON(DisplayDays);
 			}
@@ -67,12 +69,16 @@ namespace Whats4Dinner.ViewModels
 		/// <returns></returns>
 		private bool SaveButtonCanExecute()
 		{
-			// TODO: make sure no duplicate dishes are created
-			if (EntryName.Length > 0)
+			// if the entered name already exists, return false
+			if (DishDB.Select(dish => dish.Name).Contains(EntryName))
 			{
-				return true;
+				if (SelectedDish == null || SelectedDish.Name != EntryName)
+				{
+					return false;
+				}
 			}
-			return false;
+
+			return true;
 		}
 
 		private void AddToMealExecute()
@@ -85,13 +91,23 @@ namespace Whats4Dinner.ViewModels
 		{
 			foreach (Dish dish in DishDB)
 			{
-				if (dish.Name == BeforeEdit.Name)
+				if (dish.Name == NameBeforeEdit)
 				{
 					dish.Name = EntryName;
 					dish.DishCategories = InputDishCategories;
+					break;
 				}
 			}
 			DishDBIO.WriteDishesToJSON(DishDB);
+		}
+
+		private bool EditDBCanExecute()
+		{
+			if (DishDB.Select(dish => dish.Name).Contains(NameBeforeEdit))
+			{
+				return true;
+			}
+			return false;
 		}
 
 		/// <summary>
@@ -136,7 +152,7 @@ namespace Whats4Dinner.ViewModels
 			// initialize commands
 			SaveButtonClick = new DelegateCommand(SaveButtonExecute, SaveButtonCanExecute);
 			AddToMealCommand = new DelegateCommand(AddToMealExecute);
-			EditDBCommand = new DelegateCommand(EditDBExecute);
+			EditDBCommand = new DelegateCommand(EditDBExecute, EditDBCanExecute);
 		}
 	}
 }
