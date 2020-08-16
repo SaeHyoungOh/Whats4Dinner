@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Whats4Dinner.Models;
-using Whats4Dinner.ViewModels.DataStructure;
+using Whats4Dinner.Models.DataStructure;
 
 namespace Whats4Dinner.ViewModels
 {

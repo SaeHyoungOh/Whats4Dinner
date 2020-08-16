@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
 
-namespace Whats4Dinner.ViewModels.DataStructure
+namespace Whats4Dinner.Models.DataStructure
 {
 	/// <summary>
 	/// A dish with Id, Name, and Category

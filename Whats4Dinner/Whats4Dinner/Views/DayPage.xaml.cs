@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Whats4Dinner.ViewModels;
-using Whats4Dinner.ViewModels.DataStructure;
+using Whats4Dinner.Models.DataStructure;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using static Whats4Dinner.ViewModels.DataStructure.Dish;
-using static Whats4Dinner.ViewModels.DataStructure.Meal;
+using static Whats4Dinner.Models.DataStructure.Meal;
 
-namespace Whats4Dinner.ViewModels.DataStructure
+namespace Whats4Dinner.Models.DataStructure
 {
 	/// <summary>
 	/// A Day with Date and a list of Meals, and whether each Meal has dishes in it

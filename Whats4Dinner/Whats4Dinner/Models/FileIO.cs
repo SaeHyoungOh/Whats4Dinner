@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Whats4Dinner.ViewModels.DataStructure;
+using Whats4Dinner.Models.DataStructure;
 using Xamarin.Forms;
-using static Whats4Dinner.ViewModels.DataStructure.Dish;
+using static Whats4Dinner.Models.DataStructure.Dish;
 
 namespace Whats4Dinner.Models
 {

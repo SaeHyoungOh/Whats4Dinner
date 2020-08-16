@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Whats4Dinner.ViewModels
+namespace Whats4Dinner
 {
 	/// <summary>
 	/// The base class for all ViewModels which use INotifyPropertyChanged for properties to notify the Views

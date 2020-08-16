@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Whats4Dinner.Models;
-using Whats4Dinner.ViewModels.DataStructure;
+using Whats4Dinner.Models.DataStructure;
 using Xamarin.Forms;
 
 namespace Whats4Dinner.ViewModels

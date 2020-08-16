@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Whats4Dinner.ViewModels.DataStructure;
-using static Whats4Dinner.ViewModels.DataStructure.Meal;
+using Whats4Dinner.Models.DataStructure;
+using static Whats4Dinner.Models.DataStructure.Meal;
 
 namespace UnitTestProject1
 {

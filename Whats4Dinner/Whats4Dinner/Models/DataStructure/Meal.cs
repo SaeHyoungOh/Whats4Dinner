@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using static Whats4Dinner.ViewModels.DataStructure.Dish;
+using static Whats4Dinner.Models.DataStructure.Dish;
 
-namespace Whats4Dinner.ViewModels.DataStructure
+namespace Whats4Dinner.Models.DataStructure
 {
 	/// <summary>
 	/// A meal with MealType, a list of Dishes, a string of dishes to display on View

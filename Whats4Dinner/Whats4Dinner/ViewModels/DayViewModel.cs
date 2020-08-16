@@ -1,7 +1,7 @@
 ﻿using Prism.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Whats4Dinner.ViewModels.DataStructure;
+using Whats4Dinner.Models.DataStructure;
 
 namespace Whats4Dinner.ViewModels
 {
