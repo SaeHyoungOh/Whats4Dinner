@@ -94,7 +94,7 @@ namespace Whats4Dinner.ViewModels
 
 		/// <summary>
 		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
-		/// It is called by the code behind in AddDishPage View.
+		/// It is called by the code behind in DishEditPage View.
 		/// </summary>
 		public void DeleteButtonExecute(Dish SelectedDish)
 		{

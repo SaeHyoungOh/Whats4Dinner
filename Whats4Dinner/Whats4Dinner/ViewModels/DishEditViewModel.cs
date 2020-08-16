@@ -12,7 +12,7 @@ using static Whats4Dinner.Models.DataStructure.Dish;
 
 namespace Whats4Dinner.ViewModels
 {
-	class DishViewModel : BaseViewModel
+	class DishEditViewModel : BaseViewModel
 	{
 		Day SelectedDay;
 		Meal SelectedMeal;
@@ -36,7 +36,7 @@ namespace Whats4Dinner.ViewModels
 
 		/// <summary>
 		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
-		/// It is called by the code behind in AddDishPage View.
+		/// It is called by the code behind in DishEditPage View.
 		/// </summary>
 		private void SaveButtonExecute()
 		{
@@ -117,7 +117,7 @@ namespace Whats4Dinner.ViewModels
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
 		/// <param name="SelectedDish"></param>
-		public DishViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null)
+		public DishEditViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null)
 		{
 			// initialize properties
 			this.DisplayDays = DisplayDays;

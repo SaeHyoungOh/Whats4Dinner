@@ -40,7 +40,7 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private async void CreateItem_Clicked(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new DishPage(DisplayDays, SelectedDay, SelectedMeal));
+			await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal));
 		}
 
 		private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -55,6 +55,7 @@ namespace Whats4Dinner.Views
 				// close page
 				Navigation.PopAsync();
 			}
+			// selected dish is already in the meal
 			else
 			{
 				DisplayAlert(null, selectedDish.Name + " is already included in this meal.", "Ok");

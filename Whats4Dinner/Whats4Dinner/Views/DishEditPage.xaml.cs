@@ -13,14 +13,14 @@ using Xamarin.Forms.Xaml;
 namespace Whats4Dinner.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class DishPage : ContentPage
+	public partial class DishEditPage : ContentPage
 	{
 		ObservableCollection<Day> DisplayDays;
 		Day SelectedDay;
 		Meal SelectedMeal;
 		Dish SelectedDish;
 
-		public DishPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null)
+		public DishEditPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null)
 		{
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
@@ -32,12 +32,12 @@ namespace Whats4Dinner.Views
 			// new dish page
 			if (SelectedDish == null)
 			{
-				BindingContext = new DishViewModel(DisplayDays, SelectedDay, SelectedMeal);
+				BindingContext = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal);
 			}
 			// edit dish page
 			else
 			{
-				BindingContext = new DishViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish);
+				BindingContext = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish);
 			}
 		}
 
@@ -51,7 +51,7 @@ namespace Whats4Dinner.Views
 			}
 
 			// call the command
-			DishViewModel viewModel = (DishViewModel)BindingContext;
+			DishEditViewModel viewModel = (DishEditViewModel)BindingContext;
 			if (viewModel.SaveButtonClick.CanExecute())
 			{
 				viewModel.SaveButtonClick.Execute();

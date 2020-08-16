@@ -53,7 +53,7 @@ namespace Whats4Dinner.Views
 
 			if (action == "Edit")
 			{
-				await Navigation.PushModalAsync(new NavigationPage(new DishPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish)));
+				await Navigation.PushModalAsync(new NavigationPage(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish)));
 			}
 			else if (action == "Remove")
 			{
