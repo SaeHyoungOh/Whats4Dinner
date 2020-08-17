@@ -19,25 +19,28 @@ namespace Whats4Dinner.Views
 		Day SelectedDay;
 		Meal SelectedMeal;
 		Dish SelectedDish;
+		DishEditViewModel viewModel;
+		bool IsFromDB;
 
-		public DishEditPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null)
+		public DishEditPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
 		{
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 			this.SelectedDish = SelectedDish;
+			this.IsFromDB = IsFromDB;
 
 			InitializeComponent();
 
 			// new dish page
 			if (SelectedDish == null)
 			{
-				BindingContext = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal);
+				BindingContext = viewModel = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal);
 			}
 			// edit dish page
 			else
 			{
-				BindingContext = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish);
+				BindingContext = viewModel = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish, IsFromDB);
 			}
 		}
 
@@ -51,39 +54,19 @@ namespace Whats4Dinner.Views
 			}
 
 			// call the command
-			DishEditViewModel viewModel = (DishEditViewModel)BindingContext;
 			if (viewModel.SaveButtonClick.CanExecute())
 			{
 				viewModel.SaveButtonClick.Execute();
 
-				// adding a new dish to the database
-				if (viewModel.IsNew)
+				// if added a new dish to the database
+				if (SelectedDish == null)
 				{
-					if (await DisplayAlert(null, "Also add to your meal?", "Yes", "No"))
-					{
-						viewModel.AddToMealCommand.Execute();
-						// return to the meal page
-						Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-					}
+					await AddDishToMealPrompt();
 				}
-				// editing a dish
+				// if edited a dish
 				else
 				{
-					if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
-					{
-						if (viewModel.EditDBCommand.CanExecute())
-						{
-							viewModel.EditDBCommand.Execute();
-						}
-						// if the dish no longer exists in the database
-						else
-						{
-							if (await DisplayAlert(null, "The dish does not exist in the database. Add to the database?", "Yes", "No"))
-							{
-								viewModel.SaveButtonClick.Execute();
-							}
-						}
-					}
+					await EditDishPrompt();
 				}
 			}
 			// input validation - duplicate name
@@ -95,6 +78,49 @@ namespace Whats4Dinner.Views
 
 			// close the page
 			await Navigation.PopAsync();
+		}
+
+		private async Task AddDishToMealPrompt()
+		{
+			if (await DisplayAlert(null, "Also add to your meal?", "Yes", "No"))
+			{
+				viewModel.AddToMealCommand.Execute();
+				// return to the meal page
+				Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+			}
+		}
+
+		private async Task EditDishPrompt()
+		{
+			if (IsFromDB)
+			{
+				if (await DisplayAlert(null, "Also make changes to all the planned meals?", "Yes", "No"))
+				{
+					if (viewModel.AdditionalEditDishCommand.CanExecute())
+					{
+						viewModel.AdditionalEditDishCommand.Execute();
+					}
+				}
+			}
+			else
+			{
+				if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
+				{
+					if (viewModel.AdditionalEditDishCommand.CanExecute())
+					{
+						viewModel.AdditionalEditDishCommand.Execute();
+					}
+					// if the dish no longer exists in the database
+					else
+					{
+						if (await DisplayAlert(null, "The dish does not exist in the database. Add to the database?", "Yes", "No"))
+						{
+							viewModel.SaveButtonClick.Execute();
+						}
+					}
+				}
+
+			}
 		}
 	}
 }

@@ -33,6 +33,11 @@ namespace Whats4Dinner.Views
 			BindingContext = viewModel = new DishDBViewModel(DisplayDays, SelectedDay, SelectedMeal);
 		}
 
+		private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			((DishDBViewModel)BindingContext).SearchCommand.Execute();
+		}
+
 		/// <summary>
 		/// When "Create New" button is clicked, navigate to new dish page
 		/// </summary>
@@ -43,10 +48,31 @@ namespace Whats4Dinner.Views
 			await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal));
 		}
 
-		private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+		private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
 
+			// ask for action
+			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Add to meal", "Edit", "Delete");
+
+			if (action == "Add to meal")
+			{
+				AddToMealTapped(selectedDish, sender);
+			}
+			else if (action == "Edit")
+			{
+				await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish, true));
+			}
+			else if (action == "Delete")
+			{
+				DeleteDishTapped(selectedDish);
+			}
+
+			((ListView)sender).SelectedItem = null; // deselect
+		}
+
+		private void AddToMealTapped(Dish selectedDish, object sender)
+		{
 			// call the command to add dish to meal
 			if (viewModel.AddDishCommand.CanExecute(selectedDish))
 			{
@@ -59,20 +85,12 @@ namespace Whats4Dinner.Views
 			else
 			{
 				DisplayAlert(null, selectedDish.Name + " is already included in this meal.", "Ok");
-				((ListView)sender).SelectedItem = null;	// deselect
+				((ListView)sender).SelectedItem = null; // deselect
 			}
 		}
 
-		private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+		private async void DeleteDishTapped(Dish selectedDish)
 		{
-			((DishDBViewModel)BindingContext).SearchCommand.Execute();
-		}
-
-		private async void DeleteItem_Clicked(object sender, EventArgs e)
-		{
-			Button thisButton = (Button)sender;
-			Dish selectedDish = (Dish)thisButton.BindingContext;
-
 			if (await DisplayAlert(null, "Delete " + selectedDish.Name + " from the database?", "Delete", "Cancel"))
 			{
 				// call the command to delete dish from the meal

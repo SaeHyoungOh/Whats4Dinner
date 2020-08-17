@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Whats4Dinner.Models;
+using Whats4Dinner.Models.DataStructure;
 
 namespace UnitTestProject1
 {

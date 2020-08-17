@@ -20,7 +20,7 @@ namespace Whats4Dinner.ViewModels
 
 		public DelegateCommand SaveButtonClick;
 		public DelegateCommand AddToMealCommand;
-		public DelegateCommand EditDBCommand;
+		public DelegateCommand AdditionalEditDishCommand;
 		public string EntryName { get; set; }
 		public bool GrainCheckBox { get; set; }
 		public bool VeggieCheckBox { get; set; }
@@ -32,7 +32,7 @@ namespace Whats4Dinner.ViewModels
 
 		private string NameBeforeEdit { get; set; }
 
-		public bool IsNew { get; set; }
+		private bool IsFromDB;
 
 		/// <summary>
 		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
@@ -57,9 +57,26 @@ namespace Whats4Dinner.ViewModels
 			// or edit the dish
 			else
 			{
-				NameBeforeEdit = string.Copy(SelectedDish.Name);
-				SelectedMeal.EditDish(SelectedDish, EntryName, InputDishCategories);
-				UserDataIO.WriteUserDataToJSON(DisplayDays);
+				NameBeforeEdit = string.Copy(SelectedDish.Name);	// save the dish name before change
+
+				if (IsFromDB)
+				{
+					foreach (Dish dish in DishDB)
+					{
+						if (dish.Name == SelectedDish.Name)
+						{
+							dish.Name = EntryName;
+							dish.DishCategories = InputDishCategories;
+							DishDBIO.WriteDishesToJSON(DishDB);
+							break;
+						}
+					}
+				}
+				else
+				{
+					SelectedMeal.EditDish(SelectedDish, EntryName, InputDishCategories);
+					UserDataIO.WriteUserDataToJSON(DisplayDays);
+				}
 			}
 		}
 
@@ -87,27 +104,60 @@ namespace Whats4Dinner.ViewModels
 			UserDataIO.WriteUserDataToJSON(DisplayDays);
 		}
 
-		private void EditDBExecute()
+		private void AdditionalEditDishExecute()
 		{
-			foreach (Dish dish in DishDB)
+			// change all cases of the dish in the user data, today or later
+			if (IsFromDB)
 			{
-				if (dish.Name == NameBeforeEdit)
+				foreach (Day day in DisplayDays)
 				{
-					dish.Name = EntryName;
-					dish.DishCategories = InputDishCategories;
-					break;
+					if (day.ThisDate >= DateTime.Today)
+					{
+						foreach (Meal meal in day.Meals)
+						{
+							foreach (Dish dish in meal.Dishes)
+							{
+								if (dish.Name == NameBeforeEdit)
+								{
+									dish.Name = EntryName;
+									dish.DishCategories = InputDishCategories;
+								}
+							}
+						}
+					}
 				}
+				UserDataIO.WriteUserDataToJSON(DisplayDays);
 			}
-			DishDBIO.WriteDishesToJSON(DishDB);
+			// change the dish in the database
+			else
+			{
+				foreach (Dish dish in DishDB)
+				{
+					if (dish.Name == NameBeforeEdit)
+					{
+						dish.Name = EntryName;
+						dish.DishCategories = InputDishCategories;
+						break;
+					}
+				}
+				DishDBIO.WriteDishesToJSON(DishDB);
+			}
 		}
 
-		private bool EditDBCanExecute()
+		private bool AdditionalEditDishCanExecute()
 		{
-			if (DishDB.Select(dish => dish.Name).Contains(NameBeforeEdit))
+			if (IsFromDB)
 			{
 				return true;
 			}
-			return false;
+			else
+			{
+				if (DishDB.Select(dish => dish.Name).Contains(NameBeforeEdit))
+				{
+					return true;
+				}
+				return false;
+			}
 		}
 
 		/// <summary>
@@ -117,13 +167,14 @@ namespace Whats4Dinner.ViewModels
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
 		/// <param name="SelectedDish"></param>
-		public DishEditViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null)
+		public DishEditViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
 		{
 			// initialize properties
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 			this.SelectedDish = SelectedDish;
+			this.IsFromDB = IsFromDB;
 			UserDataIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
 			DishDB = DishDBIO.ReadDishesFromJSON();
@@ -134,7 +185,6 @@ namespace Whats4Dinner.ViewModels
 				Title = "Add a Dish";
 				EntryName = "";
 				GrainCheckBox = VeggieCheckBox = ProteinCheckBox = CondimentCheckBox = DrinkCheckBox = false;
-				IsNew = true;
 			}
 			// edit dish
 			else
@@ -146,13 +196,12 @@ namespace Whats4Dinner.ViewModels
 				ProteinCheckBox = SelectedDish.HasProtein;
 				CondimentCheckBox = SelectedDish.HasCondiment;
 				DrinkCheckBox = SelectedDish.HasDrink;
-				IsNew = false;
 			}
 
 			// initialize commands
 			SaveButtonClick = new DelegateCommand(SaveButtonExecute, SaveButtonCanExecute);
 			AddToMealCommand = new DelegateCommand(AddToMealExecute);
-			EditDBCommand = new DelegateCommand(EditDBExecute, EditDBCanExecute);
+			AdditionalEditDishCommand = new DelegateCommand(AdditionalEditDishExecute, AdditionalEditDishCanExecute);
 		}
 	}
 }
