@@ -1,15 +1,36 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="Whats4Dinner.Views.DishDBPage"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 x:Class="Whats4Dinner.Views.DishDBPage"
 			 Title="{Binding Title}">
 
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Text="Create New" Clicked="CreateItem_Clicked" />
 	</ContentPage.ToolbarItems>
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="baseLabelStyle" TargetType="Label">
+				<Setter Property="FontFamily" Value="Arial"/>
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
+			</Style>
+			<Style x:Key="ListItemTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="20"/>
+				<Setter Property="TextColor" Value="Black"/>
+			</Style>
+			<Style x:Key="ListItemDetailTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="14"/>
+				<Setter Property="TextColor" Value="#646464"/>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
 
 	<StackLayout>
 		<SearchBar x:Name="searchBar"
@@ -20,22 +41,37 @@
 			<ListView ItemsSource="{Binding SearchResult}"
 					  ItemTapped="ListView_ItemTapped"
 					  CachingStrategy="RecycleElement">
-				<ListView.Header>
-					<Label Text="&#x24D8; Pull to refresh" HorizontalOptions="Center"/>
-				</ListView.Header>
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
-							<StackLayout>
+							<StackLayout Margin="10, 5, 5, 5">
 								<Grid>
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="9*"/>
+										<ColumnDefinition Width="4*"/>
+										<ColumnDefinition Width="1*"/>
+										<ColumnDefinition Width="1*"/>
+										<ColumnDefinition Width="1*"/>
+										<ColumnDefinition Width="1*"/>
 										<ColumnDefinition Width="1*"/>
 									</Grid.ColumnDefinitions>
 									<Label Text="{Binding Name}"
-										   Grid.Column="0"
-										   FontSize="20"
-										   Padding="10, 5, 5, 5"/>
+											   Grid.Column="0"
+											   Style="{DynamicResource ListItemDetailTextStyle}"/>
+									<Label Text="{Binding DishCategory0}"
+											   Grid.Column="1"
+											   IsEnabled="{Binding HasDishCategory0}"/>
+									<Label Text="{Binding DishCategory1}"
+											   Grid.Column="2"
+											   IsEnabled="{Binding HasDishCategory1}"/>
+									<Label Text="{Binding DishCategory2}"
+											   Grid.Column="3"
+											   IsEnabled="{Binding HasDishCategory2}"/>
+									<Label Text="{Binding DishCategory3}"
+											   Grid.Column="4"
+											   IsEnabled="{Binding HasDishCategory3}"/>
+									<Label Text="{Binding DishCategory4}"
+											   Grid.Column="5"
+											   IsEnabled="{Binding HasDishCategory4}"/>
 								</Grid>
 							</StackLayout>
 						</ViewCell>

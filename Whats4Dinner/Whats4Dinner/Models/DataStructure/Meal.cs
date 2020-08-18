@@ -93,14 +93,14 @@ namespace Whats4Dinner.Models.DataStructure
 					mealString += dish.Name;
 
 					// also add the dish categories
-					if (dish.DishCategories.Count > 0)
+					if (dish.ThisDishCategories.Count > 0)
 					{
 						mealString += " (";
 
-						foreach (DishCategory dishCategory in dish.DishCategories)
+						foreach (string dishCategory in dish.ThisDishCategories)
 						{
-							mealString += dishCategory.ToString();
-							if (dishCategory != dish.DishCategories.Last())
+							mealString += dishCategory;
+							if (dishCategory != dish.ThisDishCategories.Last())
 							{
 								mealString += ", ";
 							}
@@ -152,7 +152,7 @@ namespace Whats4Dinner.Models.DataStructure
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="cat"></param>
-		public void AddDish(string name, List<DishCategory> cat)
+		public void AddDish(string name, List<string> cat)
 		{
 			Dishes.Add(new Dish(name, cat));
 		}
@@ -166,10 +166,10 @@ namespace Whats4Dinner.Models.DataStructure
 			Dishes.Add(dish);
 		}
 
-		public void EditDish(Dish dish, string name, List<DishCategory> cat)
+		public void EditDish(Dish dish, string name, List<string> cat)
 		{
 			dish.Name = name;
-			dish.DishCategories = cat;
+			dish.ThisDishCategories = cat;
 		}
 
 		/// <summary>

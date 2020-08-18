@@ -22,13 +22,62 @@ namespace Whats4Dinner.ViewModels
 		public DelegateCommand AddToMealCommand;
 		public DelegateCommand AdditionalEditDishCommand;
 		public string EntryName { get; set; }
-		public bool GrainCheckBox { get; set; }
-		public bool VeggieCheckBox { get; set; }
-		public bool ProteinCheckBox { get; set; }
-		public bool CondimentCheckBox { get; set; }
-		public bool DrinkCheckBox { get; set; }
 
-		private List<DishCategory> InputDishCategories { get; set; }
+		// DishCategory for View
+		public string DishCategory0
+		{
+			get
+			{
+				SetProperty(ref dishCategory0, DishCategories[0]);
+				return dishCategory0;
+			}
+		}
+		public string DishCategory1
+		{
+			get
+			{
+				SetProperty(ref dishCategory1, DishCategories[1]);
+				return dishCategory1;
+			}
+		}
+		public string DishCategory2
+		{
+			get
+			{
+				SetProperty(ref dishCategory2, DishCategories[2]);
+				return dishCategory2;
+			}
+		}
+		public string DishCategory3
+		{
+			get
+			{
+				SetProperty(ref dishCategory3, DishCategories[3]);
+				return dishCategory3;
+			}
+		}
+		public string DishCategory4
+		{
+			get
+			{
+				SetProperty(ref dishCategory4, DishCategories[4]);
+				return dishCategory4;
+			}
+		}
+		// fields for the properties above
+		private string dishCategory0;
+		private string dishCategory1;
+		private string dishCategory2;
+		private string dishCategory3;
+		private string dishCategory4;
+
+		public bool DishCategoryCheckBox0 { get; set; }
+		public bool DishCategoryCheckBox1 { get; set; }
+		public bool DishCategoryCheckBox2 { get; set; }
+		public bool DishCategoryCheckBox3 { get; set; }
+		public bool DishCategoryCheckBox4 { get; set; }
+
+		private List<string> InputDishCategories { get; set; }
 
 		private string NameBeforeEdit { get; set; }
 
@@ -41,12 +90,12 @@ namespace Whats4Dinner.ViewModels
 		private void SaveButtonExecute()
 		{
 			// build the dish category list
-			InputDishCategories = new List<DishCategory>();
-			if (GrainCheckBox) InputDishCategories.Add(Dish.DishCategory.Grain);
-			if (VeggieCheckBox) InputDishCategories.Add(Dish.DishCategory.Veggie);
-			if (ProteinCheckBox) InputDishCategories.Add(Dish.DishCategory.Protein);
-			if (CondimentCheckBox) InputDishCategories.Add(Dish.DishCategory.Condiment);
-			if (DrinkCheckBox) InputDishCategories.Add(Dish.DishCategory.Drink);
+			InputDishCategories = new List<string>();
+			if (DishCategoryCheckBox0) InputDishCategories.Add(DishCategories[0]);
+			if (DishCategoryCheckBox1) InputDishCategories.Add(DishCategories[1]);
+			if (DishCategoryCheckBox2) InputDishCategories.Add(DishCategories[2]);
+			if (DishCategoryCheckBox3) InputDishCategories.Add(DishCategories[3]);
+			if (DishCategoryCheckBox4) InputDishCategories.Add(DishCategories[4]);
 
 			// add dish to the database
 			if (SelectedDish == null)
@@ -67,7 +116,7 @@ namespace Whats4Dinner.ViewModels
 						if (dish.Name == SelectedDish.Name)
 						{
 							dish.Name = EntryName;
-							dish.DishCategories = InputDishCategories;
+							dish.ThisDishCategories = InputDishCategories;
 							DishDBIO.WriteDishesToJSON(DishDB);
 							MessagingCenter.Send(this, "DB updated");	// refresh the search result
 							break;
@@ -122,7 +171,7 @@ namespace Whats4Dinner.ViewModels
 								if (dish.Name == NameBeforeEdit)
 								{
 									dish.Name = EntryName;
-									dish.DishCategories = InputDishCategories;
+									dish.ThisDishCategories = InputDishCategories;
 								}
 							}
 						}
@@ -138,7 +187,7 @@ namespace Whats4Dinner.ViewModels
 					if (dish.Name == NameBeforeEdit)
 					{
 						dish.Name = EntryName;
-						dish.DishCategories = InputDishCategories;
+						dish.ThisDishCategories = InputDishCategories;
 						break;
 					}
 				}
@@ -187,18 +236,18 @@ namespace Whats4Dinner.ViewModels
 			{
 				Title = "Add a Dish";
 				EntryName = "";
-				GrainCheckBox = VeggieCheckBox = ProteinCheckBox = CondimentCheckBox = DrinkCheckBox = false;
+				DishCategoryCheckBox0 = DishCategoryCheckBox1 = DishCategoryCheckBox2 = DishCategoryCheckBox3 = DishCategoryCheckBox4 = false;
 			}
 			// edit dish
 			else
 			{
 				Title = "Edit Dish";
 				EntryName = SelectedDish.Name;
-				GrainCheckBox = SelectedDish.HasGrain;
-				VeggieCheckBox = SelectedDish.HasVeggie;
-				ProteinCheckBox = SelectedDish.HasProtein;
-				CondimentCheckBox = SelectedDish.HasCondiment;
-				DrinkCheckBox = SelectedDish.HasDrink;
+				DishCategoryCheckBox0 = SelectedDish.HasDishCategory0;
+				DishCategoryCheckBox1 = SelectedDish.HasDishCategory1;
+				DishCategoryCheckBox2 = SelectedDish.HasDishCategory2;
+				DishCategoryCheckBox3 = SelectedDish.HasDishCategory3;
+				DishCategoryCheckBox4 = SelectedDish.HasDishCategory4;
 			}
 
 			// initialize commands

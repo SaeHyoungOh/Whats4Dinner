@@ -36,46 +36,46 @@ namespace Whats4Dinner.Models
 		/// <summary>
 		/// Create a sample json file for testing
 		/// </summary>
-		public void CreateSampleUserData()
-		{
-			// create the days object to save to JSON
-			ObservableCollection<Day> sampleDays = new ObservableCollection<Day>
-			{
-				new Day(DateTime.Today.AddDays(1)),
-				new Day(DateTime.Today.AddDays(3)),
-				new Day(DateTime.Today.AddDays(5)),
-				new Day(DateTime.Today.AddDays(6))
-			};
+		//public void CreateSampleUserData()
+		//{
+		//	// create the days object to save to JSON
+		//	ObservableCollection<Day> sampleDays = new ObservableCollection<Day>
+		//	{
+		//		new Day(DateTime.Today.AddDays(1)),
+		//		new Day(DateTime.Today.AddDays(3)),
+		//		new Day(DateTime.Today.AddDays(5)),
+		//		new Day(DateTime.Today.AddDays(6))
+		//	};
 
-			// fill the sample days
-			sampleDays[0].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", new List<DishCategory> { DishCategory.Grain});
-			sampleDays[1].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", new List<DishCategory> { DishCategory.Protein });
-			sampleDays[2].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", new List<DishCategory> { DishCategory.Veggie });
-			sampleDays[3].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", new List<DishCategory> { DishCategory.Grain });
-			sampleDays[3].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", new List<DishCategory> { DishCategory.Protein });
-			sampleDays[3].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", new List<DishCategory> { DishCategory.Veggie });
+		//	// fill the sample days
+		//	sampleDays[0].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", new List<string> { DishCategory.Grain});
+		//	sampleDays[1].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", new List<string> { DishCategory.Protein });
+		//	sampleDays[2].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", new List<string> { DishCategory.Veggie });
+		//	sampleDays[3].Meals[(int)Meal.MealType.Breakfast].AddDish("Blueberry Pancakes", new List<string> { DishCategory.Grain });
+		//	sampleDays[3].Meals[(int)Meal.MealType.Lunch].AddDish("Ribeye Steak", new List<string> { DishCategory.Protein });
+		//	sampleDays[3].Meals[(int)Meal.MealType.Dinner].AddDish("Green Salad", new List<string> { DishCategory.Veggie });
 
-			WriteUserDataToJSON(sampleDays);
-		}
+		//	WriteUserDataToJSON(sampleDays);
+		//}
 
-		public void CreateSampleDishes()
-		{
-			// list of sample dishes
-			ObservableCollection<Dish> sampleDishes = new ObservableCollection<Dish>
-			{
-				new Dish("dish 1", new List<DishCategory> { DishCategory.Protein, DishCategory.Veggie }),
-				new Dish("dish 2"),
-				new Dish("dish 3"),
-				new Dish("dish 4"),
-				new Dish("dish 5"),
-				new Dish("dish 6"),
-				new Dish("dish 7"),
-				new Dish("dish 8"),
-				new Dish("dish 9")
-			};
+		//public void CreateSampleDishes()
+		//{
+		//	// list of sample dishes
+		//	ObservableCollection<Dish> sampleDishes = new ObservableCollection<Dish>
+		//	{
+		//		new Dish("dish 1", new List<string> { DishCategory.Protein, DishCategory.Veggie }),
+		//		new Dish("dish 2"),
+		//		new Dish("dish 3"),
+		//		new Dish("dish 4"),
+		//		new Dish("dish 5"),
+		//		new Dish("dish 6"),
+		//		new Dish("dish 7"),
+		//		new Dish("dish 8"),
+		//		new Dish("dish 9")
+		//	};
 
-			WriteDishesToJSON(sampleDishes);
-		}
+		//	WriteDishesToJSON(sampleDishes);
+		//}
 
 		/// <summary>
 		/// Sort, convert DishGroup to DishGroupForJSON, and then write user's data to JSON file
@@ -115,6 +115,13 @@ namespace Whats4Dinner.Models
 			File.WriteAllText(FilePath, jsonString);
 		}
 
+		public void WriteDishCategoriesToJSON(List<string> DishCategories)
+		{
+			// save to file
+			string jsonString = JsonSerializer.Serialize(DishCategories, serializeOptions);
+			File.WriteAllText(FilePath, jsonString);
+		}
+
 		/// <summary>
 		/// Read user's data from JSON file, covnert DishGroupForJSON to DishGroup, and return it
 		/// </summary>
@@ -151,6 +158,31 @@ namespace Whats4Dinner.Models
 			else
 			{
 				result = new ObservableCollection<Dish>();
+			}
+
+			return result;
+		}
+
+		public List<string> ReadDishCategoriesFromJSON()
+		{
+			List<string> result;
+
+			if (File.Exists(FilePath))
+			{
+				string jsonString = File.ReadAllText(FilePath);
+				result = JsonSerializer.Deserialize<List<string>>(jsonString, serializeOptions);
+			}
+			// return a pre-made list if file does not exist
+			else
+			{
+				result = new List<string>
+				{
+					"Grain",
+					"Veggi",
+					"Prote",
+					"Condi",
+					"Drink"
+				};
 			}
 
 			return result;

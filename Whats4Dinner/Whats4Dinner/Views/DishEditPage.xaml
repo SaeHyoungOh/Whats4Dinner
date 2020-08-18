@@ -57,30 +57,25 @@
 						<ColumnDefinition Width="1*"/>
 						<ColumnDefinition Width="8*"/>
 					</Grid.ColumnDefinitions>
-					<CheckBox x:Name="GrainCheckBox"
-							  IsChecked="{Binding GrainCheckBox}"
+					<CheckBox IsChecked="{Binding DishCategoryCheckBox0}"
 							  Grid.Row="0" Grid.Column="0"/>
-					<Label Text="Grain"
+					<Label Text="{Binding DishCategory0}"
 						   Grid.Row="0" Grid.Column="1"/>
-					<CheckBox x:Name="VeggieCheckBox"
-							  IsChecked="{Binding VeggieCheckBox}"
+					<CheckBox IsChecked="{Binding DishCategoryCheckBox1}"
 							  Grid.Row="1" Grid.Column="0"/>
-					<Label Text="Veggie"
+					<Label Text="{Binding DishCategory1}"
 						   Grid.Row="1" Grid.Column="1"/>
-					<CheckBox x:Name="ProteinCheckBox"
-							  IsChecked="{Binding ProteinCheckBox}"
+					<CheckBox IsChecked="{Binding DishCategoryCheckBox2}"
 							  Grid.Row="2" Grid.Column="0"/>
-					<Label Text="Protein"
+					<Label Text="{Binding DishCategory2}"
 						   Grid.Row="2" Grid.Column="1"/>
-					<CheckBox x:Name="CondimentCheckBox"
-							  IsChecked="{Binding CondimentCheckBox}"
+					<CheckBox IsChecked="{Binding DishCategoryCheckBox3}"
 							  Grid.Row="3" Grid.Column="0"/>
-					<Label Text="Condiment"
+					<Label Text="{Binding DishCategory3}"
 						   Grid.Row="3" Grid.Column="1"/>
-					<CheckBox x:Name="DrinkCheckBox"
-							  IsChecked="{Binding DrinkCheckBox}"
+					<CheckBox IsChecked="{Binding DishCategoryCheckBox4}"
 							  Grid.Row="4" Grid.Column="0"/>
-					<Label Text="Drink"
+					<Label Text="{Binding DishCategory4}"
 						   Grid.Row="4" Grid.Column="1"/>
 				</Grid>
 			</StackLayout>

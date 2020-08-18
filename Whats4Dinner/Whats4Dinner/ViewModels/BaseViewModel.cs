@@ -18,22 +18,27 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// The file name for storing the user data
 		/// </summary>
-		protected readonly string userFileName = "UserData.json";
+		protected static readonly string userFileName = "UserData.json";
 
 		/// <summary>
 		/// The file name for storing the dish database
 		/// </summary>
-		protected readonly string dishFileName = "DishDB.json";
+		protected static readonly string dishFileName = "DishDB.json";
+
+		/// <summary>
+		/// DelegateCommand (from Prism) to use in View when refreshing
+		/// </summary>
+		public DelegateCommand LoadItemsCommand { get; set; }
 
 		/// <summary>
 		/// FileIO object to handle user data I/O
 		/// </summary>
-		protected FileIO UserDataIO;
+		protected FileIO UserDataIO { get; set; }
 
 		/// <summary>
 		/// FileIO object to handle dish database I/O
 		/// </summary>
-		protected FileIO DishDBIO;
+		protected FileIO DishDBIO { get; set; }
 			
 		/// <summary>
 							/// The title of the page
@@ -82,11 +87,6 @@ namespace Whats4Dinner.ViewModels
 		private bool isBusy = false;
 		private ObservableCollection<Day> displayDays;
 		private ObservableCollection<Dish> dishDB;
-
-		/// <summary>
-		/// DelegateCommand (from Prism) to use in View when refreshing
-		/// </summary>
-		public DelegateCommand LoadItemsCommand { get; set; }
 
 		/// <summary>
 		/// Fill the DisplayDays from user data read from file

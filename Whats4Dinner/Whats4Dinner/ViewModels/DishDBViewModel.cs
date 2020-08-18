@@ -82,7 +82,7 @@ namespace Whats4Dinner.ViewModels
 		/// <param name="SelectedDish"></param>
 		private void AddDishExecute(Dish SelectedDish)
 		{
-			SelectedMeal.AddDish(SelectedDish.Name, SelectedDish.DishCategories);
+			SelectedMeal.AddDish(SelectedDish.Name, SelectedDish.ThisDishCategories);
 			UserDataIO.WriteUserDataToJSON(DisplayDays);
 		}
 
