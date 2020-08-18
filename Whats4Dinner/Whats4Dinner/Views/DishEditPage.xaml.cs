@@ -22,7 +22,7 @@ namespace Whats4Dinner.Views
 		DishEditViewModel viewModel;
 		bool IsFromDB;
 
-		public DishEditPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
+		public DishEditPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false, ObservableCollection<Dish> DishDB = null)
 		{
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
@@ -31,17 +31,7 @@ namespace Whats4Dinner.Views
 			this.IsFromDB = IsFromDB;
 
 			InitializeComponent();
-
-			// new dish page
-			if (SelectedDish == null)
-			{
-				BindingContext = viewModel = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal);
-			}
-			// edit dish page
-			else
-			{
-				BindingContext = viewModel = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish, IsFromDB);
-			}
+			BindingContext = viewModel = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish, IsFromDB, DishDB);
 		}
 
 		private async void Save_Clicked(object sender, EventArgs e)

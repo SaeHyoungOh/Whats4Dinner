@@ -9,7 +9,7 @@
 			 Title="{Binding Title}">
 	
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="View Dishes" Clicked="AddItem_Clicked" />
+		<ToolbarItem Text="Dish DB" Clicked="AddItem_Clicked" />
 	</ContentPage.ToolbarItems>
 
 	<ContentPage.Resources>
@@ -33,19 +33,19 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
-	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
-		<StackLayout>
-			<Grid>
-				<Grid Grid.Row="0" IsVisible="{Binding NoDishes}">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="2*"/>
-						<RowDefinition Height="3*"/>
-					</Grid.RowDefinitions>
-					<Label Text="(No Dishes to Display)"
-						   Grid.Row="1"
-						   HorizontalOptions="Center"
-						   FontSize="20"/>
-				</Grid>
+	<StackLayout>
+		<Grid>
+			<Grid Grid.Row="0" IsVisible="{Binding NoDishes}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="2*"/>
+					<RowDefinition Height="3*"/>
+				</Grid.RowDefinitions>
+				<Label Text="(No Dishes to Display)"
+						Grid.Row="1"
+						HorizontalOptions="Center"
+						FontSize="20"/>
+			</Grid>
+			<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 				<ListView x:Name="DishCategories"
 						  Grid.Row="0"
 						  HasUnevenRows="True"
@@ -98,7 +98,7 @@
 						</DataTemplate>
 					</ListView.ItemTemplate>
 				</ListView>
-			</Grid>
-		</StackLayout>
-	</RefreshView>
+			</RefreshView>
+		</Grid>
+	</StackLayout>
 </ContentPage>

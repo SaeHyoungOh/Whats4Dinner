@@ -53,6 +53,7 @@ namespace Whats4Dinner.ViewModels
 			{
 				DishDB.Add(new Dish(EntryName, InputDishCategories));
 				DishDBIO.WriteDishesToJSON(DishDB);
+				MessagingCenter.Send(this, "DB updated");	// refresh the search result
 			}
 			// or edit the dish
 			else
@@ -68,6 +69,7 @@ namespace Whats4Dinner.ViewModels
 							dish.Name = EntryName;
 							dish.DishCategories = InputDishCategories;
 							DishDBIO.WriteDishesToJSON(DishDB);
+							MessagingCenter.Send(this, "DB updated");	// refresh the search result
 							break;
 						}
 					}
@@ -141,6 +143,7 @@ namespace Whats4Dinner.ViewModels
 					}
 				}
 				DishDBIO.WriteDishesToJSON(DishDB);
+				MessagingCenter.Send(this, "DB updated");   // refresh the search result
 			}
 		}
 
@@ -167,7 +170,7 @@ namespace Whats4Dinner.ViewModels
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
 		/// <param name="SelectedDish"></param>
-		public DishEditViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
+		public DishEditViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false, ObservableCollection<Dish> DishDB = null)
 		{
 			// initialize properties
 			this.DisplayDays = DisplayDays;
@@ -177,7 +180,7 @@ namespace Whats4Dinner.ViewModels
 			this.IsFromDB = IsFromDB;
 			UserDataIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
-			DishDB = DishDBIO.ReadDishesFromJSON();
+			this.DishDB = DishDB;
 
 			// new dish
 			if (SelectedDish == null)

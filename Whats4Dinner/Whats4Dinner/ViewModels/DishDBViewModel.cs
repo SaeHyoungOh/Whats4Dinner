@@ -203,6 +203,11 @@ namespace Whats4Dinner.ViewModels
 			DeleteDishCommand = new DelegateCommand<Dish>(DeleteDishExecute, DeleteDishCanExecute);
 			SearchCommand = new DelegateCommand(SearchExecute);
 			LoadDishesCommand = new DelegateCommand(ExecuteLoadDishesCommand);
+
+			MessagingCenter.Subscribe<DishEditViewModel>(this, "DB updated", (sender) =>
+			{
+				SearchExecute();
+			});
 		}
 	}
 }

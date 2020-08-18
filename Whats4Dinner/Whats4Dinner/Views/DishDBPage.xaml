@@ -11,15 +11,18 @@
 		<ToolbarItem Text="Create New" Clicked="CreateItem_Clicked" />
 	</ContentPage.ToolbarItems>
 
-	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadDishesCommand}">
-		<StackLayout>
-			<SearchBar x:Name="searchBar"
-					   Placeholder="Search..."
-					   Text="{Binding Query}"
-					   TextChanged="SearchBar_TextChanged"/>
+	<StackLayout>
+		<SearchBar x:Name="searchBar"
+					Placeholder="Search..."
+					Text="{Binding Query}"
+					TextChanged="SearchBar_TextChanged"/>
+		<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadDishesCommand}">
 			<ListView ItemsSource="{Binding SearchResult}"
 					  ItemTapped="ListView_ItemTapped"
 					  CachingStrategy="RecycleElement">
+				<ListView.Header>
+					<Label Text="&#x24D8; Pull to refresh" HorizontalOptions="Center"/>
+				</ListView.Header>
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
@@ -39,6 +42,6 @@
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>
-		</StackLayout>
-	</RefreshView>
+		</RefreshView>
+	</StackLayout>
 </ContentPage>

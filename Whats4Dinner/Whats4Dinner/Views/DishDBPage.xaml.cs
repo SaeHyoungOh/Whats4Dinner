@@ -35,7 +35,7 @@ namespace Whats4Dinner.Views
 
 		private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			((DishDBViewModel)BindingContext).SearchCommand.Execute();
+			viewModel.SearchCommand.Execute();
 		}
 
 		/// <summary>
@@ -43,9 +43,9 @@ namespace Whats4Dinner.Views
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private async void CreateItem_Clicked(object sender, EventArgs e)
+		private void CreateItem_Clicked(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal));
+			Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, null, true, viewModel.DishDB));
 		}
 
 		private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -61,7 +61,7 @@ namespace Whats4Dinner.Views
 			}
 			else if (action == "Edit")
 			{
-				await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish, true));
+				await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish, true, viewModel.DishDB));
 			}
 			else if (action == "Delete")
 			{
