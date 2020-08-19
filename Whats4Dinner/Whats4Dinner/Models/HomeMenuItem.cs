@@ -6,8 +6,11 @@ namespace Whats4Dinner.Models
 	/// </summary>
 	public enum MenuItemType
 	{
-		Browse,
-		About
+		SevenDayView,
+		WeeklyView,
+		MonthlyView,
+		DishDB,
+		DishCategories
 	}
 
 	/// <summary>

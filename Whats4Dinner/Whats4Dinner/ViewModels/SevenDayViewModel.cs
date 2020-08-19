@@ -12,12 +12,12 @@ namespace Whats4Dinner.ViewModels
 	/// Viewmodel to display WeekPage, with a list of days
 	/// Derived from BaseViewModel
 	/// </summary>
-	public class WeekViewModel : BaseViewModel
+	public class SevenDayViewModel : BaseViewModel
 	{
 		/// <summary>
 		/// Constructor for WeekViewModel class
 		/// </summary>
-		public WeekViewModel()
+		public SevenDayViewModel()
 		{
 			// initialize properties
 			Title = "Week View";

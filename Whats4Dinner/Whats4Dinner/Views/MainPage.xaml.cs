@@ -10,33 +10,31 @@ using Whats4Dinner.ViewModels;
 
 namespace Whats4Dinner.Views
 {
-	// Learn more about making custom code visible in the Xamarin.Forms previewer
-	// by visiting https://aka.ms/xamarinforms-previewer
-	[DesignTimeVisible(false)]
+	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainPage : MasterDetailPage
 	{
-		Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+		Dictionary<MenuItemType, NavigationPage> MenuPages = new Dictionary<MenuItemType, NavigationPage>();
 		public MainPage()
 		{
 			InitializeComponent();
 
-			Detail = new NavigationPage(new WeekPage());
+			Detail = new NavigationPage(new SevenDayPage());
 
 			MasterBehavior = MasterBehavior.Popover;
 
-			MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+			MenuPages.Add(MenuItemType.SevenDayView, (NavigationPage)Detail);
 		}
 
-		public async Task NavigateFromMenu(int id)
+		public async Task NavigateFromMenu(MenuItemType id)
 		{
 			if (!MenuPages.ContainsKey(id))
 			{
 				switch (id)
 				{
-					case (int)MenuItemType.Browse:
-						MenuPages.Add(id, new NavigationPage(new WeekPage()));
+					case MenuItemType.SevenDayView:
+						MenuPages.Add(id, new NavigationPage(new SevenDayPage()));
 						break;
-					case (int)MenuItemType.About:
+					case MenuItemType.DishDB:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));
 						break;
 				}
@@ -51,8 +49,8 @@ namespace Whats4Dinner.Views
 				if (Device.RuntimePlatform == Device.Android)
 					await Task.Delay(100);
 
-				IsPresented = false;
 			}
+			IsPresented = false;
 		}
 	}
 }

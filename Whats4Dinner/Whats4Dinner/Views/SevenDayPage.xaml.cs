@@ -6,9 +6,9 @@ using Xamarin.Forms.Xaml;
 namespace Whats4Dinner.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class WeekPage : ContentPage
+	public partial class SevenDayPage : ContentPage
 	{
-		public WeekPage()
+		public SevenDayPage()
 		{
 			InitializeComponent();
 		}

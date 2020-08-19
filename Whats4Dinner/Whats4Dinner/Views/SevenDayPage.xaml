@@ -5,10 +5,10 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:Whats4Dinner.ViewModels"
 			 mc:Ignorable="d"
-			 x:Class="Whats4Dinner.Views.WeekPage"
+			 x:Class="Whats4Dinner.Views.SevenDayPage"
 			 Title="{Binding Title}">
 	<ContentPage.BindingContext>
-		<vm:WeekViewModel/>
+		<vm:SevenDayViewModel/>
 	</ContentPage.BindingContext>
 
 	<ContentPage.Resources>

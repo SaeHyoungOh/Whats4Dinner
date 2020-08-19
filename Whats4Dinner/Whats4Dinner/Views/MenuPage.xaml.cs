@@ -4,37 +4,34 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Whats4Dinner.ViewModels;
 
 namespace Whats4Dinner.Views
 {
-	// Learn more about making custom code visible in the Xamarin.Forms previewer
-	// by visiting https://aka.ms/xamarinforms-previewer
-	[DesignTimeVisible(false)]
+	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MenuPage : ContentPage
 	{
 		MainPage RootPage { get => Application.Current.MainPage as MainPage; }
-		List<HomeMenuItem> menuItems;
+		MenuViewModel viewModel;
+
 		public MenuPage()
 		{
 			InitializeComponent();
 
-			menuItems = new List<HomeMenuItem>
-			{
-				new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-				new HomeMenuItem {Id = MenuItemType.About, Title="About" }
-			};
+			BindingContext = viewModel = new MenuViewModel();
 
-			ListViewMenu.ItemsSource = menuItems;
+			ListViewMenu.SelectedItem = viewModel.MenuItems[(int)MenuItemType.SevenDayView];
+		}
 
-			ListViewMenu.SelectedItem = menuItems[0];
-			ListViewMenu.ItemSelected += async (sender, e) =>
-			{
-				if (e.SelectedItem == null)
-					return;
+		private async void ListViewMenu_ItemTapped(object sender, ItemTappedEventArgs e)
+		{
+			HomeMenuItem selectedItem = ((ListView)sender).SelectedItem as HomeMenuItem;
 
-				var id = (int)((HomeMenuItem)e.SelectedItem).Id;
-				await RootPage.NavigateFromMenu(id);
-			};
+			if (selectedItem == null)
+				return;
+
+			MenuItemType id = selectedItem.Id;
+			await RootPage.NavigateFromMenu(id);
 		}
 	}
 }

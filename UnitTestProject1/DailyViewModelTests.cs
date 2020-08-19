@@ -15,7 +15,7 @@ namespace UnitTestProject1
 			// Arrange
 
 			// Act
-			WeekViewModel testDailyViewModel = new WeekViewModel();
+			SevenDayViewModel testDailyViewModel = new SevenDayViewModel();
 
 			// Assert
 			Assert.AreEqual(7, testDailyViewModel.DisplayDays.Count);
@@ -28,7 +28,7 @@ namespace UnitTestProject1
 			string today = DateTime.Today.Date.ToString();
 
 			// Act
-			WeekViewModel testDailyViewModel = new WeekViewModel();
+			SevenDayViewModel testDailyViewModel = new SevenDayViewModel();
 
 			// Assert
 			Assert.AreEqual(today, testDailyViewModel.DisplayDays[0].DisplayDayOfWeek);
