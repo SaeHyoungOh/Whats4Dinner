@@ -8,8 +8,14 @@ namespace Whats4Dinner.Models.DataStructure
 	/// </summary>
 	public class Dish : BaseModel
 	{
+		/// <summary>
+		/// Static (shared) FileIO object for reading/writing Dish Categories
+		/// </summary>
 		private static FileIO DishCategoriesIO { get; set; }
 
+		/// <summary>
+		/// JSON file name for Dish Categories
+		/// </summary>
 		private static string DishCategoriesFileName = "DishCategories.json";
 
 		/// <summary>
@@ -41,7 +47,7 @@ namespace Whats4Dinner.Models.DataStructure
 			}
 		}
 
-		// DishCategory for View
+		// DishCategory for display in View
 		public string DishCategory0
 		{
 			get
@@ -83,7 +89,7 @@ namespace Whats4Dinner.Models.DataStructure
 			}
 		}
 
-		// whether DishCategories contains each of the DishCategory
+		// whether DishCategories contains each of the DishCategory, to display in View
 		public bool HasDishCategory0
 		{
 			get
@@ -164,6 +170,10 @@ namespace Whats4Dinner.Models.DataStructure
 		private bool hasDishCategory3;
 		private bool hasDishCategory4;
 
+		/// <summary>
+		/// Static constructor for the shared property DishCategoriesIO
+		/// Also initialize static DishCategories collection
+		/// </summary>
 		static Dish()
 		{
 			DishCategoriesIO = new FileIO(DishCategoriesFileName);

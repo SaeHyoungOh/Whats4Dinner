@@ -79,7 +79,7 @@ namespace Whats4Dinner.Models.DataStructure
 		}
 
 		/// <summary>
-		/// List of dishes for display in view
+		/// List of dishes for display in View
 		/// </summary>
 		public string DisplayPreviewDishes
 		{
@@ -166,6 +166,12 @@ namespace Whats4Dinner.Models.DataStructure
 			Dishes.Add(dish);
 		}
 
+		/// <summary>
+		/// Edit an existing Dish
+		/// </summary>
+		/// <param name="dish"></param>
+		/// <param name="name"></param>
+		/// <param name="cat"></param>
 		public void EditDish(Dish dish, string name, List<string> cat)
 		{
 			dish.Name = name;
@@ -176,7 +182,7 @@ namespace Whats4Dinner.Models.DataStructure
 		/// Delete a Dish from the list of Dishes
 		/// </summary>
 		/// <param name="selected"></param>
-		public void DeleteDish(Dish selected)
+		public void RemoveDish(Dish selected)
 		{
 			Dishes.Remove(selected);
 		}

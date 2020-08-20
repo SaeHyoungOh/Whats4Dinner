@@ -12,18 +12,32 @@ using static Whats4Dinner.Models.DataStructure.Dish;
 
 namespace Whats4Dinner.ViewModels
 {
+	/// <summary>
+	/// ViewModel class for DishEditPage
+	/// </summary>
 	class DishEditViewModel : BaseViewModel
 	{
 		Day SelectedDay;
 		Meal SelectedMeal;
 		Dish SelectedDish;
 
+		/// <summary>
+		/// Command to execute when "Save" button is clicked
+		/// </summary>
 		public DelegateCommand SaveButtonClick;
+
+		/// <summary>
+		/// Command to add the dish to the meal
+		/// </summary>
 		public DelegateCommand AddToMealCommand;
+
+		/// <summary>
+		/// Command to perform additional edits: in the DishDB or in the meals, depending on the user's action
+		/// </summary>
 		public DelegateCommand AdditionalEditDishCommand;
 		public string EntryName { get; set; }
 
-		// DishCategory for View
+		// DishCategory to display in View
 		public string DishCategory0
 		{
 			get
@@ -71,16 +85,26 @@ namespace Whats4Dinner.ViewModels
 		private string dishCategory3;
 		private string dishCategory4;
 
+		// dish category checkboxes to display in the view, two-way
 		public bool DishCategoryCheckBox0 { get; set; }
 		public bool DishCategoryCheckBox1 { get; set; }
 		public bool DishCategoryCheckBox2 { get; set; }
 		public bool DishCategoryCheckBox3 { get; set; }
 		public bool DishCategoryCheckBox4 { get; set; }
 
+		/// <summary>
+		/// List of Dish Categories built from the user input
+		/// </summary>
 		private List<string> InputDishCategories { get; set; }
 
+		/// <summary>
+		/// Name of the Dish before edit, for looking up
+		/// </summary>
 		private string NameBeforeEdit { get; set; }
 
+		/// <summary>
+		/// Whether the page is created from the DB; it determines the behavior of the commands.
+		/// </summary>
 		private bool IsFromDB;
 
 		/// <summary>
@@ -97,18 +121,19 @@ namespace Whats4Dinner.ViewModels
 			if (DishCategoryCheckBox3) InputDishCategories.Add(DishCategories[3]);
 			if (DishCategoryCheckBox4) InputDishCategories.Add(DishCategories[4]);
 
-			// add dish to the database
+			// if the page is opened to create a new dish, add the dish to the database
 			if (SelectedDish == null)
 			{
 				DishDB.Add(new Dish(EntryName, InputDishCategories));
 				DishDBIO.WriteDishesToJSON(DishDB);
 				MessagingCenter.Send(this, "DB updated");	// refresh the search result
 			}
-			// or edit the dish
+			// otherwise edit the dish
 			else
 			{
 				NameBeforeEdit = string.Copy(SelectedDish.Name);	// save the dish name before change
 
+				// if editing from the DishDB, find the dish in DishDB and update it
 				if (IsFromDB)
 				{
 					foreach (Dish dish in DishDB)
@@ -123,6 +148,7 @@ namespace Whats4Dinner.ViewModels
 						}
 					}
 				}
+				// if editing from the meal, update the dish in the meal
 				else
 				{
 					SelectedMeal.EditDish(SelectedDish, EntryName, InputDishCategories);
@@ -149,15 +175,23 @@ namespace Whats4Dinner.ViewModels
 			return true;
 		}
 
+		/// <summary>
+		/// Add the Dish as built in the page to the meal
+		/// </summary>
 		private void AddToMealExecute()
 		{
 			SelectedMeal.AddDish(EntryName, InputDishCategories);
 			UserDataIO.WriteUserDataToJSON(DisplayDays);
 		}
 
+		/// <summary>
+		/// After editing a Dish and the initial saving is done, more action can be done after the prompt to the user:
+		/// If the Dish in the DishDB was edited, the occurrences of the Dish in the meals in the future can be updated.
+		/// If the Dish in the Meal was edited, the DishDB can be updated.
+		/// </summary>
 		private void AdditionalEditDishExecute()
 		{
-			// change all cases of the dish in the user data, today or later
+			// if DishDB is edited, update all cases of the dish in the user data, today and later
 			if (IsFromDB)
 			{
 				foreach (Day day in DisplayDays)
@@ -179,7 +213,7 @@ namespace Whats4Dinner.ViewModels
 				}
 				UserDataIO.WriteUserDataToJSON(DisplayDays);
 			}
-			// change the dish in the database
+			// if the Dish in the Meal was edited, update the Dish in the database
 			else
 			{
 				foreach (Dish dish in DishDB)
@@ -196,12 +230,18 @@ namespace Whats4Dinner.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Whether AdditionalEditDish command can execute; 
+		/// </summary>
+		/// <returns></returns>
 		private bool AdditionalEditDishCanExecute()
 		{
+			// if the DIsh in the DishDB was edited, always allow additional update to the meals
 			if (IsFromDB)
 			{
 				return true;
 			}
+			// if the Dish in the Meal was edited, only update if the DishDB still contains that Dish.
 			else
 			{
 				if (DishDB.Select(dish => dish.Name).Contains(NameBeforeEdit))
@@ -231,14 +271,14 @@ namespace Whats4Dinner.ViewModels
 			DishDBIO = new FileIO(dishFileName);
 			this.DishDB = DishDB;
 
-			// new dish
+			// if creating a new dish, initialize an empty form
 			if (SelectedDish == null)
 			{
 				Title = "Add a Dish";
 				EntryName = "";
 				DishCategoryCheckBox0 = DishCategoryCheckBox1 = DishCategoryCheckBox2 = DishCategoryCheckBox3 = DishCategoryCheckBox4 = false;
 			}
-			// edit dish
+			// if editing a dish, pre-fill the form with the existing data
 			else
 			{
 				Title = "Edit Dish";

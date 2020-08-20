@@ -12,6 +12,9 @@ using Xamarin.Forms.Xaml;
 
 namespace Whats4Dinner.Views
 {
+	/// <summary>
+	/// View to display Dish Editing; BindingContext: DishEditViewModel
+	/// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishEditPage : ContentPage
 	{
@@ -20,20 +23,39 @@ namespace Whats4Dinner.Views
 		Meal SelectedMeal;
 		Dish SelectedDish;
 		DishEditViewModel viewModel;
+		/// <summary>
+		/// Whether this page is created from the DishDB
+		/// </summary>
 		bool IsFromDB;
 
+		/// <summary>
+		/// Cosntructor for DishEditPage; initializes properties
+		/// </summary>
+		/// <param name="DisplayDays"></param>
+		/// <param name="SelectedDay"></param>
+		/// <param name="SelectedMeal"></param>
+		/// <param name="SelectedDish"></param>
+		/// <param name="IsFromDB"></param>
+		/// <param name="DishDB"></param>
 		public DishEditPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false, ObservableCollection<Dish> DishDB = null)
 		{
+			// initialize properties
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 			this.SelectedDish = SelectedDish;
 			this.IsFromDB = IsFromDB;
 
+			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
 			BindingContext = viewModel = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish, IsFromDB, DishDB);
 		}
 
+		/// <summary>
+		/// When "Save" button is clicked, the Dish is saved to its appropriate locations, with additional updates depending on the user prompt
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void Save_Clicked(object sender, EventArgs e)
 		{
 			// input validation - empty name
@@ -43,7 +65,7 @@ namespace Whats4Dinner.Views
 				return;
 			}
 
-			// call the command
+			// call the command to save the Dish and prompt for additional updates
 			if (viewModel.SaveButtonClick.CanExecute())
 			{
 				viewModel.SaveButtonClick.Execute();
@@ -70,6 +92,10 @@ namespace Whats4Dinner.Views
 			await Navigation.PopAsync();
 		}
 
+		/// <summary>
+		/// User prompt whether to add the Dish to the Meal, and return to the MealPage upon closing
+		/// </summary>
+		/// <returns></returns>
 		private async Task AddDishToMealPrompt()
 		{
 			if (await DisplayAlert(null, "Also add to your meal?", "Yes", "No"))
@@ -80,8 +106,13 @@ namespace Whats4Dinner.Views
 			}
 		}
 
+		/// <summary>
+		/// User prompts whether to do additional updates to the Dish Database or the Meal, depending on whether it is the DishDB or the Meal being edited.
+		/// </summary>
+		/// <returns></returns>
 		private async Task EditDishPrompt()
 		{
+			// if editing the Dish in the DishDB, prompt to update all the planned meals
 			if (IsFromDB)
 			{
 				if (await DisplayAlert(null, "Also make changes to all the planned meals?", "Yes", "No"))
@@ -92,6 +123,7 @@ namespace Whats4Dinner.Views
 					}
 				}
 			}
+			// if editing the Dish in the Meal, prompt to update the DishDB
 			else
 			{
 				if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
@@ -100,7 +132,7 @@ namespace Whats4Dinner.Views
 					{
 						viewModel.AdditionalEditDishCommand.Execute();
 					}
-					// if the dish no longer exists in the database
+					// if the dish no longer exists in the database, prompt to create on in the DishDB
 					else
 					{
 						if (await DisplayAlert(null, "The dish does not exist in the database. Add to the database?", "Yes", "No"))

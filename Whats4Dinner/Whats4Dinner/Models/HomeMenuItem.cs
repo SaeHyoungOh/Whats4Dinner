@@ -10,7 +10,8 @@ namespace Whats4Dinner.Models
 		WeeklyView,
 		MonthlyView,
 		DishDB,
-		DishCategories
+		DishCategories,
+		About
 	}
 
 	/// <summary>
@@ -18,8 +19,44 @@ namespace Whats4Dinner.Models
 	/// </summary>
 	public class HomeMenuItem
 	{
+		/// <summary>
+		/// MenuItemType of the item, in enum
+		/// </summary>
 		public MenuItemType Id { get; set; }
 
+		/// <summary>
+		/// Title of the menu item, initialized in the constructor
+		/// </summary>
 		public string Title { get; set; }
+
+		/// <summary>
+		/// Constructor for HomeMenuItem; it initializes the properties.
+		/// </summary>
+		/// <param name="id"></param>
+		public HomeMenuItem(MenuItemType id)
+		{
+			Id = id;
+			switch (id)
+			{
+				case MenuItemType.SevenDayView:
+					Title = "7-Day View";
+					break;
+				case MenuItemType.WeeklyView:
+					Title = "Weekly View";
+					break;
+				case MenuItemType.MonthlyView:
+					Title = "Monthy View";
+					break;
+				case MenuItemType.DishDB:
+					Title = "Dish Database";
+					break;
+				case MenuItemType.DishCategories:
+					Title = "Dish Categories";
+					break;
+				case MenuItemType.About:
+					Title = "About";
+					break;
+			}
+		}
 	}
 }

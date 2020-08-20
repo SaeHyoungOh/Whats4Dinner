@@ -15,6 +15,9 @@ using Xamarin.Forms.Xaml;
 
 namespace Whats4Dinner.Views
 {
+	/// <summary>
+	/// View to display Dish Database. BindingContext: DishDBViewModel
+	/// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishDBPage : ContentPage
 	{
@@ -23,16 +26,29 @@ namespace Whats4Dinner.Views
 		Meal SelectedMeal;
 		DishDBViewModel viewModel;
 
+		/// <summary>
+		/// Cosntructor for DishDBPage; initializes properties
+		/// </summary>
+		/// <param name="DisplayDays"></param>
+		/// <param name="SelectedDay"></param>
+		/// <param name="SelectedMeal"></param>
 		public DishDBPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
 		{
+			// initialize properties
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 
+			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
 			BindingContext = viewModel = new DishDBViewModel(DisplayDays, SelectedDay, SelectedMeal);
 		}
 
+		/// <summary>
+		/// Listener for when the text is changed in the SearchBar; it executes SearchCommand
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			viewModel.SearchCommand.Execute();
@@ -48,6 +64,11 @@ namespace Whats4Dinner.Views
 			Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, null, true, viewModel.DishDB));
 		}
 
+		/// <summary>
+		/// When a ListView item is tapped, prompt user for actions: add, edit, and delete.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
@@ -55,14 +76,17 @@ namespace Whats4Dinner.Views
 			// ask for action
 			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Add to meal", "Edit", "Delete");
 
+			// add the selected Dish to the Meal
 			if (action == "Add to meal")
 			{
 				AddToMealTapped(selectedDish, sender);
 			}
+			// edit the selected Dish in the DishDB
 			else if (action == "Edit")
 			{
 				await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish, true, viewModel.DishDB));
 			}
+			// delete the selected Dish from the DishDB
 			else if (action == "Delete")
 			{
 				DeleteDishTapped(selectedDish);
@@ -71,6 +95,11 @@ namespace Whats4Dinner.Views
 			((ListView)sender).SelectedItem = null; // deselect
 		}
 
+		/// <summary>
+		/// Add the selected Dish to the Meal
+		/// </summary>
+		/// <param name="selectedDish"></param>
+		/// <param name="sender"></param>
 		private void AddToMealTapped(Dish selectedDish, object sender)
 		{
 			// call the command to add dish to meal
@@ -81,7 +110,7 @@ namespace Whats4Dinner.Views
 				// close page
 				Navigation.PopAsync();
 			}
-			// selected dish is already in the meal
+			// if selected dish is already in the meal
 			else
 			{
 				DisplayAlert(null, selectedDish.Name + " is already included in this meal.", "Ok");
@@ -89,6 +118,10 @@ namespace Whats4Dinner.Views
 			}
 		}
 
+		/// <summary>
+		/// Delete the selected Dish from the DishDB
+		/// </summary>
+		/// <param name="selectedDish"></param>
 		private async void DeleteDishTapped(Dish selectedDish)
 		{
 			if (await DisplayAlert(null, "Delete " + selectedDish.Name + " from the database?", "Delete", "Cancel"))

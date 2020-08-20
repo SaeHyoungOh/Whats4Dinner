@@ -12,14 +12,11 @@ namespace Whats4Dinner.ViewModels
 
 		public MenuViewModel()
 		{
-			MenuItems = new ObservableCollection<HomeMenuItem>
+			MenuItems = new ObservableCollection<HomeMenuItem>();
+			foreach (MenuItemType menuItemType in Enum.GetValues(typeof(MenuItemType)))
 			{
-				new HomeMenuItem {Id = MenuItemType.SevenDayView, Title="7-Day View" },
-				new HomeMenuItem {Id = MenuItemType.WeeklyView, Title="Weekly View" },
-				new HomeMenuItem {Id = MenuItemType.MonthlyView, Title="Monthy View" },
-				new HomeMenuItem {Id = MenuItemType.DishDB, Title="Dish Database" },
-				new HomeMenuItem {Id = MenuItemType.DishCategories, Title="Dish Categories" }
-			};
+				MenuItems.Add(new HomeMenuItem(menuItemType));
+			}
 		}
 	}
 }

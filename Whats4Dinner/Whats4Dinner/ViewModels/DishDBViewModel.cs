@@ -11,6 +11,9 @@ using Xamarin.Forms;
 
 namespace Whats4Dinner.ViewModels
 {
+	/// <summary>
+	/// ViewModel class for DishDBPage
+	/// </summary>
 	class DishDBViewModel : BaseViewModel
 	{
 		/// <summary>
@@ -38,11 +41,6 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
-		/// Query string from the view to be searched in DishDB
-		/// </summary>
-		public string Query { get; set; }
-
-		/// <summary>
 		/// List of Dishes as the result of searching the query string in DishDB
 		/// </summary>
 		public ObservableCollection<Dish> SearchResult
@@ -58,6 +56,11 @@ namespace Whats4Dinner.ViewModels
 		private Day selectedDay;
 		private Meal selectedMeal;
 		private ObservableCollection<Dish> searchResult;
+
+		/// <summary>
+		/// Query string from the view to be searched in DishDB
+		/// </summary>
+		public string Query { get; set; }
 
 		/// <summary>
 		/// Command to refresh the dish database in view
@@ -93,6 +96,7 @@ namespace Whats4Dinner.ViewModels
 		/// <returns></returns>
 		private bool AddDishCanExecute(Dish SelectedDish)
 		{
+			// make sure the meal does not already contain it
 			if (SelectedDish != null && !(SelectedMeal.Dishes.Select(dish => dish.Name).Contains(SelectedDish.Name)))
 			{
 				return true;
@@ -101,7 +105,7 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
-		/// Delete the selected Dish from the meal and save to file
+		/// Delete the selected Dish from the DishDB and save to file
 		/// </summary>
 		/// <param name="SelectedDish"></param>
 		private void DeleteDishExecute(Dish SelectedDish)
@@ -117,6 +121,7 @@ namespace Whats4Dinner.ViewModels
 		/// <returns></returns>
 		private bool DeleteDishCanExecute(Dish SelectedDish)
 		{
+			// make sure the DishDB contains the dish
 			if (SelectedDish != null && DishDB.Contains(SelectedDish))
 			{
 				return true;
@@ -130,7 +135,7 @@ namespace Whats4Dinner.ViewModels
 		/// </summary>
 		private void SearchExecute()
 		{
-			// empty query returns the whole database
+			// empty query sets the whole database to DishDB
 			if (Query == "")
 			{
 				SearchResult = DishDB;
@@ -204,6 +209,7 @@ namespace Whats4Dinner.ViewModels
 			SearchCommand = new DelegateCommand(SearchExecute);
 			LoadDishesCommand = new DelegateCommand(ExecuteLoadDishesCommand);
 
+			// use MessagingCenter to be notified when the Dish DB is updated, to also update SearchResult
 			MessagingCenter.Subscribe<DishEditViewModel>(this, "DB updated", (sender) =>
 			{
 				SearchExecute();

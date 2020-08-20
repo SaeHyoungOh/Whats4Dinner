@@ -90,26 +90,28 @@ namespace Whats4Dinner.ViewModels
 		private Day selectedDay;
 		private Meal selectedMeal;
 
-		public DelegateCommand<Dish> DeleteButtonClick;
+		/// <summary>
+		/// Command to remove the Dish from the Meal
+		/// </summary>
+		public DelegateCommand<Dish> RemoveButtonClick;
 
 		/// <summary>
-		/// Gets the user entry for the name and the list of categories, then adds the dish to the meal, and saves it to file.
-		/// It is called by the code behind in DishEditPage View.
+		/// Removes the Dish from the meal, and saves to file.
 		/// </summary>
-		public void DeleteButtonExecute(Dish SelectedDish)
+		public void RemoveButtonExecute(Dish SelectedDish)
 		{
-			// delete dish from the meal
-			SelectedMeal.DeleteDish(SelectedDish);
+			// Remove dish from the meal
+			SelectedMeal.RemoveDish(SelectedDish);
 
 			// and save to file
 			UserDataIO.WriteUserDataToJSON(DisplayDays);
 		}
 
 		/// <summary>
-		/// Input validation whether to proceed with saving the dish
+		/// Whether to execute RemoveButtonClick; only if the Meal contains the Dish.
 		/// </summary>
 		/// <returns></returns>
-		public bool DeleteButtonCanExecute(Dish SelectedDish)
+		public bool RemoveButtonCanExecute(Dish SelectedDish)
 		{
 			if (SelectedMeal.Dishes.Contains(SelectedDish))
 			{
@@ -135,7 +137,7 @@ namespace Whats4Dinner.ViewModels
 
 			// initialize commands
 			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);
-			DeleteButtonClick = new DelegateCommand<Dish>(DeleteButtonExecute, DeleteButtonCanExecute);
+			RemoveButtonClick = new DelegateCommand<Dish>(RemoveButtonExecute, RemoveButtonCanExecute);
 		}
 	}
 }

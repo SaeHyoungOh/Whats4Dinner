@@ -9,28 +9,25 @@ using Whats4Dinner.Models.DataStructure;
 namespace Whats4Dinner.ViewModels
 {
 	/// <summary>
-	/// Viewmodel to display WeekPage, with a list of days
+	/// Viewmodel to display SevenDayPage, with a list of days
 	/// Derived from BaseViewModel
 	/// </summary>
 	public class SevenDayViewModel : BaseViewModel
 	{
 		/// <summary>
-		/// Constructor for WeekViewModel class
+		/// Constructor for SevenDayViewModel class
 		/// </summary>
 		public SevenDayViewModel()
 		{
 			// initialize properties
-			Title = "Week View";
+			Title = "7-Day View";
 			DisplayDays = new ObservableCollection<Day>();
 			UserDataIO = new FileIO(userFileName);
-
-			// create a sample file. delete for production
-			//UserDataIO.CreateSampleFile();
 
 			// read user's data from JSON file
 			ObservableCollection<Day> dataFromFile = UserDataIO.ReadUserDataFromJSON();
 
-			// fill the week with days
+			// fill the 7-day with days
 			FillDisplayDays(dataFromFile);
 
 			// for refreshing

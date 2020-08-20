@@ -11,6 +11,9 @@ using Xamarin.Forms.Xaml;
 
 namespace Whats4Dinner.Views
 {
+	/// <summary>
+	/// View to display a Meal; BindingContext: MealViewModel
+	/// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MealPage : ContentPage
 	{
@@ -18,12 +21,20 @@ namespace Whats4Dinner.Views
 		Day SelectedDay;
 		Meal SelectedMeal;
 
+		/// <summary>
+		/// Cosntructor for MealPage; initializes properties
+		/// </summary>
+		/// <param name="DisplayDays"></param>
+		/// <param name="SelectedDay"></param>
+		/// <param name="SelectedMeal"></param>
 		public MealPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
 		{
+			// initialize properties
 			this.DisplayDays = DisplayDays;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 
+			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
 			BindingContext = new MealViewModel(DisplayDays, SelectedDay, SelectedMeal);
 		}
@@ -62,9 +73,9 @@ namespace Whats4Dinner.Views
 				{
 					// call the command
 					MealViewModel viewModel = (MealViewModel)BindingContext;
-					if (viewModel.DeleteButtonClick.CanExecute(selectedDish))
+					if (viewModel.RemoveButtonClick.CanExecute(selectedDish))
 					{
-						viewModel.DeleteButtonClick.Execute(selectedDish);
+						viewModel.RemoveButtonClick.Execute(selectedDish);
 					}
 				}
 			}
