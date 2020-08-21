@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Whats4Dinner.Models;
 using Whats4Dinner.Models.DataStructure;
 
 namespace Whats4Dinner.ViewModels
@@ -42,18 +43,15 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Constructor for DayViewModel class
 		/// </summary>
-		/// <param name="DisplayDays">The entirety of the DisplayDays for the week</param>
+		/// <param name="UserData">The entirety of the DisplayDays for the week</param>
 		/// <param name="SelectedDay">The currently selected Day</param>
-		public DayViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay)
+		public DayViewModel(ObservableCollection<Day> UserData, Day SelectedDay)
 		{
 			// initialize the properties
-			this.DisplayDays = DisplayDays;
+			this.UserData = UserData;
 			this.SelectedDay = SelectedDay;
 			Title = SelectedDay.DisplayDayOfWeek + ", " + SelectedDay.DisplayDate;
 			DisplayMeals = SelectedDay.Meals;
-
-			// for refreshing
-			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);
 		}
 	}
 }

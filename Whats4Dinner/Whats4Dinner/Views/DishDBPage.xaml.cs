@@ -21,7 +21,7 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishDBPage : ContentPage
 	{
-		ObservableCollection<Day> DisplayDays;
+		ObservableCollection<Day> UserData;
 		Day SelectedDay;
 		Meal SelectedMeal;
 		DishDBViewModel viewModel;
@@ -29,19 +29,19 @@ namespace Whats4Dinner.Views
 		/// <summary>
 		/// Cosntructor for DishDBPage; initializes properties
 		/// </summary>
-		/// <param name="DisplayDays"></param>
+		/// <param name="UserData"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
-		public DishDBPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
+		public DishDBPage(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal)
 		{
 			// initialize properties
-			this.DisplayDays = DisplayDays;
+			this.UserData = UserData;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = viewModel = new DishDBViewModel(DisplayDays, SelectedDay, SelectedMeal);
+			BindingContext = viewModel = new DishDBViewModel(UserData, SelectedDay, SelectedMeal);
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private void CreateItem_Clicked(object sender, EventArgs e)
 		{
-			Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, null, true, viewModel.DishDB));
+			Navigation.PushAsync(new DishEditPage(UserData, SelectedDay, SelectedMeal, null, true));
 		}
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace Whats4Dinner.Views
 			// edit the selected Dish in the DishDB
 			else if (action == "Edit")
 			{
-				await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish, true, viewModel.DishDB));
+				await Navigation.PushAsync(new DishEditPage(UserData, SelectedDay, SelectedMeal, selectedDish, true));
 			}
 			// delete the selected Dish from the DishDB
 			else if (action == "Delete")

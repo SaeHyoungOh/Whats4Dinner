@@ -18,7 +18,7 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishEditPage : ContentPage
 	{
-		ObservableCollection<Day> DisplayDays;
+		ObservableCollection<Day> UserData;
 		Day SelectedDay;
 		Meal SelectedMeal;
 		Dish SelectedDish;
@@ -31,16 +31,16 @@ namespace Whats4Dinner.Views
 		/// <summary>
 		/// Cosntructor for DishEditPage; initializes properties
 		/// </summary>
-		/// <param name="DisplayDays"></param>
+		/// <param name="UserData"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
 		/// <param name="SelectedDish"></param>
 		/// <param name="IsFromDB"></param>
 		/// <param name="DishDB"></param>
-		public DishEditPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false, ObservableCollection<Dish> DishDB = null)
+		public DishEditPage(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
 		{
 			// initialize properties
-			this.DisplayDays = DisplayDays;
+			this.UserData = UserData;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 			this.SelectedDish = SelectedDish;
@@ -48,7 +48,7 @@ namespace Whats4Dinner.Views
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = viewModel = new DishEditViewModel(DisplayDays, SelectedDay, SelectedMeal, SelectedDish, IsFromDB, DishDB);
+			BindingContext = viewModel = new DishEditViewModel(UserData, SelectedDay, SelectedMeal, SelectedDish, IsFromDB);
 		}
 
 		/// <summary>

@@ -152,7 +152,7 @@ namespace Whats4Dinner.ViewModels
 				else
 				{
 					SelectedMeal.EditDish(SelectedDish, EntryName, InputDishCategories);
-					UserDataIO.WriteUserDataToJSON(DisplayDays);
+					UserDataIO.WriteUserDataToJSON(UserData);
 				}
 			}
 		}
@@ -176,12 +176,16 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
-		/// Add the Dish as built in the page to the meal
+		/// Add the Dish as built in the page to the meal, and save to file
 		/// </summary>
 		private void AddToMealExecute()
 		{
 			SelectedMeal.AddDish(EntryName, InputDishCategories);
-			UserDataIO.WriteUserDataToJSON(DisplayDays);
+			if (!UserData.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
+			{
+				UserData.Add(SelectedDay);
+			}
+			UserDataIO.WriteUserDataToJSON(UserData);
 		}
 
 		/// <summary>
@@ -194,7 +198,7 @@ namespace Whats4Dinner.ViewModels
 			// if DishDB is edited, update all cases of the dish in the user data, today and later
 			if (IsFromDB)
 			{
-				foreach (Day day in DisplayDays)
+				foreach (Day day in UserData)
 				{
 					if (day.ThisDate >= DateTime.Today)
 					{
@@ -211,7 +215,7 @@ namespace Whats4Dinner.ViewModels
 						}
 					}
 				}
-				UserDataIO.WriteUserDataToJSON(DisplayDays);
+				UserDataIO.WriteUserDataToJSON(UserData);
 			}
 			// if the Dish in the Meal was edited, update the Dish in the database
 			else
@@ -255,23 +259,23 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Constructor for AddDishViewModel class
 		/// </summary>
-		/// <param name="DisplayDays"></param>
+		/// <param name="UserData"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
 		/// <param name="SelectedDish"></param>
-		public DishEditViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false, ObservableCollection<Dish> DishDB = null)
+		public DishEditViewModel(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
 		{
 			// initialize properties
-			this.DisplayDays = DisplayDays;
+			this.UserData = UserData;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 			this.SelectedDish = SelectedDish;
 			this.IsFromDB = IsFromDB;
 			UserDataIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
+			DishDB = DishDBIO.ReadDishesFromJSON();
 			DishCategoriesIO = new FileIO(dishCategoriesFileName);
 			DishCategories = DishCategoriesIO.ReadDishCategoriesFromJSON();
-			this.DishDB = DishDB;
 
 			// if creating a new dish, initialize an empty form
 			if (SelectedDish == null)

@@ -28,45 +28,44 @@
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
-		<ListView x:Name="Meals"
-				  HasUnevenRows="True"
-				  VerticalOptions="FillAndExpand"
-				  Margin="5, 5, 5, 5"
-				  ItemsSource="{Binding DisplayMeals}"
-				  ItemTapped="Handle_ItemTapped"
-				  CachingStrategy="RecycleElement">
-			<ListView.Header>
-				<StackLayout>
-					<Label Text="&#x24D8; Tap on a Meal for detail"
-						   HorizontalTextAlignment="Center"/>
-				</StackLayout>
-			</ListView.Header>
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<ViewCell>
-						<StackLayout Margin="10, 8, 10, 7">
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition/>
-									<RowDefinition/>
-								</Grid.RowDefinitions>
-								<Label Text="{Binding ThisMealType}"
-									   Grid.Row="0"
-									   Style="{DynamicResource ListItemTextStyle}"/>
-								<Label Text="(Not planned)"
-									   Grid.Row="1"
-									   IsVisible="{Binding NoDishes}"
-									   Style="{DynamicResource ListItemDetailTextStyle}"
-									   TextColor="LightGray"/>
-								<Label Text="{Binding DisplayPreviewDishes}"
-									   Grid.Row="1"
-									   Style="{DynamicResource ListItemDetailTextStyle}"/>
-							</Grid>
-						</StackLayout>
-					</ViewCell>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-	</RefreshView>
+	
+	<ListView x:Name="Meals"
+				HasUnevenRows="True"
+				VerticalOptions="FillAndExpand"
+				Margin="5, 5, 5, 5"
+				ItemsSource="{Binding DisplayMeals}"
+				ItemTapped="Handle_ItemTapped"
+				CachingStrategy="RecycleElement">
+		<ListView.Header>
+			<StackLayout>
+				<Label Text="&#x24D8; Tap on a Meal for detail"
+					   HorizontalTextAlignment="Center"/>
+			</StackLayout>
+		</ListView.Header>
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<ViewCell>
+					<StackLayout Margin="10, 8, 10, 7">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+							<Label Text="{Binding ThisMealType}"
+								   Grid.Row="0"
+								   Style="{DynamicResource ListItemTextStyle}"/>
+							<Label Text="(Not planned)"
+								   Grid.Row="1"
+								   IsVisible="{Binding NoDishes}"
+								   Style="{DynamicResource ListItemDetailTextStyle}"
+								   TextColor="LightGray"/>
+							<Label Text="{Binding DisplayPreviewDishes}"
+								   Grid.Row="1"
+								   Style="{DynamicResource ListItemDetailTextStyle}"/>
+						</Grid>
+					</StackLayout>
+				</ViewCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
 </ContentPage>

@@ -4,6 +4,7 @@ using Whats4Dinner.ViewModels;
 using Whats4Dinner.Models.DataStructure;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Whats4Dinner.Models;
 
 namespace Whats4Dinner.Views
 {
@@ -13,23 +14,23 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DayPage : ContentPage
 	{
-		private ObservableCollection<Day> DisplayDays;
+		private ObservableCollection<Day> UserData;
 		private Day SelectedDay;
 
 		/// <summary>
 		/// Cosntructor for DayPage; initializes properties
 		/// </summary>
-		/// <param name="DisplayDays"></param>
+		/// <param name="UserData"></param>
 		/// <param name="SelectedDay"></param>
-		public DayPage(ObservableCollection<Day> DisplayDays, Day SelectedDay)
+		public DayPage(ObservableCollection<Day> UserData, Day SelectedDay)
 		{
 			// initialize properties
-			this.DisplayDays = DisplayDays;
+			this.UserData = UserData;
 			this.SelectedDay = SelectedDay;
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = new DayViewModel(DisplayDays, SelectedDay);
+			BindingContext = new DayViewModel(UserData, SelectedDay);
 		}
 
 		/// <summary>
@@ -44,7 +45,7 @@ namespace Whats4Dinner.Views
 
 			// get the selected Meal, and navigate to its MealPage
 			Meal SelectedMeal = (Meal)((ListView)sender).SelectedItem;
-			await Navigation.PushAsync(new MealPage(DisplayDays, SelectedDay, SelectedMeal));
+			await Navigation.PushAsync(new MealPage(UserData, SelectedDay, SelectedMeal));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;

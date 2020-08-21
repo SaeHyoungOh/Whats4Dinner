@@ -37,13 +37,17 @@ namespace Whats4Dinner.Models
 		/// Sort and write user's data to JSON file
 		/// </summary>
 		/// <param name="days"></param>
-		public void WriteUserDataToJSON(ObservableCollection<Day> DisplayDays)
+		public void WriteUserDataToJSON(ObservableCollection<Day> UserData)
 		{
 			// convert ObservalbeCollection to List so it can sort
 			List<Day> days = new List<Day>();
-			foreach (Day day in DisplayDays)
+			foreach (Day day in UserData)
 			{
-				days.Add(day);
+				// only save the days with meals
+				if (day.HasMeals)
+				{
+					days.Add(day);
+				}
 			}
 
 			// sort the list by day
@@ -99,6 +103,7 @@ namespace Whats4Dinner.Models
 		{
 			ObservableCollection<Day> result;
 
+			//File.Delete(FilePath);
 			if (File.Exists(FilePath))
 			{
 				string jsonString = File.ReadAllText(FilePath);

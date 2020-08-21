@@ -21,17 +21,17 @@ namespace Whats4Dinner.ViewModels
 		{
 			// initialize properties
 			Title = "7-Day View";
-			DisplayDays = new ObservableCollection<Day>();
-			UserDataIO = new FileIO(userFileName);
+			PageType = MenuItemType.SevenDayView;
 
 			// read user's data from JSON file
-			ObservableCollection<Day> dataFromFile = UserDataIO.ReadUserDataFromJSON();
+			UserDataIO = new FileIO(userFileName);
+			UserData = UserDataIO.ReadUserDataFromJSON();
 
 			// fill the 7-day with days
-			FillDisplayDays(dataFromFile);
+			FillDisplayDays(PageType);
 
 			// for refreshing
-			LoadItemsCommand = new DelegateCommand(ExecuteLoadItemsCommand);
+			LoadItemsCommand = new DelegateCommand<MenuItemType>(ExecuteLoadItemsCommand);
 		}
 	}
 }

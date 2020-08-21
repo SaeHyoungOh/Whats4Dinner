@@ -86,7 +86,11 @@ namespace Whats4Dinner.ViewModels
 		private void AddDishExecute(Dish SelectedDish)
 		{
 			SelectedMeal.AddDish(SelectedDish.Name, SelectedDish.ThisDishCategories);
-			UserDataIO.WriteUserDataToJSON(DisplayDays);
+			if (!UserData.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
+			{
+				UserData.Add(SelectedDay);
+			}
+			UserDataIO.WriteUserDataToJSON(UserData);
 		}
 
 		/// <summary>
@@ -185,13 +189,13 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Constructor for DishDBViewModel
 		/// </summary>
-		/// <param name="DisplayDays"></param>
+		/// <param name="UserData"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
-		public DishDBViewModel(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
+		public DishDBViewModel(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal)
 		{
 			// initialize properties
-			this.DisplayDays = DisplayDays;
+			this.UserData = UserData;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 			UserDataIO = new FileIO(userFileName);

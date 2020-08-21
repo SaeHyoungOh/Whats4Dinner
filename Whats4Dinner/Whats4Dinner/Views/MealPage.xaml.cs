@@ -17,26 +17,26 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MealPage : ContentPage
 	{
-		ObservableCollection<Day> DisplayDays;
+		ObservableCollection<Day> UserData;
 		Day SelectedDay;
 		Meal SelectedMeal;
 
 		/// <summary>
 		/// Cosntructor for MealPage; initializes properties
 		/// </summary>
-		/// <param name="DisplayDays"></param>
+		/// <param name="UserData"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
-		public MealPage(ObservableCollection<Day> DisplayDays, Day SelectedDay, Meal SelectedMeal)
+		public MealPage(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal)
 		{
 			// initialize properties
-			this.DisplayDays = DisplayDays;
+			this.UserData = UserData;
 			this.SelectedDay = SelectedDay;
 			this.SelectedMeal = SelectedMeal;
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = new MealViewModel(DisplayDays, SelectedDay, SelectedMeal);
+			BindingContext = new MealViewModel(UserData, SelectedDay, SelectedMeal);
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace Whats4Dinner.Views
 		private async void AddItem_Clicked(object sender, EventArgs e)
 		{
 			// navigate to dish db page
-			await Navigation.PushAsync(new DishDBPage(DisplayDays, SelectedDay, SelectedMeal));
+			await Navigation.PushAsync(new DishDBPage(UserData, SelectedDay, SelectedMeal));
 		}
 
 		/// <summary>
@@ -64,7 +64,7 @@ namespace Whats4Dinner.Views
 
 			if (action == "Edit")
 			{
-				await Navigation.PushAsync(new DishEditPage(DisplayDays, SelectedDay, SelectedMeal, selectedDish));
+				await Navigation.PushAsync(new DishEditPage(UserData, SelectedDay, SelectedMeal, selectedDish));
 			}
 			else if (action == "Remove")
 			{

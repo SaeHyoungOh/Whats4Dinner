@@ -45,60 +45,58 @@
 						HorizontalOptions="Center"
 						FontSize="20"/>
 			</Grid>
-			<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
-				<ListView x:Name="DishCategories"
-						  Grid.Row="0"
-						  HasUnevenRows="True"
-						  VerticalOptions="FillAndExpand"
-						  Margin="5, 5, 5, 5"
-						  ItemsSource="{Binding DisplayDishes}"
-						  ItemTapped="DishCategories_ItemTapped"
-						  CachingStrategy="RecycleElement">
-					<ListView.Header>
-						<StackLayout>
-							<Label Text="&#x24D8; Tap on item to edit"
-								   IsVisible="{Binding HasDishes}"
-								   HorizontalTextAlignment="Center"/>
-						</StackLayout>
-					</ListView.Header>
-					<ListView.ItemTemplate>
-						<DataTemplate>
-							<ViewCell>
-								<StackLayout Margin="10, 5, 5, 5">
-									<Grid>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="4*"/>
-											<ColumnDefinition Width="1*"/>
-											<ColumnDefinition Width="1*"/>
-											<ColumnDefinition Width="1*"/>
-											<ColumnDefinition Width="1*"/>
-											<ColumnDefinition Width="1*"/>
-										</Grid.ColumnDefinitions>
-										<Label Text="{Binding Name}"
-											   Grid.Column="0"
-											   Style="{DynamicResource ListItemDetailTextStyle}"/>
-										<Label Text="{Binding DishCategory0}"
-											   Grid.Column="1"
-											   IsEnabled="{Binding HasDishCategory0}"/>
-										<Label Text="{Binding DishCategory1}"
-											   Grid.Column="2"
-											   IsEnabled="{Binding HasDishCategory1}"/>
-										<Label Text="{Binding DishCategory2}"
-											   Grid.Column="3"
-											   IsEnabled="{Binding HasDishCategory2}"/>
-										<Label Text="{Binding DishCategory3}"
-											   Grid.Column="4"
-											   IsEnabled="{Binding HasDishCategory3}"/>
-										<Label Text="{Binding DishCategory4}"
-											   Grid.Column="5"
-											   IsEnabled="{Binding HasDishCategory4}"/>
-									</Grid>
-								</StackLayout>
-							</ViewCell>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>
-			</RefreshView>
+			<ListView x:Name="DishCategories"
+						Grid.Row="0"
+						HasUnevenRows="True"
+						VerticalOptions="FillAndExpand"
+						Margin="5, 5, 5, 5"
+						ItemsSource="{Binding DisplayDishes}"
+						ItemTapped="DishCategories_ItemTapped"
+						CachingStrategy="RecycleElement">
+				<ListView.Header>
+					<StackLayout>
+						<Label Text="&#x24D8; Tap on item to edit"
+								IsVisible="{Binding HasDishes}"
+								HorizontalTextAlignment="Center"/>
+					</StackLayout>
+				</ListView.Header>
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout Margin="10, 5, 5, 5">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="4*"/>
+										<ColumnDefinition Width="1*"/>
+										<ColumnDefinition Width="1*"/>
+										<ColumnDefinition Width="1*"/>
+										<ColumnDefinition Width="1*"/>
+										<ColumnDefinition Width="1*"/>
+									</Grid.ColumnDefinitions>
+									<Label Text="{Binding Name}"
+										   Grid.Column="0"
+										   Style="{DynamicResource ListItemDetailTextStyle}"/>
+									<Label Text="{Binding DishCategory0}"
+										   Grid.Column="1"
+										   IsEnabled="{Binding HasDishCategory0}"/>
+									<Label Text="{Binding DishCategory1}"
+										   Grid.Column="2"
+										   IsEnabled="{Binding HasDishCategory1}"/>
+									<Label Text="{Binding DishCategory2}"
+										   Grid.Column="3"
+										   IsEnabled="{Binding HasDishCategory2}"/>
+									<Label Text="{Binding DishCategory3}"
+										   Grid.Column="4"
+										   IsEnabled="{Binding HasDishCategory3}"/>
+									<Label Text="{Binding DishCategory4}"
+										   Grid.Column="5"
+										   IsEnabled="{Binding HasDishCategory4}"/>
+								</Grid>
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
 		</Grid>
 	</StackLayout>
 </ContentPage>
