@@ -72,9 +72,17 @@ namespace Whats4Dinner.Views
 		private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
+			string action;
 
 			// ask for action
-			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Add to meal", "Edit", "Delete");
+			if (SelectedMeal == null)
+			{
+				action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Edit", "Delete");
+			}
+			else
+			{
+				action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Add to meal", "Edit", "Delete");
+			}
 
 			// add the selected Dish to the Meal
 			if (action == "Add to meal")

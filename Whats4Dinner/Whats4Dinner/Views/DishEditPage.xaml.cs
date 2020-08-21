@@ -70,13 +70,13 @@ namespace Whats4Dinner.Views
 			{
 				viewModel.SaveButtonClick.Execute();
 
-				// if added a new dish to the database
-				if (SelectedDish == null)
+				// if added a new dish to the database from a meal view
+				if (SelectedDish == null && SelectedMeal != null)
 				{
 					await AddDishToMealPrompt();
 				}
 				// if edited a dish
-				else
+				else if (SelectedDish != null)
 				{
 					await EditDishPrompt();
 				}
@@ -124,7 +124,7 @@ namespace Whats4Dinner.Views
 				}
 			}
 			// if editing the Dish in the Meal, prompt to update the DishDB
-			else
+			else if (SelectedMeal != null)
 			{
 				if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
 				{

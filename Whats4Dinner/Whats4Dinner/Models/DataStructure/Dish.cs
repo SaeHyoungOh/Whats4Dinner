@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 
 namespace Whats4Dinner.Models.DataStructure
@@ -8,21 +9,6 @@ namespace Whats4Dinner.Models.DataStructure
 	/// </summary>
 	public class Dish : BaseModel
 	{
-		/// <summary>
-		/// Static (shared) FileIO object for reading/writing Dish Categories
-		/// </summary>
-		private static FileIO DishCategoriesIO { get; set; }
-
-		/// <summary>
-		/// JSON file name for Dish Categories
-		/// </summary>
-		private static string DishCategoriesFileName = "DishCategories.json";
-
-		/// <summary>
-		/// List of categories a dish can have
-		/// </summary>
-		public static List<string> DishCategories { get; set; }
-
 		/// <summary>
 		/// Name of the Dish
 		/// </summary>
@@ -38,29 +24,14 @@ namespace Whats4Dinner.Models.DataStructure
 		/// <summary>
 		/// Category of the Dish, as listed in Dish.Categories
 		/// </summary>
-		public List<string> ThisDishCategories
-		{
-			get => dishCategories;
-			set
-			{
-				SetProperty(ref dishCategories, value);
-			}
-		}
+		public List<string> ThisDishCategories { get; set; }
 
 		// DishCategory for display in View
-		public string DishCategory0
-		{
-			get
-			{
-				SetProperty(ref dishCategory0, DishCategories[0]);
-				return dishCategory0;
-			}
-		}
 		public string DishCategory1
 		{
 			get
 			{
-				SetProperty(ref dishCategory1, DishCategories[1]);
+				SetProperty(ref dishCategory1, DishCategories["1"]);
 				return dishCategory1;
 			}
 		}
@@ -68,7 +39,7 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			get
 			{
-				SetProperty(ref dishCategory2, DishCategories[2]);
+				SetProperty(ref dishCategory2, DishCategories["2"]);
 				return dishCategory2;
 			}
 		}
@@ -76,7 +47,7 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			get
 			{
-				SetProperty(ref dishCategory3, DishCategories[3]);
+				SetProperty(ref dishCategory3, DishCategories["3"]);
 				return dishCategory3;
 			}
 		}
@@ -84,30 +55,25 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			get
 			{
-				SetProperty(ref dishCategory4, DishCategories[4]);
+				SetProperty(ref dishCategory4, DishCategories["4"]);
 				return dishCategory4;
+			}
+		}
+		public string DishCategory5
+		{
+			get
+			{
+				SetProperty(ref dishCategory5, DishCategories["5"]);
+				return dishCategory5;
 			}
 		}
 
 		// whether DishCategories contains each of the DishCategory, to display in View
-		public bool HasDishCategory0
-		{
-			get
-			{
-				if (ThisDishCategories.Contains(DishCategories[0]))
-				{
-					SetProperty(ref hasDishCategory0, true);
-					return true;
-				}
-				SetProperty(ref hasDishCategory0, false);
-				return false;
-			}
-		}
 		public bool HasDishCategory1
 		{
 			get
 			{
-				if (ThisDishCategories.Contains(DishCategories[1]))
+				if (ThisDishCategories.Contains(DishCategories["1"]))
 				{
 					SetProperty(ref hasDishCategory1, true);
 					return true;
@@ -120,7 +86,7 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			get
 			{
-				if (ThisDishCategories.Contains(DishCategories[2]))
+				if (ThisDishCategories.Contains(DishCategories["2"]))
 				{
 					SetProperty(ref hasDishCategory2, true);
 					return true;
@@ -133,7 +99,7 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			get
 			{
-				if (ThisDishCategories.Contains(DishCategories[3]))
+				if (ThisDishCategories.Contains(DishCategories["3"]))
 				{
 					SetProperty(ref hasDishCategory3, true);
 					return true;
@@ -146,7 +112,7 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			get
 			{
-				if (ThisDishCategories.Contains(DishCategories[4]))
+				if (ThisDishCategories.Contains(DishCategories["4"]))
 				{
 					SetProperty(ref hasDishCategory4, true);
 					return true;
@@ -155,30 +121,32 @@ namespace Whats4Dinner.Models.DataStructure
 				return false;
 			}
 		}
+		public bool HasDishCategory5
+		{
+			get
+			{
+				if (ThisDishCategories.Contains(DishCategories["5"]))
+				{
+					SetProperty(ref hasDishCategory5, true);
+					return true;
+				}
+				SetProperty(ref hasDishCategory5, false);
+				return false;
+			}
+		}
 
 		// fields for the properties above
 		private string name;
-		private List<string> dishCategories;
-		private string dishCategory0;
 		private string dishCategory1;
 		private string dishCategory2;
 		private string dishCategory3;
 		private string dishCategory4;
-		private bool hasDishCategory0;
+		private string dishCategory5;
 		private bool hasDishCategory1;
 		private bool hasDishCategory2;
 		private bool hasDishCategory3;
 		private bool hasDishCategory4;
-
-		/// <summary>
-		/// Static constructor for the shared property DishCategoriesIO
-		/// Also initialize static DishCategories collection
-		/// </summary>
-		static Dish()
-		{
-			DishCategoriesIO = new FileIO(DishCategoriesFileName);
-			DishCategories = DishCategoriesIO.ReadDishCategoriesFromJSON();
-		}
+		private bool hasDishCategory5;
 
 		/// <summary>
 		/// Parameterless constructor for JSON deserialization
@@ -194,6 +162,8 @@ namespace Whats4Dinner.Models.DataStructure
 			// initialize properties
 			Name = name;
 			ThisDishCategories = new List<string>();
+			DishCategoriesIO = new FileIO(dishCategoriesFileName);
+			DishCategories = DishCategoriesIO.ReadDishCategoriesFromJSON();
 		}
 
 		/// <summary>
@@ -206,6 +176,8 @@ namespace Whats4Dinner.Models.DataStructure
 			// initialize properties
 			Name = name;
 			ThisDishCategories = categories;
+			DishCategoriesIO = new FileIO(dishCategoriesFileName);
+			DishCategories = DishCategoriesIO.ReadDishCategoriesFromJSON();
 		}
 	}
 }

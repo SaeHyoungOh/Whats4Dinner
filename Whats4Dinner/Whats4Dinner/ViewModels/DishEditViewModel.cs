@@ -38,19 +38,11 @@ namespace Whats4Dinner.ViewModels
 		public string EntryName { get; set; }
 
 		// DishCategory to display in View
-		public string DishCategory0
-		{
-			get
-			{
-				SetProperty(ref dishCategory0, DishCategories[0]);
-				return dishCategory0;
-			}
-		}
 		public string DishCategory1
 		{
 			get
 			{
-				SetProperty(ref dishCategory1, DishCategories[1]);
+				SetProperty(ref dishCategory1, DishCategories["1"]);
 				return dishCategory1;
 			}
 		}
@@ -58,7 +50,7 @@ namespace Whats4Dinner.ViewModels
 		{
 			get
 			{
-				SetProperty(ref dishCategory2, DishCategories[2]);
+				SetProperty(ref dishCategory2, DishCategories["2"]);
 				return dishCategory2;
 			}
 		}
@@ -66,7 +58,7 @@ namespace Whats4Dinner.ViewModels
 		{
 			get
 			{
-				SetProperty(ref dishCategory3, DishCategories[3]);
+				SetProperty(ref dishCategory3, DishCategories["3"]);
 				return dishCategory3;
 			}
 		}
@@ -74,23 +66,31 @@ namespace Whats4Dinner.ViewModels
 		{
 			get
 			{
-				SetProperty(ref dishCategory4, DishCategories[4]);
+				SetProperty(ref dishCategory4, DishCategories["4"]);
 				return dishCategory4;
 			}
 		}
 		// fields for the properties above
-		private string dishCategory0;
+		public string DishCategory5
+		{
+			get
+			{
+				SetProperty(ref dishCategory5, DishCategories["5"]);
+				return dishCategory5;
+			}
+		}
 		private string dishCategory1;
 		private string dishCategory2;
 		private string dishCategory3;
 		private string dishCategory4;
+		private string dishCategory5;
 
 		// dish category checkboxes to display in the view, two-way
-		public bool DishCategoryCheckBox0 { get; set; }
 		public bool DishCategoryCheckBox1 { get; set; }
 		public bool DishCategoryCheckBox2 { get; set; }
 		public bool DishCategoryCheckBox3 { get; set; }
 		public bool DishCategoryCheckBox4 { get; set; }
+		public bool DishCategoryCheckBox5 { get; set; }
 
 		/// <summary>
 		/// List of Dish Categories built from the user input
@@ -115,11 +115,11 @@ namespace Whats4Dinner.ViewModels
 		{
 			// build the dish category list
 			InputDishCategories = new List<string>();
-			if (DishCategoryCheckBox0) InputDishCategories.Add(DishCategories[0]);
-			if (DishCategoryCheckBox1) InputDishCategories.Add(DishCategories[1]);
-			if (DishCategoryCheckBox2) InputDishCategories.Add(DishCategories[2]);
-			if (DishCategoryCheckBox3) InputDishCategories.Add(DishCategories[3]);
-			if (DishCategoryCheckBox4) InputDishCategories.Add(DishCategories[4]);
+			if (DishCategoryCheckBox1) InputDishCategories.Add(DishCategories["1"]);
+			if (DishCategoryCheckBox2) InputDishCategories.Add(DishCategories["2"]);
+			if (DishCategoryCheckBox3) InputDishCategories.Add(DishCategories["3"]);
+			if (DishCategoryCheckBox4) InputDishCategories.Add(DishCategories["4"]);
+			if (DishCategoryCheckBox5) InputDishCategories.Add(DishCategories["5"]);
 
 			// if the page is opened to create a new dish, add the dish to the database
 			if (SelectedDish == null)
@@ -269,6 +269,8 @@ namespace Whats4Dinner.ViewModels
 			this.IsFromDB = IsFromDB;
 			UserDataIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
+			DishCategoriesIO = new FileIO(dishCategoriesFileName);
+			DishCategories = DishCategoriesIO.ReadDishCategoriesFromJSON();
 			this.DishDB = DishDB;
 
 			// if creating a new dish, initialize an empty form
@@ -276,18 +278,18 @@ namespace Whats4Dinner.ViewModels
 			{
 				Title = "Add a Dish";
 				EntryName = "";
-				DishCategoryCheckBox0 = DishCategoryCheckBox1 = DishCategoryCheckBox2 = DishCategoryCheckBox3 = DishCategoryCheckBox4 = false;
+				DishCategoryCheckBox1 = DishCategoryCheckBox2 = DishCategoryCheckBox3 = DishCategoryCheckBox4 = DishCategoryCheckBox5 = false;
 			}
 			// if editing a dish, pre-fill the form with the existing data
 			else
 			{
 				Title = "Edit Dish";
 				EntryName = SelectedDish.Name;
-				DishCategoryCheckBox0 = SelectedDish.HasDishCategory0;
 				DishCategoryCheckBox1 = SelectedDish.HasDishCategory1;
 				DishCategoryCheckBox2 = SelectedDish.HasDishCategory2;
 				DishCategoryCheckBox3 = SelectedDish.HasDishCategory3;
 				DishCategoryCheckBox4 = SelectedDish.HasDishCategory4;
+				DishCategoryCheckBox5 = SelectedDish.HasDishCategory5;
 			}
 
 			// initialize commands

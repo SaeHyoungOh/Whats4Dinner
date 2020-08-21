@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IX.Observable;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Text.Json;
 using Whats4Dinner.Models.DataStructure;
 using Xamarin.Forms;
-using static Whats4Dinner.Models.DataStructure.Dish;
 
 namespace Whats4Dinner.Models
 {
@@ -76,11 +76,15 @@ namespace Whats4Dinner.Models
 		}
 
 		/// <summary>
-		/// Write Dish Categories to JSON file
+		/// Sort and write Dish Categories to JSON file
 		/// </summary>
 		/// <param name="DishCategories"></param>
-		public void WriteDishCategoriesToJSON(List<string> DishCategories)
+		public void WriteDishCategoriesToJSON(Dictionary<string, string> DishCategories)
 		{
+			// sort the dictionary by Key
+			// reference: https://stackoverflow.com/questions/289/how-do-you-sort-a-dictionary-by-value
+			DishCategories = DishCategories.OrderBy(pair => pair.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
+
 			// save to file
 			string jsonString = JsonSerializer.Serialize(DishCategories, serializeOptions);
 			File.WriteAllText(FilePath, jsonString);
@@ -135,25 +139,25 @@ namespace Whats4Dinner.Models
 		/// Read Dish Categories from JSON file and return it
 		/// </summary>
 		/// <returns></returns>
-		public List<string> ReadDishCategoriesFromJSON()
+		public Dictionary<string, string> ReadDishCategoriesFromJSON()
 		{
-			List<string> result;
+			Dictionary<string, string> result;
 
 			if (File.Exists(FilePath))
 			{
 				string jsonString = File.ReadAllText(FilePath);
-				result = JsonSerializer.Deserialize<List<string>>(jsonString, serializeOptions);
+				result = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString, serializeOptions);
 			}
 			// return a pre-made list if file does not exist
 			else
 			{
-				result = new List<string>
+				result = new Dictionary<string, string>
 				{
-					"Grain",
-					"Veggi",
-					"Prote",
-					"Condi",
-					"Drink"
+					{ "1", "Grain" },
+					{ "2", "Veggi" },
+					{ "3", "Prote" },
+					{ "4", "Condi" },
+					{ "5", "Drink" }
 				};
 			}
 

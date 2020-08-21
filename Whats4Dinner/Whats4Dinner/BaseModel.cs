@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Whats4Dinner.Models;
 
 namespace Whats4Dinner
 {
@@ -10,6 +12,29 @@ namespace Whats4Dinner
 	/// </summary>
 	public class BaseModel : INotifyPropertyChanged
 	{
+		/// <summary>
+		/// List of categories a dish can have
+		/// </summary>
+		public Dictionary<string, string> DishCategories
+		{
+			get => dishCategories;
+			set
+			{
+				SetProperty(ref dishCategories, value);
+			}
+		}
+		protected Dictionary<string, string> dishCategories;
+
+		/// <summary>
+		/// The file name for storing the dish categories
+		/// </summary>
+		protected readonly string dishCategoriesFileName = "DishCategories.json";
+
+		/// <summary>
+		/// FileIO object to handle dish database I/O
+		/// </summary>
+		protected FileIO DishCategoriesIO { get; set; }
+
 		/// <summary>
 		/// A replacement for the default "set" method for class property
 		/// reference: Microsoft Documents

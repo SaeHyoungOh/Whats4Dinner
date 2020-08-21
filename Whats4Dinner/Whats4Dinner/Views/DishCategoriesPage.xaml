@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 x:Class="Whats4Dinner.Views.DishCategoriesPage"
+			 Title="{Binding Title}">
+
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="baseLabelStyle" TargetType="Label">
+				<Setter Property="FontFamily" Value="Arial"/>
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
+			</Style>
+			<Style x:Key="ListItemTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="20"/>
+				<Setter Property="TextColor" Value="Black"/>
+			</Style>
+			<Style x:Key="ListItemDetailTextStyle"
+				   TargetType="Label"
+				   BasedOn="{StaticResource baseLabelStyle}">
+				<Setter Property="FontSize" Value="14"/>
+				<Setter Property="TextColor" Value="#646464"/>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+
+	<RefreshView>
+		<ListView ItemsSource="{Binding DishCategories}"
+				  HasUnevenRows="True"
+				  Margin="5, 5, 5, 5"
+				  ItemTapped="ListView_ItemTapped">
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<StackLayout>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<Label Text="{Binding Key}"
+									   Style="{DynamicResource ListItemTextStyle}"/>
+								<Label Text="{Binding Value}"
+									   Style="{DynamicResource ListItemTextStyle}"/>
+							</Grid>
+						</StackLayout>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</RefreshView>
+</ContentPage>

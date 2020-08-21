@@ -45,7 +45,7 @@ namespace Whats4Dinner.ViewModels
 							/// </summary>
 		public string Title
 		{
-			get { return title; }
+			get => title;
 			set { SetProperty(ref title, value); }
 		}
 
@@ -54,7 +54,7 @@ namespace Whats4Dinner.ViewModels
 		/// </summary>
 		public bool IsBusy
 		{
-			get { return isBusy; }
+			get => isBusy;
 			set { SetProperty(ref isBusy, value); }
 		}
 

@@ -7,6 +7,8 @@ using Xamarin.Forms.Xaml;
 
 using Whats4Dinner.Models;
 using Whats4Dinner.ViewModels;
+using System.Collections.ObjectModel;
+using Whats4Dinner.Models.DataStructure;
 
 namespace Whats4Dinner.Views
 {
@@ -49,6 +51,14 @@ namespace Whats4Dinner.Views
 				{
 					case MenuItemType.SevenDayView:
 						MenuPages.Add(id, new NavigationPage(new SevenDayPage()));
+						break;
+					case MenuItemType.DishDB:
+						FileIO UserDataIO = new FileIO("UserData.json");
+						ObservableCollection<Day> DisplayDays = UserDataIO.ReadUserDataFromJSON();
+						MenuPages.Add(id, new NavigationPage(new DishDBPage(DisplayDays, null, null)));
+						break;
+					case MenuItemType.DishCategories:
+						MenuPages.Add(id, new NavigationPage(new DishCategoriesPage()));
 						break;
 					case MenuItemType.About:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));
