@@ -86,11 +86,11 @@ namespace Whats4Dinner.ViewModels
 		private void AddDishExecute(Dish SelectedDish)
 		{
 			SelectedMeal.AddDish(SelectedDish.Name, SelectedDish.ThisDishCategories);
-			if (!UserData.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
+			if (!UserDays.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
 			{
-				UserData.Add(SelectedDay);
+				UserDays.Add(SelectedDay);
 			}
-			UserDataIO.WriteUserDataToJSON(UserData);
+			UserDaysIO.WriteUserDaysToJSON(UserDays);
 		}
 
 		/// <summary>
@@ -189,16 +189,17 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Constructor for DishDBViewModel
 		/// </summary>
-		/// <param name="UserData"></param>
+		/// <param name="UserDays"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
-		public DishDBViewModel(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal)
+		public DishDBViewModel(Dictionary<string, object> UserData)
 		{
 			// initialize properties
 			this.UserData = UserData;
-			this.SelectedDay = SelectedDay;
-			this.SelectedMeal = SelectedMeal;
-			UserDataIO = new FileIO(userFileName);
+			UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			SelectedDay = (Day)UserData["SelectedDay"];
+			SelectedMeal = (Meal)UserData["SelectedMeal"];
+			UserDaysIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
 			Title = "Choose a Dish";
 			Query = "";

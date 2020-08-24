@@ -19,7 +19,7 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// The file name for storing the user data
 		/// </summary>
-		protected static readonly string userFileName = "UserData.json";
+		protected static readonly string userFileName = "UserDays.json";
 
 		/// <summary>
 		/// The file name for storing the dish database
@@ -29,12 +29,12 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// DelegateCommand (from Prism) to use in View when refreshing
 		/// </summary>
-		public DelegateCommand<MenuItemType> LoadItemsCommand { get; set; }
+		public DelegateCommand<MenuItemType?> LoadItemsCommand { get; set; }
 
 		/// <summary>
 		/// FileIO object to handle user data I/O
 		/// </summary>
-		protected FileIO UserDataIO { get; set; }
+		protected FileIO UserDaysIO { get; set; }
 
 		/// <summary>
 		/// FileIO object to handle dish database I/O
@@ -65,6 +65,11 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
+		/// List of all the meals in user data
+		/// </summary>
+		public ObservableCollection<Day> UserDays { get; set; }
+
+		/// <summary>
 		/// List of all the Days and their Meals and Dishes
 		/// </summary>
 		public ObservableCollection<Day> DisplayDays
@@ -75,11 +80,6 @@ namespace Whats4Dinner.ViewModels
 				SetProperty(ref displayDays, value);
 			}
 		}
-
-		/// <summary>
-		/// List of all the meals in user data
-		/// </summary>
-		public ObservableCollection<Day> UserData { get; set; }
 
 		/// <summary>
 		/// List of Dishes already created before
@@ -99,13 +99,15 @@ namespace Whats4Dinner.ViewModels
 		private ObservableCollection<Day> displayDays;
 		private ObservableCollection<Dish> dishDB;
 
+		public Dictionary<string, object> UserData { get; set; }
+
 		/// <summary>
 		/// Fill the DisplayDays from user data read from file
 		/// </summary>
-		/// <param name="UserData"></param>
-		protected void FillDisplayDays(MenuItemType menuItemType)
+		/// <param name="UserDays"></param>
+		protected void FillDisplayDays(MenuItemType? menuItemType)
 		{
-			if (UserData == null)
+			if (UserDays == null)
 			{
 				return;
 			}
@@ -114,44 +116,44 @@ namespace Whats4Dinner.ViewModels
 			{
 				DateTime today = DateTime.Today;
 				int i = 0,	// number of days to fill (7 days)
-					j = 0;	// UserData index to iterate
+					j = 0;	// UserDays index to iterate
 
 				while (i < 7)
 				{
-					DateTime userDataDate, currentDate = today.AddDays(i);
+					DateTime UserDaysDate, currentDate = today.AddDays(i);
 
 					// prevent j from going out of bounds
-					if (j < UserData.Count)
+					if (j < UserDays.Count)
 					{
-						userDataDate = UserData[j].ThisDate;
+						UserDaysDate = UserDays[j].ThisDate;
 					}
 					else
 					{
-						userDataDate = today.AddDays(7);
+						UserDaysDate = today.AddDays(7);
 					}
 
 					// if we run out of data from file, fill days with blanks
-					if (j > UserData.Count - 1 || userDataDate > today.AddDays(6))
+					if (j > UserDays.Count - 1 || UserDaysDate > today.AddDays(6))
 					{
 						DisplayDays.Add(new Day(currentDate));
 						i++;
 					}
 					// skip until today
-					else if (userDataDate < currentDate)
+					else if (UserDaysDate < currentDate)
 					{
 						j++;
 					}
 					// use the day if date matches
-					else if (userDataDate == currentDate)
+					else if (UserDaysDate == currentDate)
 					{
-						DisplayDays.Add(UserData[j]);
+						DisplayDays.Add(UserDays[j]);
 						j++;
 						i++;
 					}
 					// fill the between days with empty day
-					else if (userDataDate <= today.AddDays(6))
+					else if (UserDaysDate <= today.AddDays(6))
 					{
-						int emptyDays = (userDataDate - currentDate).Days;
+						int emptyDays = (UserDaysDate - currentDate).Days;
 						for (int k = 0; k < emptyDays; k++)
 						{
 							DisplayDays.Add(new Day(currentDate));
@@ -161,7 +163,7 @@ namespace Whats4Dinner.ViewModels
 					// ignore all dates after the 7 days
 					else
 					{
-						j = UserData.Count;
+						j = UserDays.Count;
 					}
 				}
 			}
@@ -171,16 +173,17 @@ namespace Whats4Dinner.ViewModels
 		/// Replace the DisplayDays with new data from the file
 		/// (to be made asyncronous when using database)
 		/// </summary>
-		protected void ExecuteLoadItemsCommand(MenuItemType menuItemType)
+		protected void ExecuteLoadItemsCommand(MenuItemType? menuItemType)
 		{
 			IsBusy = true;
 
 			try
 			{
-				UserData.Clear();
+				UserDays.Clear();
+				DisplayDays.Clear();
 
 				// read user's data from JSON file
-				UserData = UserDataIO.ReadUserDataFromJSON();
+				UserDays = UserDaysIO.ReadUserDaysFromJSON();
 
 				// fill the week with days
 				FillDisplayDays(menuItemType);

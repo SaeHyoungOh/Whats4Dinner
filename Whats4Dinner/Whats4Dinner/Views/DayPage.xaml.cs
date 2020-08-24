@@ -14,23 +14,19 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DayPage : ContentPage
 	{
-		private ObservableCollection<Day> UserData;
-		private Day SelectedDay;
+		private Dictionary<string, object> UserData;
 
 		/// <summary>
 		/// Cosntructor for DayPage; initializes properties
 		/// </summary>
-		/// <param name="UserData"></param>
-		/// <param name="SelectedDay"></param>
-		public DayPage(ObservableCollection<Day> UserData, Day SelectedDay)
+		public DayPage(Dictionary<string, object> UserData)
 		{
 			// initialize properties
 			this.UserData = UserData;
-			this.SelectedDay = SelectedDay;
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = new DayViewModel(UserData, SelectedDay);
+			BindingContext = new DayViewModel(UserData);
 		}
 
 		/// <summary>
@@ -44,8 +40,8 @@ namespace Whats4Dinner.Views
 				return;
 
 			// get the selected Meal, and navigate to its MealPage
-			Meal SelectedMeal = (Meal)((ListView)sender).SelectedItem;
-			await Navigation.PushAsync(new MealPage(UserData, SelectedDay, SelectedMeal));
+			UserData.Add("SelectedMeal", (Meal)((ListView)sender).SelectedItem);
+			await Navigation.PushAsync(new MealPage(UserData));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;

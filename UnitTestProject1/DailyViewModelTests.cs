@@ -18,7 +18,7 @@ namespace UnitTestProject1
 			SevenDayViewModel testDailyViewModel = new SevenDayViewModel();
 
 			// Assert
-			Assert.AreEqual(7, testDailyViewModel.UserData.Count);
+			Assert.AreEqual(7, testDailyViewModel.UserDays.Count);
 		}
 
 		[TestMethod]
@@ -31,7 +31,7 @@ namespace UnitTestProject1
 			SevenDayViewModel testDailyViewModel = new SevenDayViewModel();
 
 			// Assert
-			Assert.AreEqual(today, testDailyViewModel.UserData[0].DisplayDayOfWeek);
+			Assert.AreEqual(today, testDailyViewModel.UserDays[0].DisplayDayOfWeek);
 		}
 	}
 }

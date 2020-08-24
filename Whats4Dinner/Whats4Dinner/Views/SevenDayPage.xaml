@@ -4,6 +4,7 @@
 			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:Whats4Dinner.ViewModels"
+			 xmlns:model="clr-namespace:Whats4Dinner.Models"
 			 mc:Ignorable="d"
 			 x:Class="Whats4Dinner.Views.SevenDayPage"
 			 Title="{Binding Title}">
@@ -33,7 +34,7 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
-	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
+	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}" CommandParameter="{x:Static model:MenuItemType.SevenDayView}">
 		<ListView x:Name="Days"
 				  HasUnevenRows="True"
 				  VerticalOptions="FillAndExpand"

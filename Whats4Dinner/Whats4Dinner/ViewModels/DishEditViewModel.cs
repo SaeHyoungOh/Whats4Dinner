@@ -152,7 +152,7 @@ namespace Whats4Dinner.ViewModels
 				else
 				{
 					SelectedMeal.EditDish(SelectedDish, EntryName, InputDishCategories);
-					UserDataIO.WriteUserDataToJSON(UserData);
+					UserDaysIO.WriteUserDaysToJSON(UserDays);
 				}
 			}
 		}
@@ -181,11 +181,11 @@ namespace Whats4Dinner.ViewModels
 		private void AddToMealExecute()
 		{
 			SelectedMeal.AddDish(EntryName, InputDishCategories);
-			if (!UserData.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
+			if (!UserDays.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
 			{
-				UserData.Add(SelectedDay);
+				UserDays.Add(SelectedDay);
 			}
-			UserDataIO.WriteUserDataToJSON(UserData);
+			UserDaysIO.WriteUserDaysToJSON(UserDays);
 		}
 
 		/// <summary>
@@ -198,7 +198,7 @@ namespace Whats4Dinner.ViewModels
 			// if DishDB is edited, update all cases of the dish in the user data, today and later
 			if (IsFromDB)
 			{
-				foreach (Day day in UserData)
+				foreach (Day day in UserDays)
 				{
 					if (day.ThisDate >= DateTime.Today)
 					{
@@ -215,7 +215,7 @@ namespace Whats4Dinner.ViewModels
 						}
 					}
 				}
-				UserDataIO.WriteUserDataToJSON(UserData);
+				UserDaysIO.WriteUserDaysToJSON(UserDays);
 			}
 			// if the Dish in the Meal was edited, update the Dish in the database
 			else
@@ -259,19 +259,20 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Constructor for AddDishViewModel class
 		/// </summary>
-		/// <param name="UserData"></param>
+		/// <param name="UserDays"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
 		/// <param name="SelectedDish"></param>
-		public DishEditViewModel(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
+		public DishEditViewModel(Dictionary<string, object> UserData, bool IsFromDB = false)
 		{
 			// initialize properties
 			this.UserData = UserData;
-			this.SelectedDay = SelectedDay;
-			this.SelectedMeal = SelectedMeal;
-			this.SelectedDish = SelectedDish;
+			UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			SelectedDay = (Day)UserData["SelectedDay"];
+			SelectedMeal = (Meal)UserData["SelectedMeal"];
+			SelectedDish = (Dish)UserData["SelectedDish"];
 			this.IsFromDB = IsFromDB;
-			UserDataIO = new FileIO(userFileName);
+			UserDaysIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
 			DishDB = DishDBIO.ReadDishesFromJSON();
 			DishCategoriesIO = new FileIO(dishCategoriesFileName);

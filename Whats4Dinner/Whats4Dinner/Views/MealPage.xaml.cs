@@ -8,6 +8,7 @@ using Whats4Dinner.ViewModels;
 using Whats4Dinner.Models.DataStructure;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Collections.Generic;
 
 namespace Whats4Dinner.Views
 {
@@ -17,26 +18,19 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MealPage : ContentPage
 	{
-		ObservableCollection<Day> UserData;
-		Day SelectedDay;
-		Meal SelectedMeal;
+		private Dictionary<string, object> UserData;
 
 		/// <summary>
 		/// Cosntructor for MealPage; initializes properties
 		/// </summary>
-		/// <param name="UserData"></param>
-		/// <param name="SelectedDay"></param>
-		/// <param name="SelectedMeal"></param>
-		public MealPage(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal)
+		public MealPage(Dictionary<string, object> UserData)
 		{
 			// initialize properties
 			this.UserData = UserData;
-			this.SelectedDay = SelectedDay;
-			this.SelectedMeal = SelectedMeal;
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = new MealViewModel(UserData, SelectedDay, SelectedMeal);
+			BindingContext = new MealViewModel(UserData);
 		}
 
 		/// <summary>
@@ -47,7 +41,7 @@ namespace Whats4Dinner.Views
 		private async void AddItem_Clicked(object sender, EventArgs e)
 		{
 			// navigate to dish db page
-			await Navigation.PushAsync(new DishDBPage(UserData, SelectedDay, SelectedMeal));
+			await Navigation.PushAsync(new DishDBPage(UserData));
 		}
 
 		/// <summary>
@@ -58,13 +52,14 @@ namespace Whats4Dinner.Views
 		private async void DishCategories_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
+			UserData.Add("SelectedDish", selectedDish);
 
 			// ask for action
 			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Remove", "Edit");
 
 			if (action == "Edit")
 			{
-				await Navigation.PushAsync(new DishEditPage(UserData, SelectedDay, SelectedMeal, selectedDish));
+				await Navigation.PushAsync(new DishEditPage(UserData));
 			}
 			else if (action == "Remove")
 			{

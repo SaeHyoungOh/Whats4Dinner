@@ -32,11 +32,10 @@ namespace Whats4Dinner.Views
 				return;
 			// get the data from ViewModel
 			SevenDayViewModel viewModel = (SevenDayViewModel)BindingContext;
-			ObservableCollection<Day> UserData = viewModel.UserData;
-			Day SelectedDay = (Day)((ListView)sender).SelectedItem;
+			viewModel.UserData.Add("SelectedDay", (Day)((ListView)sender).SelectedItem);
 
 			// Navigate to the DayPage
-			await Navigation.PushAsync(new DayPage(UserData, SelectedDay));
+			await Navigation.PushAsync(new DayPage(viewModel.UserData));
 
 
 			//Deselect Item

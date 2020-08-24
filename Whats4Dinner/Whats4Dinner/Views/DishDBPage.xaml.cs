@@ -21,27 +21,20 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishDBPage : ContentPage
 	{
-		ObservableCollection<Day> UserData;
-		Day SelectedDay;
-		Meal SelectedMeal;
-		DishDBViewModel viewModel;
+		private Dictionary<string, object> UserData;
+		private DishDBViewModel viewModel;
 
 		/// <summary>
 		/// Cosntructor for DishDBPage; initializes properties
 		/// </summary>
-		/// <param name="UserData"></param>
-		/// <param name="SelectedDay"></param>
-		/// <param name="SelectedMeal"></param>
-		public DishDBPage(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal)
+		public DishDBPage(Dictionary<string, object> UserData)
 		{
 			// initialize properties
 			this.UserData = UserData;
-			this.SelectedDay = SelectedDay;
-			this.SelectedMeal = SelectedMeal;
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = viewModel = new DishDBViewModel(UserData, SelectedDay, SelectedMeal);
+			BindingContext = viewModel = new DishDBViewModel(UserData);
 		}
 
 		/// <summary>
@@ -61,7 +54,7 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private void CreateItem_Clicked(object sender, EventArgs e)
 		{
-			Navigation.PushAsync(new DishEditPage(UserData, SelectedDay, SelectedMeal, null, true));
+			Navigation.PushAsync(new DishEditPage(UserData, true));
 		}
 
 		/// <summary>
@@ -72,10 +65,11 @@ namespace Whats4Dinner.Views
 		private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
-			string action;
+			UserData.Add("SelectedDish", selectedDish);
 
 			// ask for action
-			if (SelectedMeal == null)
+			string action;
+			if (UserData["SelectedMeal"] == null)
 			{
 				action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Edit", "Delete");
 			}
@@ -92,7 +86,7 @@ namespace Whats4Dinner.Views
 			// edit the selected Dish in the DishDB
 			else if (action == "Edit")
 			{
-				await Navigation.PushAsync(new DishEditPage(UserData, SelectedDay, SelectedMeal, selectedDish, true));
+				await Navigation.PushAsync(new DishEditPage(UserData, true));
 			}
 			// delete the selected Dish from the DishDB
 			else if (action == "Delete")

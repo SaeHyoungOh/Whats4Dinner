@@ -104,7 +104,7 @@ namespace Whats4Dinner.ViewModels
 			SelectedMeal.RemoveDish(SelectedDish);
 
 			// and save to file
-			UserDataIO.WriteUserDataToJSON(UserData);
+			UserDaysIO.WriteUserDaysToJSON(UserDays);
 		}
 
 		/// <summary>
@@ -123,17 +123,16 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Constructor for MealViewModel
 		/// </summary>
-		/// <param name="selected">selected Meal from MealPage</param>
-		/// <param name="previousTitle">Title from MealPage</param>
-		public MealViewModel(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal)
+		public MealViewModel(Dictionary<string, object> UserData)
 		{
 			// initialize properties
 			this.UserData = UserData;
-			this.SelectedDay = SelectedDay;
-			this.SelectedMeal = SelectedMeal;
+			UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			SelectedDay = (Day)UserData["SelectedDay"];
+			SelectedMeal = (Meal)UserData["SelectedMeal"];
 			DisplayDishes = SelectedMeal.Dishes;
 			Title = SelectedMeal.ThisMealType.ToString() + ", " + SelectedDay.DisplayDayOfWeek + " " + SelectedDay.DisplayDate;
-			UserDataIO = new FileIO(userFileName);
+			UserDaysIO = new FileIO(userFileName);
 
 			// initialize commands
 			RemoveButtonClick = new DelegateCommand<Dish>(RemoveButtonExecute, RemoveButtonCanExecute);

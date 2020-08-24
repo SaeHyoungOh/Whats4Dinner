@@ -53,9 +53,13 @@ namespace Whats4Dinner.Views
 						MenuPages.Add(id, new NavigationPage(new SevenDayPage()));
 						break;
 					case MenuItemType.DishDB:
-						FileIO UserDataIO = new FileIO("UserData.json");
-						ObservableCollection<Day> DisplayDays = UserDataIO.ReadUserDataFromJSON();
-						MenuPages.Add(id, new NavigationPage(new DishDBPage(DisplayDays, null, null)));
+						FileIO UserDaysIO = new FileIO("UserDays.json");
+						ObservableCollection<Day> UserDays = UserDaysIO.ReadUserDaysFromJSON();
+						Dictionary<string, object> UserData = new Dictionary<string, object>
+						{
+							{ "UserDays", UserDays }
+						};
+						MenuPages.Add(id, new NavigationPage(new DishDBPage(UserData)));
 						break;
 					case MenuItemType.DishCategories:
 						MenuPages.Add(id, new NavigationPage(new DishCategoriesPage()));

@@ -18,11 +18,8 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishEditPage : ContentPage
 	{
-		ObservableCollection<Day> UserData;
-		Day SelectedDay;
-		Meal SelectedMeal;
-		Dish SelectedDish;
-		DishEditViewModel viewModel;
+		private Dictionary<string, object> UserData;
+		private DishEditViewModel viewModel;
 		/// <summary>
 		/// Whether this page is created from the DishDB
 		/// </summary>
@@ -31,24 +28,21 @@ namespace Whats4Dinner.Views
 		/// <summary>
 		/// Cosntructor for DishEditPage; initializes properties
 		/// </summary>
-		/// <param name="UserData"></param>
+		/// <param name="UserDays"></param>
 		/// <param name="SelectedDay"></param>
 		/// <param name="SelectedMeal"></param>
 		/// <param name="SelectedDish"></param>
 		/// <param name="IsFromDB"></param>
 		/// <param name="DishDB"></param>
-		public DishEditPage(ObservableCollection<Day> UserData, Day SelectedDay, Meal SelectedMeal, Dish SelectedDish = null, bool IsFromDB = false)
+		public DishEditPage(Dictionary<string, object> UserData, bool IsFromDB = false)
 		{
 			// initialize properties
 			this.UserData = UserData;
-			this.SelectedDay = SelectedDay;
-			this.SelectedMeal = SelectedMeal;
-			this.SelectedDish = SelectedDish;
 			this.IsFromDB = IsFromDB;
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = viewModel = new DishEditViewModel(UserData, SelectedDay, SelectedMeal, SelectedDish, IsFromDB);
+			BindingContext = viewModel = new DishEditViewModel(UserData, IsFromDB);
 		}
 
 		/// <summary>
@@ -71,12 +65,12 @@ namespace Whats4Dinner.Views
 				viewModel.SaveButtonClick.Execute();
 
 				// if added a new dish to the database from a meal view
-				if (SelectedDish == null && SelectedMeal != null)
+				if (UserData["SelectedDish"] == null && UserData["SelectedMeal"] != null)
 				{
 					await AddDishToMealPrompt();
 				}
 				// if edited a dish
-				else if (SelectedDish != null)
+				else if (UserData["SelectedDish"] != null)
 				{
 					await EditDishPrompt();
 				}
@@ -124,7 +118,7 @@ namespace Whats4Dinner.Views
 				}
 			}
 			// if editing the Dish in the Meal, prompt to update the DishDB
-			else if (SelectedMeal != null)
+			else if (UserData["SelectedMeal"] != null)
 			{
 				if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
 				{
