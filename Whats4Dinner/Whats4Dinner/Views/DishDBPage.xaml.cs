@@ -54,6 +54,7 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private void CreateItem_Clicked(object sender, EventArgs e)
 		{
+			UserData.Remove("SelectedDish");
 			Navigation.PushAsync(new DishEditPage(UserData, true));
 		}
 
@@ -69,13 +70,13 @@ namespace Whats4Dinner.Views
 
 			// ask for action
 			string action;
-			if (UserData["SelectedMeal"] == null)
+			if (UserData.ContainsKey("SelectedMeal"))
 			{
-				action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Edit", "Delete");
+				action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Add to meal", "Edit", "Delete");
 			}
 			else
 			{
-				action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Add to meal", "Edit", "Delete");
+				action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Edit", "Delete");
 			}
 
 			// add the selected Dish to the Meal

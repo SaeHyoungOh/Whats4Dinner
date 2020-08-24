@@ -52,6 +52,12 @@ namespace Whats4Dinner.Views
 					case MenuItemType.SevenDayView:
 						MenuPages.Add(id, new NavigationPage(new SevenDayPage()));
 						break;
+					case MenuItemType.WeeklyView:
+						MenuPages.Add(id, new NavigationPage(new AboutPage()));
+						break;
+					case MenuItemType.MonthlyView:
+						MenuPages.Add(id, new NavigationPage(new AboutPage()));
+						break;
 					case MenuItemType.DishDB:
 						FileIO UserDaysIO = new FileIO("UserDays.json");
 						ObservableCollection<Day> UserDays = UserDaysIO.ReadUserDaysFromJSON();
@@ -71,7 +77,7 @@ namespace Whats4Dinner.Views
 			}
 
 			// change the Detail of the MasterDetailPage to the chosen Page
-			var newPage = MenuPages[id];
+			NavigationPage newPage = MenuPages[id];
 
 			if (newPage != null && Detail != newPage)
 			{

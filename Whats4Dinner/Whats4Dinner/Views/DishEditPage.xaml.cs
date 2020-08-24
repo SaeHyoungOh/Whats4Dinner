@@ -65,12 +65,12 @@ namespace Whats4Dinner.Views
 				viewModel.SaveButtonClick.Execute();
 
 				// if added a new dish to the database from a meal view
-				if (UserData["SelectedDish"] == null && UserData["SelectedMeal"] != null)
+				if (UserData.ContainsKey("SelectedMeal") && !UserData.ContainsKey("SelectedDish"))
 				{
 					await AddDishToMealPrompt();
 				}
 				// if edited a dish
-				else if (UserData["SelectedDish"] != null)
+				else if (UserData.ContainsKey("SelectedDish"))
 				{
 					await EditDishPrompt();
 				}
