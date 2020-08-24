@@ -32,8 +32,11 @@ namespace Whats4Dinner.ViewModels
 			FillDisplayDays(PageType);
 
 			// fill data parameter
-			UserData.Add("UserDays", UserDays);
-			UserData.Add("DisplayDays", DisplayDays);
+			UserData = new Dictionary<string, object>
+			{
+				{ "UserDays", UserDays },
+				{ "DisplayDays", DisplayDays }
+			};
 
 			// for refreshing
 			LoadItemsCommand = new DelegateCommand<MenuItemType?>(ExecuteLoadItemsCommand);

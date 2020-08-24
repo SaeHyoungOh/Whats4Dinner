@@ -52,7 +52,7 @@ namespace Whats4Dinner.Views
 		private async void DishCategories_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
 			Dish selectedDish = (Dish)((ListView)sender).SelectedItem;
-			UserData.Add("SelectedDish", selectedDish);
+			UserData["SelectedDish"] = selectedDish;
 
 			// ask for action
 			string action = await DisplayActionSheet(selectedDish.Name, "Cancel", null, "Remove", "Edit");

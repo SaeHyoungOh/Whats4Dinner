@@ -39,7 +39,8 @@ namespace Whats4Dinner.Models.DataStructure
 				{
 					dayString += " (Today)";
 				}
-				return dayString;
+				SetProperty(ref displayDayOfWeek, dayString);
+				return displayDayOfWeek;
 			}
 			set
 			{
@@ -54,7 +55,8 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			get
 			{
-				return ThisDate.Date.ToString("MM/dd/yyyy");
+				SetProperty(ref displayDate, ThisDate.Date.ToString("MM/dd/yyyy"));
+				return displayDate;
 			}
 			set
 			{
@@ -83,10 +85,13 @@ namespace Whats4Dinner.Models.DataStructure
 			{
 				if (Meals.Count > (int)MealType.Breakfast)
 				{
-					return Meals[(int)MealType.Breakfast].HasDishes;
+					SetProperty(ref breakfastCheck, Meals[(int)MealType.Breakfast].HasDishes);
 				}
-
-				return false;
+				else
+				{
+					SetProperty(ref breakfastCheck, false);
+				}
+				return breakfastCheck;
 			}
 			set
 			{
@@ -103,10 +108,13 @@ namespace Whats4Dinner.Models.DataStructure
 			{
 				if (Meals.Count > (int)MealType.Lunch)
 				{
-					return Meals[(int)MealType.Lunch].HasDishes;
+					SetProperty(ref lunchCheck, Meals[(int)MealType.Lunch].HasDishes);
 				}
-
-				return false;
+				else
+				{
+					SetProperty(ref lunchCheck, false);
+				}
+				return lunchCheck;
 			}
 			set
 			{
@@ -123,10 +131,13 @@ namespace Whats4Dinner.Models.DataStructure
 			{
 				if (Meals.Count > (int)MealType.Dinner)
 				{
-					return Meals[(int)MealType.Dinner].HasDishes;
+					SetProperty(ref dinnerCheck, Meals[(int)MealType.Dinner].HasDishes);
 				}
-
-				return false;
+				else
+				{
+					SetProperty(ref dinnerCheck, false);
+				}
+				return dinnerCheck;
 			}
 			set
 			{
@@ -143,10 +154,13 @@ namespace Whats4Dinner.Models.DataStructure
 			{
 				if (Meals.Count > (int)MealType.Other)
 				{
-					return Meals[(int)MealType.Other].HasDishes;
+					SetProperty(ref otherCheck, Meals[(int)MealType.Other].HasDishes);
 				}
-
-				return false;
+				else
+				{
+					SetProperty(ref otherCheck, false);
+				}
+				return otherCheck;
 			}
 			set
 			{
@@ -182,7 +196,7 @@ namespace Whats4Dinner.Models.DataStructure
 				{
 					mealString += "(Not planned)";
 				}
-
+				SetProperty(ref displayBreakfast, mealString);
 				return mealString;
 			}
 			set
@@ -219,7 +233,7 @@ namespace Whats4Dinner.Models.DataStructure
 				{
 					mealString += "(Not planned)";
 				}
-
+				SetProperty(ref displayLunch, mealString);
 				return mealString;
 			}
 			set
@@ -255,7 +269,7 @@ namespace Whats4Dinner.Models.DataStructure
 				{
 					mealString += "(Not planned)";
 				}
-
+				SetProperty(ref displayDinner, mealString);
 				return mealString;
 			}
 			set
@@ -292,7 +306,7 @@ namespace Whats4Dinner.Models.DataStructure
 				{
 					mealString += "(Not planned)";
 				}
-
+				SetProperty(ref displayOther, mealString);
 				return mealString;
 			}
 			set
@@ -302,7 +316,7 @@ namespace Whats4Dinner.Models.DataStructure
 		}
 
 		/// <summary>
-		/// Whether the day as any meals
+		/// Whether the day as any meals, used in FileIO
 		/// </summary>
 		public bool HasMeals
 		{

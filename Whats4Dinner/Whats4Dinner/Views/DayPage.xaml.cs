@@ -40,7 +40,7 @@ namespace Whats4Dinner.Views
 				return;
 
 			// get the selected Meal, and navigate to its MealPage
-			UserData.Add("SelectedMeal", (Meal)((ListView)sender).SelectedItem);
+			UserData["SelectedMeal"] = (Meal)((ListView)sender).SelectedItem;
 			await Navigation.PushAsync(new MealPage(UserData));
 
 			//Deselect Item

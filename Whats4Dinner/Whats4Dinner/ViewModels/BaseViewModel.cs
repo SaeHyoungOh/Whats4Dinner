@@ -156,7 +156,7 @@ namespace Whats4Dinner.ViewModels
 						int emptyDays = (UserDaysDate - currentDate).Days;
 						for (int k = 0; k < emptyDays; k++)
 						{
-							DisplayDays.Add(new Day(currentDate));
+							DisplayDays.Add(new Day(currentDate.AddDays(k)));
 							i++;
 						}
 					}

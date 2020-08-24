@@ -32,7 +32,7 @@ namespace Whats4Dinner.Views
 				return;
 			// get the data from ViewModel
 			SevenDayViewModel viewModel = (SevenDayViewModel)BindingContext;
-			viewModel.UserData.Add("SelectedDay", (Day)((ListView)sender).SelectedItem);
+			viewModel.UserData["SelectedDay"] = (Day)((ListView)sender).SelectedItem;
 
 			// Navigate to the DayPage
 			await Navigation.PushAsync(new DayPage(viewModel.UserData));
