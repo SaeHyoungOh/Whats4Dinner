@@ -18,6 +18,7 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainPage : MasterDetailPage
 	{
+		MainViewModel viewModel;
 		/// <summary>
 		/// List of Pages user can navigate to from the MenuPage
 		/// </summary>
@@ -30,10 +31,12 @@ namespace Whats4Dinner.Views
 		{
 			InitializeComponent();
 
+			BindingContext = viewModel = new MainViewModel();
+
 			MasterBehavior = MasterBehavior.Popover;
 
 			// the Detail of the MasterDetailPage displays the main content - set as the SevenDayPage
-			Detail = new NavigationPage(new SevenDayPage());
+			Detail = new NavigationPage(new SevenDayPage(viewModel.UserData));
 			MenuPages.Add(MenuItemType.SevenDayView, (NavigationPage)Detail);
 		}
 
@@ -50,7 +53,7 @@ namespace Whats4Dinner.Views
 				switch (id)
 				{
 					case MenuItemType.SevenDayView:
-						MenuPages.Add(id, new NavigationPage(new SevenDayPage()));
+						MenuPages.Add(id, new NavigationPage(new SevenDayPage(viewModel.UserData)));
 						break;
 					case MenuItemType.WeeklyView:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));
@@ -59,16 +62,10 @@ namespace Whats4Dinner.Views
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));
 						break;
 					case MenuItemType.DishDB:
-						FileIO UserDaysIO = new FileIO("UserDays.json");
-						ObservableCollection<Day> UserDays = UserDaysIO.ReadUserDaysFromJSON();
-						Dictionary<string, object> UserData = new Dictionary<string, object>
-						{
-							{ "UserDays", UserDays }
-						};
-						MenuPages.Add(id, new NavigationPage(new DishDBPage(UserData)));
+						MenuPages.Add(id, new NavigationPage(new DishDBPage(viewModel.UserData)));
 						break;
 					case MenuItemType.DishCategories:
-						MenuPages.Add(id, new NavigationPage(new DishCategoriesPage()));
+						MenuPages.Add(id, new NavigationPage(new DishCategoriesPage(viewModel.UserData)));
 						break;
 					case MenuItemType.About:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));

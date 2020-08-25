@@ -349,7 +349,7 @@ namespace Whats4Dinner.Models.DataStructure
 		/// Constructor for Day
 		/// </summary>
 		/// <param name="date"></param>
-		public Day(DateTime date)
+		public Day(DateTime date, Dictionary<string, object> UserData)
 		{
 			// initialize properties
 			ThisDate = date;
@@ -358,7 +358,7 @@ namespace Whats4Dinner.Models.DataStructure
 			// add type names to the Meals
 			foreach (MealType mealType in (MealType[])Enum.GetValues(typeof(MealType)))
 			{
-				Meals.Add(new Meal(mealType));
+				Meals.Add(new Meal(mealType, UserData));
 			}
 		}
 	}

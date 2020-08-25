@@ -196,17 +196,14 @@ namespace Whats4Dinner.ViewModels
 		{
 			// initialize properties
 			this.UserData = UserData;
-			UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			if (UserData.ContainsKey("UserDays")) { UserDays = (ObservableCollection<Day>)UserData["UserDays"]; }
 			if (UserData.ContainsKey("SelectedDay")) { SelectedDay = (Day)UserData["SelectedDay"]; }
 			if (UserData.ContainsKey("SelectedMeal")) { SelectedMeal = (Meal)UserData["SelectedMeal"]; }
+			if (UserData.ContainsKey("DishDB")) { DishDB = (ObservableCollection<Dish>)UserData["DishDB"]; }
 			UserDaysIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
 			Title = "Choose a Dish";
 			Query = "";
-
-			// get the Dish database from file
-			DishDB = DishDBIO.ReadDishesFromJSON();
-			UserData["DishDB"] = DishDB;
 			SearchResult = DishDB;
 
 			// initialize commands

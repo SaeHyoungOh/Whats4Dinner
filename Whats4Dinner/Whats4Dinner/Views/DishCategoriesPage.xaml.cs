@@ -15,11 +15,16 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishCategoriesPage : ContentPage
 	{
-		public DishCategoriesPage()
+		private Dictionary<string, object> UserData;
+		private DishCategoriesViewModel viewModel;
+
+		public DishCategoriesPage(Dictionary<string, object> UserData)
 		{
+			this.UserData = UserData;
+
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = new DishCategoriesViewModel();
+			BindingContext = viewModel = new DishCategoriesViewModel(UserData);
 		}
 
 		/// <summary>
@@ -29,37 +34,44 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
 		{
-			KeyValuePair<int, string> dishCategory = (KeyValuePair<int, string>)((ListView)sender).SelectedItem;
+			KeyValuePair<string, string> dishCategory = (KeyValuePair<string, string>)((ListView)sender).SelectedItem;
 
 			// user prompt for action
 			string action;
-			if (dishCategory.Key == 1)
+			if (dishCategory.Key == "1")
 			{
-				action = await DisplayActionSheet(null, "Cancel", null, "Edit", "Move Down");
+				action = await DisplayActionSheet(dishCategory.Value, "Cancel", null, "Edit", "Move Down");
 			}
-			else if (dishCategory.Key == 5)
+			else if (dishCategory.Key == "5")
 			{
-				action = await DisplayActionSheet(null, "Cancel", null, "Edit", "Move Up");
+				action = await DisplayActionSheet(dishCategory.Value, "Cancel", null, "Edit", "Move Up");
 			}
 			else
 			{
-				action = await DisplayActionSheet(null, "Cancel", null, "Edit", "Move Up", "Move Down");
+				action = await DisplayActionSheet(dishCategory.Value, "Cancel", null, "Edit", "Move Up", "Move Down");
 			}
 			
 			// edit the DishCategory
 			if (action == "Edit")
 			{
-
+				viewModel.Entry = await DisplayPromptAsync("Edit Dish Category" + dishCategory.Key, "(max. length: 5)", "OK", "Cancel", "ex. Grain", 5, null, dishCategory.Value);
+				viewModel.EditCommand.Execute(dishCategory);
 			}
 			// switch index with the previous one
 			else if (action == "Move Up")
 			{
-
+				if (viewModel.MoveUpCommand.CanExecute(dishCategory))
+				{
+					viewModel.MoveUpCommand.Execute(dishCategory);
+				}
 			}
 			// switch index with the next one
 			else if (action == "Move Down")
 			{
-
+				if (viewModel.MoveDownCommand.CanExecute(dishCategory))
+				{
+					viewModel.MoveDownCommand.Execute(dishCategory);
+				}
 			}
 
 			// Deselect Item

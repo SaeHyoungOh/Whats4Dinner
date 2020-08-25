@@ -29,22 +29,25 @@
 	</ContentPage.Resources>
 
 	<RefreshView>
-		<ListView ItemsSource="{Binding DishCategories}"
+		<ListView ItemsSource="{Binding DisplayDishCategories}"
 				  HasUnevenRows="True"
 				  Margin="5, 5, 5, 5"
 				  ItemTapped="ListView_ItemTapped">
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
-						<StackLayout>
+						<StackLayout Margin="5, 5, 5, 5">
 							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto"/>
 									<ColumnDefinition/>
 								</Grid.ColumnDefinitions>
 								<Label Text="{Binding Key}"
+									   Grid.Column="0"
 									   Style="{DynamicResource ListItemTextStyle}"/>
 								<Label Text="{Binding Value}"
+									   Grid.Column="1"
+									   Margin="10, 0, 0, 0"
 									   Style="{DynamicResource ListItemTextStyle}"/>
 							</Grid>
 						</StackLayout>

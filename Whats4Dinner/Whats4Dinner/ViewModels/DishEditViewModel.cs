@@ -124,7 +124,7 @@ namespace Whats4Dinner.ViewModels
 			// if the page is opened to create a new dish, add the dish to the database
 			if (SelectedDish == null)
 			{
-				DishDB.Add(new Dish(EntryName, InputDishCategories));
+				DishDB.Add(new Dish(EntryName, InputDishCategories, UserData));
 				DishDBIO.WriteDishesToJSON(DishDB);
 				MessagingCenter.Send(this, "DB updated");	// refresh the search result
 			}
@@ -267,17 +267,15 @@ namespace Whats4Dinner.ViewModels
 		{
 			// initialize properties
 			this.UserData = UserData;
-			UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			if (UserData.ContainsKey("UserDays")) { UserDays = (ObservableCollection<Day>)UserData["UserDays"]; }
 			if (UserData.ContainsKey("SelectedDay")) { SelectedDay = (Day)UserData["SelectedDay"]; }
 			if (UserData.ContainsKey("SelectedMeal")) { SelectedMeal = (Meal)UserData["SelectedMeal"]; }
 			if (UserData.ContainsKey("SelectedDish")) { SelectedDish = (Dish)UserData["SelectedDish"]; }
+			if (UserData.ContainsKey("DishCategories")) { DishCategories = (Dictionary<string, string>)UserData["DishCategories"]; }
+			if (UserData.ContainsKey("DishDB")) { DishDB = (ObservableCollection<Dish>)UserData["DishDB"]; }
 			this.IsFromDB = IsFromDB;
 			UserDaysIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
-			if (UserData.ContainsKey("DishDB")) { DishDB = (ObservableCollection<Dish>)UserData["DishDB"]; }
-			else { DishDB = DishDBIO.ReadDishesFromJSON(); }
-			DishCategoriesIO = new FileIO(dishCategoriesFileName);
-			DishCategories = DishCategoriesIO.ReadDishCategoriesFromJSON();
 
 			// if creating a new dish, initialize an empty form
 			if (SelectedDish == null)

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Whats4Dinner.Models;
 using Whats4Dinner.Models.DataStructure;
 using Whats4Dinner.ViewModels;
@@ -13,12 +14,17 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SevenDayPage : ContentPage
 	{
+		private Dictionary<string, object> UserData;
+
 		/// <summary>
 		/// Cosntructor for SevenDayPage
 		/// </summary>
-		public SevenDayPage()
+		public SevenDayPage(Dictionary<string, object> UserData)
 		{
+			this.UserData = UserData;
+
 			InitializeComponent();
+			BindingContext = new SevenDayViewModel(UserData);
 		}
 
 		/// <summary>
@@ -31,12 +37,10 @@ namespace Whats4Dinner.Views
 			if (e.Item == null)
 				return;
 			// get the data from ViewModel
-			SevenDayViewModel viewModel = (SevenDayViewModel)BindingContext;
-			viewModel.UserData["SelectedDay"] = (Day)((ListView)sender).SelectedItem;
+			UserData["SelectedDay"] = (Day)((ListView)sender).SelectedItem;
 
 			// Navigate to the DayPage
-			await Navigation.PushAsync(new DayPage(viewModel.UserData));
-
+			await Navigation.PushAsync(new DayPage(UserData));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;

@@ -135,7 +135,7 @@ namespace Whats4Dinner.ViewModels
 					// if we run out of data from file, fill days with blanks
 					if (j > UserDays.Count - 1 || UserDaysDate > today.AddDays(6))
 					{
-						DisplayDays.Add(new Day(currentDate));
+						DisplayDays.Add(new Day(currentDate, UserData));
 						i++;
 					}
 					// skip until today
@@ -156,7 +156,7 @@ namespace Whats4Dinner.ViewModels
 						int emptyDays = (UserDaysDate - currentDate).Days;
 						for (int k = 0; k < emptyDays; k++)
 						{
-							DisplayDays.Add(new Day(currentDate.AddDays(k)));
+							DisplayDays.Add(new Day(currentDate.AddDays(k), UserData));
 							i++;
 						}
 					}

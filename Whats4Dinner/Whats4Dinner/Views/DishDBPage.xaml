@@ -57,21 +57,21 @@
 									<Label Text="{Binding Name}"
 											   Grid.Column="0"
 											   Style="{DynamicResource ListItemDetailTextStyle}"/>
-									<Label Text="{Binding DishCategory0}"
-											   Grid.Column="1"
-											   IsEnabled="{Binding HasDishCategory0}"/>
 									<Label Text="{Binding DishCategory1}"
-											   Grid.Column="2"
+											   Grid.Column="1"
 											   IsEnabled="{Binding HasDishCategory1}"/>
 									<Label Text="{Binding DishCategory2}"
-											   Grid.Column="3"
+											   Grid.Column="2"
 											   IsEnabled="{Binding HasDishCategory2}"/>
 									<Label Text="{Binding DishCategory3}"
-											   Grid.Column="4"
+											   Grid.Column="3"
 											   IsEnabled="{Binding HasDishCategory3}"/>
 									<Label Text="{Binding DishCategory4}"
-											   Grid.Column="5"
+											   Grid.Column="4"
 											   IsEnabled="{Binding HasDishCategory4}"/>
+									<Label Text="{Binding DishCategory5}"
+											   Grid.Column="5"
+											   IsEnabled="{Binding HasDishCategory5}"/>
 								</Grid>
 							</StackLayout>
 						</ViewCell>

@@ -34,6 +34,8 @@ namespace Whats4Dinner.Models.DataStructure
 			}
 		}
 
+		Dictionary<string, object> UserData;
+
 		/// <summary>
 		/// List of dishes in the meal, separated by categories, such as grains, veggies, proteins, etc.
 		/// </summary>
@@ -131,30 +133,13 @@ namespace Whats4Dinner.Models.DataStructure
 		private string displayPreviewDishes;
 
 		/// <summary>
-		/// Parameterless constructor for JSON deserialization
-		/// </summary>
-		public Meal() { }
-
-		/// <summary>
-		/// Constructor for Meal class
-		/// </summary>
-		/// <param name="mealType">Type of the Meal, such as breakfast, lunch, dinner, etc.</param>
-		public Meal(MealType mealType)
-		{
-			// initialize properties
-			ThisMealType = mealType;
-			Dishes = new ObservableCollection<Dish>();
-			
-		}
-
-		/// <summary>
 		/// Add a Dish to the list of Dishes in the provided dish category
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="cat"></param>
 		public void AddDish(string name, List<string> cat)
 		{
-			Dishes.Add(new Dish(name, cat));
+			Dishes.Add(new Dish(name, cat, UserData));
 		}
 
 		/// <summary>
@@ -185,6 +170,23 @@ namespace Whats4Dinner.Models.DataStructure
 		public void RemoveDish(Dish selected)
 		{
 			Dishes.Remove(selected);
+		}
+
+		/// <summary>
+		/// Parameterless constructor for JSON deserialization
+		/// </summary>
+		public Meal() { }
+
+		/// <summary>
+		/// Constructor for Meal class
+		/// </summary>
+		/// <param name="mealType">Type of the Meal, such as breakfast, lunch, dinner, etc.</param>
+		public Meal(MealType mealType, Dictionary<string, object> UserData)
+		{
+			// initialize properties
+			this.UserData = UserData;
+			ThisMealType = mealType;
+			Dishes = new ObservableCollection<Dish>();
 		}
 	}
 }
