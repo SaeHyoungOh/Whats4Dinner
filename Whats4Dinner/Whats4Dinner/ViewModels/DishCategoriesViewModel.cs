@@ -55,8 +55,6 @@ namespace Whats4Dinner.ViewModels
 			DishCategories[SelectedCategory?.Key] = Entry;
 			DisplayDishCategories[SelectedCategory?.Key] = Entry;
 			DishCategoriesIO.WriteDishCategoriesToJSON(DishCategories);
-			// TODO: update DishDB, UserDays, and DisplayDays to reflect changes
-			MessagingCenter.Send(this, "DishCategories updated");
 		}
 
 		/// <summary>
@@ -151,7 +149,6 @@ namespace Whats4Dinner.ViewModels
 			DishCategories[SelectedCategory?.Key] = temp;                       // in DB
 			DisplayDishCategories[SelectedCategory?.Key] = temp;                // in View
 			DishCategoriesIO.WriteDishCategoriesToJSON(DishCategories);
-			// TODO: update DishDB, UserDays, and DisplayDays to reflect changes
 		}
 
 		/// <summary>
