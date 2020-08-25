@@ -93,7 +93,7 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Command to remove the Dish from the Meal
 		/// </summary>
-		public DelegateCommand<Dish> RemoveButtonClick;
+		public DelegateCommand<Dish> RemoveButtonClick { get; set; }
 
 		/// <summary>
 		/// Removes the Dish from the meal, and saves to file.

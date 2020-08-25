@@ -22,7 +22,9 @@ namespace Whats4Dinner.ViewModels
 			// initialize properties
 			Title = "7-Day View";
 			PageType = MenuItemType.SevenDayView;
+			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
 			DisplayDays = new ObservableCollection<Day>();
+			UserDaysIO = new FileIO(userFileName);
 
 			// fill the 7-day with days and add to UserData
 			FillDisplayDays(PageType);

@@ -137,7 +137,7 @@ namespace Whats4Dinner.Models.DataStructure
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="cat"></param>
-		public void AddDish(string name, List<string> cat)
+		public void AddDish(string name, List<string> cat, Dictionary<string, object> UserData)
 		{
 			Dishes.Add(new Dish(name, cat, UserData));
 		}

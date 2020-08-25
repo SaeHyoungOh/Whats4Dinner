@@ -24,17 +24,17 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Command to execute when "Save" button is clicked
 		/// </summary>
-		public DelegateCommand SaveButtonClick;
+		public DelegateCommand SaveButtonClick { get; set; }
 
 		/// <summary>
 		/// Command to add the dish to the meal
 		/// </summary>
-		public DelegateCommand AddToMealCommand;
+		public DelegateCommand AddToMealCommand { get; set; }
 
 		/// <summary>
 		/// Command to perform additional edits: in the DishDB or in the meals, depending on the user's action
 		/// </summary>
-		public DelegateCommand AdditionalEditDishCommand;
+		public DelegateCommand AdditionalEditDishCommand { get; set; }
 		public string EntryName { get; set; }
 
 		// DishCategory to display in View
@@ -180,7 +180,7 @@ namespace Whats4Dinner.ViewModels
 		/// </summary>
 		private void AddToMealExecute()
 		{
-			SelectedMeal.AddDish(EntryName, InputDishCategories);
+			SelectedMeal.AddDish(EntryName, InputDishCategories, UserData);
 			if (!UserDays.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
 			{
 				UserDays.Add(SelectedDay);

@@ -69,15 +69,15 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Command to add a dish to the meal, to be used in the View
 		/// </summary>
-		public DelegateCommand<Dish> AddDishCommand;
+		public DelegateCommand<Dish> AddDishCommand { get; set; }
 		/// <summary>
 		/// Command to Delete a dish from the meal, to be used in the View
 		/// </summary>
-		public DelegateCommand<Dish> DeleteDishCommand;
+		public DelegateCommand<Dish> DeleteDishCommand { get; set; }
 		/// <summary>
 		/// Command to execute the search in view
 		/// </summary>
-		public DelegateCommand SearchCommand;
+		public DelegateCommand SearchCommand { get; set; }
 
 		/// <summary>
 		/// Add the selected Dish to the meal and save to file
@@ -85,7 +85,7 @@ namespace Whats4Dinner.ViewModels
 		/// <param name="SelectedDish"></param>
 		private void AddDishExecute(Dish SelectedDish)
 		{
-			SelectedMeal.AddDish(SelectedDish.Name, SelectedDish.ThisDishCategories);
+			SelectedMeal.AddDish(SelectedDish.Name, SelectedDish.ThisDishCategories, UserData);
 			if (!UserDays.Select(day => day.ThisDate).Contains(SelectedDay.ThisDate))
 			{
 				UserDays.Add(SelectedDay);

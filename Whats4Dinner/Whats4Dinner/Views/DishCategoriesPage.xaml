@@ -28,7 +28,7 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
-	<RefreshView>
+	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadDishCategoriesCommand}">
 		<ListView ItemsSource="{Binding DisplayDishCategories}"
 				  HasUnevenRows="True"
 				  Margin="5, 5, 5, 5"

@@ -2,6 +2,7 @@
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Whats4Dinner.Models;
@@ -33,15 +34,17 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Command to edit the text of a DishCategory
 		/// </summary>
-		public DelegateCommand<KeyValuePair<string, string>?> EditCommand;
+		public DelegateCommand<KeyValuePair<string, string>?> EditCommand { get; set; }
 		/// <summary>
 		/// Command to move the DishCategory up a number
 		/// </summary>
-		public DelegateCommand<KeyValuePair<string, string>?> MoveUpCommand;
+		public DelegateCommand<KeyValuePair<string, string>?> MoveUpCommand { get; set; }
 		/// <summary>
 		/// Command to move the DishCategory Down a number
 		/// </summary>
-		public DelegateCommand<KeyValuePair<string, string>?> MoveDownCommand;
+		public DelegateCommand<KeyValuePair<string, string>?> MoveDownCommand { get; set; }
+
+		public DelegateCommand LoadDishCategoriesCommand { get; set; }
 
 		/// <summary>
 		/// Change the Value of the Selected Category to the Entry set from View
@@ -52,6 +55,7 @@ namespace Whats4Dinner.ViewModels
 			DishCategories[SelectedCategory?.Key] = Entry;
 			DisplayDishCategories[SelectedCategory?.Key] = Entry;
 			DishCategoriesIO.WriteDishCategoriesToJSON(DishCategories);
+			// TODO: update DishDB, UserDays, and DisplayDays to reflect changes
 			MessagingCenter.Send(this, "DishCategories updated");
 		}
 
@@ -147,7 +151,38 @@ namespace Whats4Dinner.ViewModels
 			DishCategories[SelectedCategory?.Key] = temp;                       // in DB
 			DisplayDishCategories[SelectedCategory?.Key] = temp;                // in View
 			DishCategoriesIO.WriteDishCategoriesToJSON(DishCategories);
-			MessagingCenter.Send(this, "DishCategories updated");
+			// TODO: update DishDB, UserDays, and DisplayDays to reflect changes
+		}
+
+		/// <summary>
+		/// Refreshes the DishCategories, read from the JSON file.
+		/// </summary>
+		private void ExecuteLoadDishCategoriesCommand()
+		{
+			IsBusy = true;
+
+			try
+			{
+				DishCategories.Clear();
+				DisplayDishCategories.Clear();
+
+				// read data from JSON file
+				DishCategories = DishCategoriesIO.ReadDishCategoriesFromJSON();
+
+				// add to display in View
+				foreach (KeyValuePair<string, string> pair in DishCategories)
+				{
+					DisplayDishCategories.Add(pair);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
+			finally
+			{
+				IsBusy = false;
+			}
 		}
 
 		/// <summary>
@@ -169,6 +204,7 @@ namespace Whats4Dinner.ViewModels
 			EditCommand = new DelegateCommand<KeyValuePair<string, string>?>(EditExecute);
 			MoveUpCommand = new DelegateCommand<KeyValuePair<string, string>?>(MoveUpExecute, MoveUpCanExecute);
 			MoveDownCommand = new DelegateCommand<KeyValuePair<string, string>?>(MoveDownExecute, MoveDownCanExecute);
+			LoadDishCategoriesCommand = new DelegateCommand(ExecuteLoadDishCategoriesCommand);
 		}
 	}
 }
