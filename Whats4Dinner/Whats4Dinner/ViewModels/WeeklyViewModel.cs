@@ -29,21 +29,17 @@ namespace Whats4Dinner.ViewModels
 		public WeeklyViewModel(Dictionary<string, object> UserData)
 		{
 			// initialize properties
+			this.UserData = UserData;
 			Title = "Weekly View";
 			UserDaysIO = new FileIO(userFileName);
 			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			if (UserData.ContainsKey("DisplayDays")) DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
 			PageType = MenuItemType.WeeklyView;
-			DisplayDays = new ObservableCollection<Day>();
-			CommandParams = new Dictionary<string, object>
-			{
-				{ "PageType", PageType },
-				{ "DisplayDays", DisplayDays }
-			};
-			UserData["DisplayDays"] = DisplayDays;
+			UserData["PageType"] = PageType;
 
 			// fill the week with days
 			NumDays = 7;
-			FillDisplayDays(CommandParams);
+			FillDisplayDays(UserData);
 
 			// initialize commands
 			LoadItemsCommand = new DelegateCommand<Dictionary<string, object>>(LoadItemsExecute);

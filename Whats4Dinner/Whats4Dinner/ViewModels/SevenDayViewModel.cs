@@ -47,25 +47,25 @@ namespace Whats4Dinner.ViewModels
 		/// Reload the UserDays from file and fill DisplayDays with 7 days.
 		/// </summary>
 		/// <param name="menuItemType"></param>
-		private void ReloadItemsExecute(Dictionary<string, object> CommandParams)
+		private void ReloadItemsExecute(Dictionary<string, object> UserData)
 		{
 			NumDays = 7;
 			CanLoadMore = true;
-			LoadItemsExecute(CommandParams);
+			LoadItemsExecute(UserData);
 		}
 
 		/// <summary>
 		/// Load 7 more days to DisplayDays, up to 28 days
 		/// </summary>
 		/// <param name="menuItemType"></param>
-		private void LoadMoreExecute(Dictionary<string, object> CommandParams)
+		private void LoadMoreExecute(Dictionary<string, object> UserData)
 		{
 			NumDays += 7;
 			if (NumDays > 23) CanLoadMore = false;
 
 			// refill the week with changed days
 			DisplayDays.Clear();
-			FillDisplayDays(CommandParams);
+			FillDisplayDays(UserData);
 		}
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace Whats4Dinner.ViewModels
 		/// </summary>
 		/// <param name="menuItemType"></param>
 		/// <returns></returns>
-		private bool LoadMoreCanExecute(Dictionary<string, object> CommandParams)
+		private bool LoadMoreCanExecute(Dictionary<string, object> UserData)
 		{
 			if (NumDays <= 21) return true;
 			else return false;
@@ -85,22 +85,18 @@ namespace Whats4Dinner.ViewModels
 		public SevenDayViewModel(Dictionary<string, object> UserData)
 		{
 			// initialize properties
+			this.UserData = UserData;
 			Title = "7-Day View";
 			UserDaysIO = new FileIO(userFileName);
 			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			if (UserData.ContainsKey("DisplayDays")) DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
 			PageType = MenuItemType.SevenDayView;
-			DisplayDays = new ObservableCollection<Day>();
-			CommandParams = new Dictionary<string, object>
-			{
-				{ "PageType", PageType },
-				{ "DisplayDays", DisplayDays }
-			};
-			UserData["DisplayDays"] = DisplayDays;
+			UserData["PageType"] = PageType;
 
 			// fill the 7-day with days
 			NumDays = 7;
 			CanLoadMore = true;
-			FillDisplayDays(CommandParams);
+			FillDisplayDays(UserData);
 
 			// initialize commands
 			LoadItemsCommand = new DelegateCommand<Dictionary<string, object>>(ReloadItemsExecute);

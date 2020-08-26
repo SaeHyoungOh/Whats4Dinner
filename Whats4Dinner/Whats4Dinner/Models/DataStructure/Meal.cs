@@ -149,6 +149,7 @@ namespace Whats4Dinner.Models.DataStructure
 		public void AddDish(Dish dish)
 		{
 			Dishes.Add(dish);
+			OnPropertyChanged("DisplayPreviewDishes");
 		}
 
 		/// <summary>
@@ -161,6 +162,7 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			dish.Name = name;
 			dish.ThisDishCategories = cat;
+			OnPropertyChanged("DisplayPreviewDishes");
 		}
 
 		/// <summary>
@@ -170,6 +172,7 @@ namespace Whats4Dinner.Models.DataStructure
 		public void RemoveDish(Dish selected)
 		{
 			Dishes.Remove(selected);
+			OnPropertyChanged("DisplayPreviewDishes");
 		}
 
 		/// <summary>

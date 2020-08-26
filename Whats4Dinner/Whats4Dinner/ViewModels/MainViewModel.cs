@@ -29,7 +29,8 @@ namespace Whats4Dinner.ViewModels
 			{
 				{ "UserDays", UserDays },
 				{ "DishCategories", DishCategories },
-				{ "DishDB", DishDB }
+				{ "DishDB", DishDB },
+				{ "DisplayDays", new ObservableCollection<Day>() }
 			};
 
 			// initialize commands

@@ -56,8 +56,6 @@ namespace Whats4Dinner.ViewModels
 		/// </summary>
 		public Dictionary<string, object> UserData { get; set; }
 
-		public Dictionary<string, object> CommandParams { get; set; }
-
 		/// <summary>
 		/// The title of the page
 		/// </summary>
@@ -110,77 +108,32 @@ namespace Whats4Dinner.ViewModels
 		/// Fill the DisplayDays from user data read from file
 		/// </summary>
 		/// <param name="UserDays"></param>
-		protected void FillDisplayDays(Dictionary<string, object> CommandParams)
+		public void FillDisplayDays(Dictionary<string, object> UserData)
 		{
 			if (UserDays == null)
 			{
 				return;
 			}
 
-			MenuItemType pageType = (MenuItemType)CommandParams["PageType"];
-			ObservableCollection<Day> displayDays = (ObservableCollection<Day>)CommandParams["DisplayDays"];
+			MenuItemType pageType = (MenuItemType)UserData["PageType"];
+			ObservableCollection<Day> displayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
+			displayDays.Clear();
+
+			DateTime today = DateTime.Today;
+			DateTime firstDay = today;
+			int i = 0,  // number of days to fill (NumDays days)
+				j = 0;  // UserDays index to iterate
 
 			if (pageType == MenuItemType.SevenDayView)
 			{
-				DateTime today = DateTime.Today;
-				int i = 0,  // number of days to fill (NumDays days)
-					j = 0;  // UserDays index to iterate
-
-				while (i < NumDays)
-				{
-					DateTime UserDaysDate, currentDate = today.AddDays(i);
-
-					// prevent j from going out of bounds
-					if (j < UserDays.Count)
-					{
-						UserDaysDate = UserDays[j].ThisDate;
-					}
-					else
-					{
-						UserDaysDate = today.AddDays(NumDays);
-					}
-
-					// if we run out of data from file, fill days with blanks
-					if (j > UserDays.Count - 1 || UserDaysDate > today.AddDays(6))
-					{
-						displayDays.Add(new Day(currentDate, UserData));
-						i++;
-					}
-					// skip until today
-					else if (UserDaysDate < currentDate)
-					{
-						j++;
-					}
-					// use the day if date matches
-					else if (UserDaysDate == currentDate)
-					{
-						displayDays.Add(UserDays[j]);
-						j++;
-						i++;
-					}
-					// fill the between days with empty day
-					else if (UserDaysDate <= today.AddDays(6))
-					{
-						int emptyDays = (UserDaysDate - currentDate).Days;
-						for (int k = 0; k < emptyDays; k++)
-						{
-							displayDays.Add(new Day(currentDate.AddDays(k), UserData));
-							i++;
-						}
-					}
-					// ignore all dates after the NumDays days
-					else
-					{
-						j = UserDays.Count;
-					}
-				}
+				
 			}
 			else if (pageType == MenuItemType.WeeklyView)
 			{
-				DateTime today = DateTime.Today;
-				DateTime firstDay;
 				switch (today.DayOfWeek)
 				{
+					case DayOfWeek.Sunday:
+						break;
 					case DayOfWeek.Monday:
 						firstDay = today.AddDays(-1);
 						break;
@@ -203,56 +156,53 @@ namespace Whats4Dinner.ViewModels
 						firstDay = today;
 						break;
 				}
-				int i = 0,  // number of days to fill (NumDays days)
-					j = 0;  // UserDays index to iterate
+			}
+			while (i < NumDays)
+			{
+				DateTime UserDaysDate, currentDate = firstDay.AddDays(i);
 
-				while (i < NumDays)
+				// prevent j from going out of bounds
+				if (j < UserDays.Count)
 				{
-					DateTime UserDaysDate, currentDate = firstDay.AddDays(i);
+					UserDaysDate = UserDays[j].ThisDate;
+				}
+				else
+				{
+					UserDaysDate = firstDay.AddDays(NumDays);
+				}
 
-					// prevent j from going out of bounds
-					if (j < UserDays.Count)
+				// if we run out of data from file, fill days with blanks
+				if (j > UserDays.Count - 1 || UserDaysDate > firstDay.AddDays(6))
+				{
+					displayDays.Add(new Day(currentDate, UserData));
+					i++;
+				}
+				// skip until firstDay
+				else if (UserDaysDate < currentDate)
+				{
+					j++;
+				}
+				// use the day if date matches
+				else if (UserDaysDate == currentDate)
+				{
+					displayDays.Add(UserDays[j]);
+					j++;
+					i++;
+				}
+				// fill the between days with empty day
+				else if (UserDaysDate <= firstDay.AddDays(6))
+				{
+					int emptyDays = (UserDaysDate - currentDate).Days;
+					for (int k = 0; k < emptyDays; k++)
 					{
-						UserDaysDate = UserDays[j].ThisDate;
-					}
-					else
-					{
-						UserDaysDate = firstDay.AddDays(NumDays);
-					}
-
-					// if we run out of data from file, fill days with blanks
-					if (j > UserDays.Count - 1 || UserDaysDate > firstDay.AddDays(6))
-					{
-						displayDays.Add(new Day(currentDate, UserData));
+						displayDays.Add(new Day(currentDate.AddDays(k), UserData));
 						i++;
 					}
-					// skip until firstDay
-					else if (UserDaysDate < currentDate)
-					{
-						j++;
-					}
-					// use the day if date matches
-					else if (UserDaysDate == currentDate)
-					{
-						displayDays.Add(UserDays[j]);
-						j++;
-						i++;
-					}
-					// fill the between days with empty day
-					else if (UserDaysDate <= firstDay.AddDays(6))
-					{
-						int emptyDays = (UserDaysDate - currentDate).Days;
-						for (int k = 0; k < emptyDays; k++)
-						{
-							displayDays.Add(new Day(currentDate.AddDays(k), UserData));
-							i++;
-						}
-					}
-					// ignore all dates after the NumDays days
-					else
-					{
-						j = UserDays.Count;
-					}
+				}
+				// ignore all dates after the NumDays days
+				else
+				{
+					j = UserDays.Count;
 				}
 			}
 		}
@@ -261,20 +211,19 @@ namespace Whats4Dinner.ViewModels
 		/// Replace the DisplayDays with new data from the file
 		/// (to be made asyncronous when using database)
 		/// </summary>
-		protected void LoadItemsExecute(Dictionary<string, object> CommandParams)
+		protected void LoadItemsExecute(Dictionary<string, object> UserData)
 		{
 			IsBusy = true;
 
 			try
 			{
 				UserDays.Clear();
-				((ObservableCollection<Day>)CommandParams["DisplayDays"]).Clear();
 
 				// read user's data from JSON file
-				UserDays = UserDaysIO.ReadUserDaysFromJSON();
+				UserData["UserDays"] = UserDaysIO.ReadUserDaysFromJSON();
 
 				// fill the week with days
-				FillDisplayDays(CommandParams);
+				FillDisplayDays(UserData);
 			}
 			catch (Exception ex)
 			{

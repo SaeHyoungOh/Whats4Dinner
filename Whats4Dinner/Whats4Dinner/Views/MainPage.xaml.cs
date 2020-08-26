@@ -96,19 +96,8 @@ namespace Whats4Dinner.Views
 						viewModel = (DishCategoriesViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
 						break;
 				}
-
-				viewModel?.LoadItemsCommand.Execute(viewModel.CommandParams);
-
-				//if (id == MenuItemType.SevenDayView)
-				//{
-				//	var viewModel = (SevenDayViewModel)newPage.BindingContext;
-				//	viewModel.LoadItemsCommand.Execute(viewModel.CommandParams);
-				//}
-				//else if (id == MenuItemType.WeeklyView)
-				//{
-				//	var viewModel = (WeeklyViewModel)newPage.BindingContext;
-				//	viewModel.LoadItemsCommand.Execute(viewModel.CommandParams);
-				//}
+				viewModel.UserData["PageType"] = id;
+				viewModel?.FillDisplayDays(viewModel.UserData);
 
 				Detail = newPage;
 
