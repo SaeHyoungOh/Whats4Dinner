@@ -52,10 +52,107 @@ namespace Whats4Dinner.ViewModels
 			}
 		}
 
+		// DishCategory for display in View
+		public string DishCategory1
+		{
+			get
+			{
+				SetProperty(ref dishCategory1, DishCategories["1"]);
+				return dishCategory1;
+			}
+			set
+			{
+				SetProperty(ref dishCategory1, value);
+			}
+		}
+		public string DishCategory2
+		{
+			get
+			{
+				SetProperty(ref dishCategory2, DishCategories["2"]);
+				return dishCategory2;
+			}
+			set
+			{
+				SetProperty(ref dishCategory2, value);
+			}
+		}
+		public string DishCategory3
+		{
+			get
+			{
+				SetProperty(ref dishCategory3, DishCategories["3"]);
+				return dishCategory3;
+			}
+			set
+			{
+				SetProperty(ref dishCategory3, value);
+			}
+		}
+		public string DishCategory4
+		{
+			get
+			{
+				SetProperty(ref dishCategory4, DishCategories["4"]);
+				return dishCategory4;
+			}
+			set
+			{
+				SetProperty(ref dishCategory4, value);
+			}
+		}
+		public string DishCategory5
+		{
+			get
+			{
+				SetProperty(ref dishCategory5, DishCategories["5"]);
+				return dishCategory5;
+			}
+			set
+			{
+				SetProperty(ref dishCategory5, value);
+			}
+		}
+		public bool DishCategory1Check
+		{
+			get => dishCategory1Check;
+			set => SetProperty(ref dishCategory1Check, value);
+		}
+		public bool DishCategory2Check
+		{
+			get => dishCategory2Check;
+			set => SetProperty(ref dishCategory2Check, value);
+		}
+		public bool DishCategory3Check
+		{
+			get => dishCategory3Check;
+			set => SetProperty(ref dishCategory3Check, value);
+		}
+		public bool DishCategory4Check
+		{
+			get => dishCategory4Check;
+			set => SetProperty(ref dishCategory4Check, value);
+		}
+		public bool DishCategory5Check
+		{
+			get => dishCategory5Check;
+			set => SetProperty(ref dishCategory5Check, value);
+		}
+
 		// fields for the properties above
 		private Day selectedDay;
 		private Meal selectedMeal;
 		private ObservableCollection<Dish> searchResult;
+		private string dishCategory1;
+		private string dishCategory2;
+		private string dishCategory3;
+		private string dishCategory4;
+		private string dishCategory5;
+		private bool dishCategory1Check;
+		private bool dishCategory2Check;
+		private bool dishCategory3Check;
+		private bool dishCategory4Check;
+		private bool dishCategory5Check;
 
 		/// <summary>
 		/// Query string from the view to be searched in DishDB
@@ -78,6 +175,10 @@ namespace Whats4Dinner.ViewModels
 		/// Command to execute the search in view
 		/// </summary>
 		public DelegateCommand SearchCommand { get; set; }
+		/// <summary>
+		/// Command to toggle a search filter on or off
+		/// </summary>
+		public DelegateCommand<string> ToggleFilterCommand { get; set; }
 
 		/// <summary>
 		/// Add the selected Dish to the meal and save to file
@@ -134,25 +235,49 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
-		/// Searches the DishDB for the query string, and sets the SearchResult with the matching Dishes.
-		/// An empty query string sets the whole DishDB to SearchResult.
+		/// Searches the DishDB for the query string and the filters, and sets the SearchResult with the matching Dishes.
+		/// An empty query string with no filters sets the whole DishDB to SearchResult.
 		/// </summary>
 		private void SearchExecute()
 		{
-			// empty query sets the whole database to DishDB
-			if (Query == "")
+			// if empty filters
+			if (!DishCategory1Check && !DishCategory2Check && !DishCategory3Check && !DishCategory4Check && !DishCategory5Check)
 			{
-				SearchResult = DishDB;
+				// if also empty Query string, set the entire DishDB to SearchResult
+				if (Query == "")
+				{
+					SearchResult = DishDB;
+				}
+				// if there is a Query string, search the DishDB for it
+				else
+				{
+					SearchResult = new ObservableCollection<Dish>();
+					foreach (Dish dish in DishDB)
+					{
+						if (dish.Name.Contains(Query))
+						{
+							SearchResult.Add(dish);
+						}
+					}
+				}
 			}
-			// build the search result based on the query string
+			// if the filters are set, search the DishDB for them
 			else
 			{
 				SearchResult = new ObservableCollection<Dish>();
 				foreach (Dish dish in DishDB)
 				{
-					if (dish.Name.Contains(Query))
+					if ((DishCategory1Check && dish.ThisDishCategories.Contains(DishCategories["1"])) ||
+						(DishCategory2Check && dish.ThisDishCategories.Contains(DishCategories["2"])) ||
+						(DishCategory3Check && dish.ThisDishCategories.Contains(DishCategories["3"])) ||
+						(DishCategory4Check && dish.ThisDishCategories.Contains(DishCategories["4"])) ||
+						(DishCategory5Check && dish.ThisDishCategories.Contains(DishCategories["5"])))
 					{
-						SearchResult.Add(dish);
+						// only add if the Query string is empty or the Name contains the Query string
+						if (Query == "" || dish.Name.Contains(Query))
+						{
+							SearchResult.Add(dish);
+						}
 					}
 				}
 			}
@@ -187,6 +312,26 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
+		/// Depending on the name of the search filter, toggle the appropriate filter on or off
+		/// </summary>
+		/// <param name="text"></param>
+		private void ToggleFilterExecute(string text)
+		{
+			if (text == DishCategories["1"])
+				DishCategory1Check = !DishCategory1Check;
+			else if (text == DishCategories["2"])
+				DishCategory2Check = !DishCategory2Check;
+			else if (text == DishCategories["3"])
+				DishCategory3Check = !DishCategory3Check;
+			else if (text == DishCategories["4"])
+				DishCategory4Check = !DishCategory4Check;
+			else if (text == DishCategories["5"])
+				DishCategory5Check = !DishCategory5Check;
+
+			SearchExecute();
+		}
+
+		/// <summary>
 		/// Constructor for DishDBViewModel
 		/// </summary>
 		/// <param name="UserDays"></param>
@@ -200,17 +345,20 @@ namespace Whats4Dinner.ViewModels
 			if (UserData.ContainsKey("SelectedDay")) { SelectedDay = (Day)UserData["SelectedDay"]; }
 			if (UserData.ContainsKey("SelectedMeal")) { SelectedMeal = (Meal)UserData["SelectedMeal"]; }
 			if (UserData.ContainsKey("DishDB")) { DishDB = (ObservableCollection<Dish>)UserData["DishDB"]; }
+			if (UserData.ContainsKey("DishCategories")) { DishCategories = (Dictionary<string, string>)UserData["DishCategories"]; }
 			UserDaysIO = new FileIO(userFileName);
 			DishDBIO = new FileIO(dishFileName);
 			Title = "Choose a Dish";
 			Query = "";
 			SearchResult = DishDB;
+			DishCategory1Check = DishCategory2Check = DishCategory3Check = DishCategory4Check = DishCategory5Check = false;
 
 			// initialize commands
 			AddDishCommand = new DelegateCommand<Dish>(AddDishExecute, AddDishCanExecute);
 			DeleteDishCommand = new DelegateCommand<Dish>(DeleteDishExecute, DeleteDishCanExecute);
 			SearchCommand = new DelegateCommand(SearchExecute);
 			LoadDishesCommand = new DelegateCommand(ExecuteLoadDishesCommand);
+			ToggleFilterCommand = new DelegateCommand<string>(ToggleFilterExecute);
 
 			// use MessagingCenter to be notified when the Dish DB is updated, to also update SearchResult
 			MessagingCenter.Subscribe<DishEditViewModel>(this, "DB updated", (sender) =>

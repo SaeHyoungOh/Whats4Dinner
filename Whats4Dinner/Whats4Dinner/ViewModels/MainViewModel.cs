@@ -9,8 +9,6 @@ namespace Whats4Dinner.ViewModels
 {
 	class MainViewModel : BaseViewModel
 	{
-		public Dictionary<string, object> UserData;
-
 		public MainViewModel()
 		{
 			// read user's data from JSON file

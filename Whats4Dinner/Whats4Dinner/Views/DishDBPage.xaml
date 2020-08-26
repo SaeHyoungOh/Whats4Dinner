@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
 			 mc:Ignorable="d"
 			 x:Class="Whats4Dinner.Views.DishDBPage"
 			 Title="{Binding Title}">
@@ -29,6 +30,15 @@
 				<Setter Property="FontSize" Value="14"/>
 				<Setter Property="TextColor" Value="#646464"/>
 			</Style>
+			<Style x:Key="FilterButtonStyle" TargetType="Button">
+				<Setter Property="FontFamily" Value="Arial"/>
+				<Setter Property="FontSize" Value="12"/>
+				<Setter Property="VerticalOptions" Value="Center"/>
+				<Setter Property="Command" Value="{Binding ToggleFilterCommand}"/>
+				<Setter Property="Margin" Value="-5, 0, 0, 0"/>
+				<!-- reference: https://forums.xamarin.com/discussion/comment/350174/#Comment_350174 -->
+				<Setter Property="android:Button.UseDefaultPadding" Value="true"/>
+			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
@@ -37,6 +47,48 @@
 					Placeholder="Search..."
 					Text="{Binding Query}"
 					TextChanged="SearchBar_TextChanged"/>
+		<Grid Margin="0, 0, 5, 5">
+			<!--<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Button Text="Reset" Grid.Column="0" Command="{Binding ResetFilterCommand}"/>-->
+			<Label Text="Filters:" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="End"/>
+			<Button Text="{Binding DishCategory1}" Grid.Column="1" CommandParameter="{Binding DishCategory1}" Style="{DynamicResource FilterButtonStyle}">
+				<Button.Triggers>
+					<DataTrigger TargetType="Button" Binding="{Binding DishCategory1Check}" Value="true">
+						<Setter Property="BackgroundColor" Value="LightBlue"/>
+					</DataTrigger>
+				</Button.Triggers>
+			</Button>
+			<Button Text="{Binding DishCategory2}" Grid.Column="2" CommandParameter="{Binding DishCategory2}" Style="{DynamicResource FilterButtonStyle}">
+				<Button.Triggers>
+					<DataTrigger TargetType="Button" Binding="{Binding DishCategory2Check}" Value="true">
+						<Setter Property="BackgroundColor" Value="LightBlue"/>
+					</DataTrigger>
+				</Button.Triggers>
+			</Button>
+			<Button Text="{Binding DishCategory3}" Grid.Column="3" CommandParameter="{Binding DishCategory3}" Style="{DynamicResource FilterButtonStyle}">
+				<Button.Triggers>
+					<DataTrigger TargetType="Button" Binding="{Binding DishCategory3Check}" Value="true">
+						<Setter Property="BackgroundColor" Value="LightBlue"/>
+					</DataTrigger>
+				</Button.Triggers>
+			</Button>
+			<Button Text="{Binding DishCategory4}" Grid.Column="4" CommandParameter="{Binding DishCategory4}" Style="{DynamicResource FilterButtonStyle}">
+				<Button.Triggers>
+					<DataTrigger TargetType="Button" Binding="{Binding DishCategory4Check}" Value="true">
+						<Setter Property="BackgroundColor" Value="LightBlue"/>
+					</DataTrigger>
+				</Button.Triggers>
+			</Button>
+			<Button Text="{Binding DishCategory5}" Grid.Column="5" CommandParameter="{Binding DishCategory5}" Style="{DynamicResource FilterButtonStyle}">
+				<Button.Triggers>
+					<DataTrigger TargetType="Button" Binding="{Binding DishCategory5Check}" Value="true">
+						<Setter Property="BackgroundColor" Value="LightBlue"/>
+					</DataTrigger>
+				</Button.Triggers>
+			</Button>
+		</Grid>
 		<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadDishesCommand}">
 			<ListView ItemsSource="{Binding SearchResult}"
 					  ItemTapped="ListView_ItemTapped"
@@ -55,23 +107,23 @@
 										<ColumnDefinition Width="1*"/>
 									</Grid.ColumnDefinitions>
 									<Label Text="{Binding Name}"
-											   Grid.Column="0"
-											   Style="{DynamicResource ListItemDetailTextStyle}"/>
+										   Grid.Column="0"
+										   Style="{DynamicResource ListItemDetailTextStyle}"/>
 									<Label Text="{Binding DishCategory1}"
-											   Grid.Column="1"
-											   IsEnabled="{Binding HasDishCategory1}"/>
+										   Grid.Column="1"
+										   IsEnabled="{Binding HasDishCategory1}"/>
 									<Label Text="{Binding DishCategory2}"
-											   Grid.Column="2"
-											   IsEnabled="{Binding HasDishCategory2}"/>
+										   Grid.Column="2"
+										   IsEnabled="{Binding HasDishCategory2}"/>
 									<Label Text="{Binding DishCategory3}"
-											   Grid.Column="3"
-											   IsEnabled="{Binding HasDishCategory3}"/>
+										   Grid.Column="3"
+										   IsEnabled="{Binding HasDishCategory3}"/>
 									<Label Text="{Binding DishCategory4}"
-											   Grid.Column="4"
-											   IsEnabled="{Binding HasDishCategory4}"/>
+										   Grid.Column="4"
+										   IsEnabled="{Binding HasDishCategory4}"/>
 									<Label Text="{Binding DishCategory5}"
-											   Grid.Column="5"
-											   IsEnabled="{Binding HasDishCategory5}"/>
+										   Grid.Column="5"
+										   IsEnabled="{Binding HasDishCategory5}"/>
 								</Grid>
 							</StackLayout>
 						</ViewCell>
