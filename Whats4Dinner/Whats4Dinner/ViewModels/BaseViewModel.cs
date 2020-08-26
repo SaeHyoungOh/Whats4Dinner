@@ -45,6 +45,16 @@ namespace Whats4Dinner.ViewModels
 		/// MenuItemType of the current page
 		/// </summary>
 		public MenuItemType PageType { get; set; }
+
+		/// <summary>
+		/// List of all the meals in user data
+		/// </summary>
+		public ObservableCollection<Day> UserDays { get; set; }
+
+		/// <summary>
+		/// All-encompassing data structure for passing between pages and classes, in order to keep a single instance of the data
+		/// </summary>
+		public Dictionary<string, object> UserData { get; set; }
 			
 		/// <summary>
 							/// The title of the page
@@ -65,9 +75,16 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		/// <summary>
-		/// List of all the meals in user data
+		/// Number of days to fill the DisplayDays
 		/// </summary>
-		public ObservableCollection<Day> UserDays { get; set; }
+		protected int NumDays
+		{
+			get => numDays;
+			set
+			{
+				SetProperty(ref numDays, value);
+			}
+		}
 
 		/// <summary>
 		/// List of all the Days and their Meals and Dishes
@@ -96,10 +113,9 @@ namespace Whats4Dinner.ViewModels
 		// fields for the properties above
 		private string title = string.Empty;
 		private bool isBusy = false;
+		private int numDays;
 		private ObservableCollection<Day> displayDays;
 		private ObservableCollection<Dish> dishDB;
-
-		public Dictionary<string, object> UserData { get; set; }
 
 		/// <summary>
 		/// Fill the DisplayDays from user data read from file
@@ -115,10 +131,10 @@ namespace Whats4Dinner.ViewModels
 			if (menuItemType == MenuItemType.SevenDayView)
 			{
 				DateTime today = DateTime.Today;
-				int i = 0,	// number of days to fill (7 days)
-					j = 0;	// UserDays index to iterate
+				int i = 0,  // number of days to fill (NumDays days)
+					j = 0;  // UserDays index to iterate
 
-				while (i < 7)
+				while (i < NumDays)
 				{
 					DateTime UserDaysDate, currentDate = today.AddDays(i);
 
@@ -129,7 +145,7 @@ namespace Whats4Dinner.ViewModels
 					}
 					else
 					{
-						UserDaysDate = today.AddDays(7);
+						UserDaysDate = today.AddDays(NumDays);
 					}
 
 					// if we run out of data from file, fill days with blanks
@@ -160,7 +176,7 @@ namespace Whats4Dinner.ViewModels
 							i++;
 						}
 					}
-					// ignore all dates after the 7 days
+					// ignore all dates after the NumDays days
 					else
 					{
 						j = UserDays.Count;
@@ -173,7 +189,7 @@ namespace Whats4Dinner.ViewModels
 		/// Replace the DisplayDays with new data from the file
 		/// (to be made asyncronous when using database)
 		/// </summary>
-		protected void ExecuteLoadItemsCommand(MenuItemType? menuItemType)
+		protected void LoadItemsExecute(MenuItemType? menuItemType)
 		{
 			IsBusy = true;
 

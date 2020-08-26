@@ -45,6 +45,11 @@
 						   HorizontalTextAlignment="Center"/>
 				</StackLayout>
 			</ListView.Header>
+			<ListView.Footer>
+				<StackLayout>
+					<Button Text="Load More" Command="{Binding LoadMoreCommand}" CommandParameter="{x:Static model:MenuItemType.SevenDayView}" IsEnabled="{Binding CanLoadMore}"/>
+				</StackLayout>
+			</ListView.Footer>
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
