@@ -56,7 +56,7 @@ namespace Whats4Dinner.Views
 						MenuPages.Add(id, new NavigationPage(new SevenDayPage(viewModel.UserData)));
 						break;
 					case MenuItemType.WeeklyView:
-						MenuPages.Add(id, new NavigationPage(new AboutPage()));
+						MenuPages.Add(id, new NavigationPage(new WeeklyPage(viewModel.UserData)));
 						break;
 					case MenuItemType.MonthlyView:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));
@@ -78,6 +78,38 @@ namespace Whats4Dinner.Views
 
 			if (newPage != null && Detail != newPage)
 			{
+				BaseViewModel? viewModel = null;
+				switch (id)
+				{
+					case MenuItemType.SevenDayView:
+						viewModel = (SevenDayViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
+						break;
+					case MenuItemType.WeeklyView:
+						viewModel = (WeeklyViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
+						break;
+					case MenuItemType.MonthlyView:
+						break;
+					case MenuItemType.DishDB:
+						viewModel = (DishDBViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
+						break;
+					case MenuItemType.DishCategories:
+						viewModel = (DishCategoriesViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
+						break;
+				}
+
+				viewModel?.LoadItemsCommand.Execute(viewModel.CommandParams);
+
+				//if (id == MenuItemType.SevenDayView)
+				//{
+				//	var viewModel = (SevenDayViewModel)newPage.BindingContext;
+				//	viewModel.LoadItemsCommand.Execute(viewModel.CommandParams);
+				//}
+				//else if (id == MenuItemType.WeeklyView)
+				//{
+				//	var viewModel = (WeeklyViewModel)newPage.BindingContext;
+				//	viewModel.LoadItemsCommand.Execute(viewModel.CommandParams);
+				//}
+
 				Detail = newPage;
 
 				if (Device.RuntimePlatform == Device.Android)

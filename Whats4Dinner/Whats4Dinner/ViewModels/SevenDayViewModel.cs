@@ -15,7 +15,20 @@ namespace Whats4Dinner.ViewModels
 	/// </summary>
 	public class SevenDayViewModel : BaseViewModel
 	{
-		public DelegateCommand<MenuItemType?> LoadMoreCommand { get; set; }
+		/// <summary>
+		/// List of all the Days and their Meals and Dishes for View
+		/// </summary>
+		public ObservableCollection<Day> DisplayDays
+		{
+			get => displayDays;
+			set
+			{
+				SetProperty(ref displayDays, value);
+			}
+		}
+		private ObservableCollection<Day> displayDays;
+
+		public DelegateCommand<Dictionary<string, object>> LoadMoreCommand { get; set; }
 
 		/// <summary>
 		/// Whether loading more days has reached its limits, to be used in View
@@ -34,25 +47,25 @@ namespace Whats4Dinner.ViewModels
 		/// Reload the UserDays from file and fill DisplayDays with 7 days.
 		/// </summary>
 		/// <param name="menuItemType"></param>
-		private void ReloadItemsExecute(MenuItemType? menuItemType)
+		private void ReloadItemsExecute(Dictionary<string, object> CommandParams)
 		{
 			NumDays = 7;
 			CanLoadMore = true;
-			LoadItemsExecute(menuItemType);
+			LoadItemsExecute(CommandParams);
 		}
 
 		/// <summary>
 		/// Load 7 more days to DisplayDays, up to 28 days
 		/// </summary>
 		/// <param name="menuItemType"></param>
-		private void LoadMoreExecute(MenuItemType? menuItemType)
+		private void LoadMoreExecute(Dictionary<string, object> CommandParams)
 		{
 			NumDays += 7;
 			if (NumDays > 23) CanLoadMore = false;
 
 			// refill the week with changed days
 			DisplayDays.Clear();
-			FillDisplayDays(menuItemType);
+			FillDisplayDays(CommandParams);
 		}
 
 		/// <summary>
@@ -60,7 +73,7 @@ namespace Whats4Dinner.ViewModels
 		/// </summary>
 		/// <param name="menuItemType"></param>
 		/// <returns></returns>
-		private bool LoadMoreCanExecute(MenuItemType? menuItemType)
+		private bool LoadMoreCanExecute(Dictionary<string, object> CommandParams)
 		{
 			if (NumDays <= 21) return true;
 			else return false;
@@ -73,20 +86,25 @@ namespace Whats4Dinner.ViewModels
 		{
 			// initialize properties
 			Title = "7-Day View";
-			PageType = MenuItemType.SevenDayView;
-			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
-			DisplayDays = new ObservableCollection<Day>();
 			UserDaysIO = new FileIO(userFileName);
-
-			// fill the 7-day with days and add to UserData
-			NumDays = 7;
-			CanLoadMore = true;
-			FillDisplayDays(PageType);
+			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
+			PageType = MenuItemType.SevenDayView;
+			DisplayDays = new ObservableCollection<Day>();
+			CommandParams = new Dictionary<string, object>
+			{
+				{ "PageType", PageType },
+				{ "DisplayDays", DisplayDays }
+			};
 			UserData["DisplayDays"] = DisplayDays;
 
-			// for refreshing
-			LoadItemsCommand = new DelegateCommand<MenuItemType?>(ReloadItemsExecute);
-			LoadMoreCommand = new DelegateCommand<MenuItemType?>(LoadMoreExecute, LoadMoreCanExecute);
+			// fill the 7-day with days
+			NumDays = 7;
+			CanLoadMore = true;
+			FillDisplayDays(CommandParams);
+
+			// initialize commands
+			LoadItemsCommand = new DelegateCommand<Dictionary<string, object>>(ReloadItemsExecute);
+			LoadMoreCommand = new DelegateCommand<Dictionary<string, object>>(LoadMoreExecute, LoadMoreCanExecute);
 		}
 	}
 }

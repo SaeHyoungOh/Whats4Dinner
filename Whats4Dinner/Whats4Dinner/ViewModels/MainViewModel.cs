@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -30,6 +31,9 @@ namespace Whats4Dinner.ViewModels
 				{ "DishCategories", DishCategories },
 				{ "DishDB", DishDB }
 			};
+
+			// initialize commands
+			LoadItemsCommand = new DelegateCommand<Dictionary<string, object>>(LoadItemsExecute);
 		}
 	}
 }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Whats4Dinner.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Whats4Dinner.Models.DataStructure;
 using Whats4Dinner.ViewModels;
 using Xamarin.Forms;
@@ -8,23 +10,17 @@ using Xamarin.Forms.Xaml;
 
 namespace Whats4Dinner.Views
 {
-	/// <summary>
-	/// View to display the 7-day page; BindingContext: SevenDayViewModel
-	/// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class SevenDayPage : ContentPage
+	public partial class WeeklyPage : ContentPage
 	{
 		private Dictionary<string, object> UserData;
 
-		/// <summary>
-		/// Cosntructor for SevenDayPage
-		/// </summary>
-		public SevenDayPage(Dictionary<string, object> UserData)
+		public WeeklyPage(Dictionary<string, object> UserData)
 		{
 			this.UserData = UserData;
 
 			InitializeComponent();
-			BindingContext = new SevenDayViewModel(UserData);
+			BindingContext = new WeeklyViewModel(UserData);
 		}
 
 		/// <summary>
