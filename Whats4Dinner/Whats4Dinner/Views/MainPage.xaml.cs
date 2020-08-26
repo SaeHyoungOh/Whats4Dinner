@@ -59,7 +59,7 @@ namespace Whats4Dinner.Views
 						MenuPages.Add(id, new NavigationPage(new WeeklyPage(viewModel.UserData)));
 						break;
 					case MenuItemType.MonthlyView:
-						MenuPages.Add(id, new NavigationPage(new AboutPage()));
+						MenuPages.Add(id, new NavigationPage(new MonthlyPage(viewModel.UserData)));
 						break;
 					case MenuItemType.DishDB:
 						MenuPages.Add(id, new NavigationPage(new DishDBPage(viewModel.UserData)));
@@ -88,6 +88,7 @@ namespace Whats4Dinner.Views
 						viewModel = (WeeklyViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
 						break;
 					case MenuItemType.MonthlyView:
+						viewModel = (MonthlyViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
 						break;
 					case MenuItemType.DishDB:
 						viewModel = (DishDBViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
@@ -96,8 +97,11 @@ namespace Whats4Dinner.Views
 						viewModel = (DishCategoriesViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
 						break;
 				}
-				viewModel.UserData["PageType"] = id;
-				viewModel?.FillDisplayDays(viewModel.UserData);
+				if (viewModel != null)
+				{
+					viewModel.UserData["PageType"] = id;
+					viewModel.FillDisplayDays(viewModel.UserData);
+				}
 
 				Detail = newPage;
 
