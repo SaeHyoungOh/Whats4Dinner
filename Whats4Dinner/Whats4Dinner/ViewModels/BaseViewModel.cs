@@ -121,9 +121,8 @@ namespace Whats4Dinner.ViewModels
 
 			DateTime today = DateTime.Today;
 			DateTime firstDay = today;
-			int i = 0,  // number of days to fill (NumDays days)
-				j = 0;  // UserDays index to iterate
 
+			// determine the starting day (firstDay)
 			if (pageType == MenuItemType.SevenDayView)
 			{
 				
@@ -156,7 +155,12 @@ namespace Whats4Dinner.ViewModels
 						firstDay = today;
 						break;
 				}
+				firstDay = firstDay.AddDays((int)UserData["CurrentWeek"] * 7);
 			}
+
+			// fill the days
+			int i = 0,  // number of days to fill (NumDays days)
+				j = 0;  // UserDays index to iterate
 			while (i < NumDays)
 			{
 				DateTime UserDaysDate, currentDate = firstDay.AddDays(i);
