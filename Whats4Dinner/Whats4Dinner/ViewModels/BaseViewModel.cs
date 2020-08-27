@@ -116,18 +116,12 @@ namespace Whats4Dinner.ViewModels
 			}
 
 			MenuItemType pageType = (MenuItemType)UserData["PageType"];
-			ObservableCollection<Day> displayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
-			displayDays.Clear();
 
 			DateTime today = DateTime.Today;
 			DateTime firstDay = today;
 
-			// determine the starting day (firstDay)
-			if (pageType == MenuItemType.SevenDayView)
-			{
-				
-			}
-			else if (pageType == MenuItemType.WeeklyView)
+			// determine the starting day (firstDay) for WeeklyView, to always start on a Sunday
+			if (pageType == MenuItemType.WeeklyView)
 			{
 				switch (today.DayOfWeek)
 				{
@@ -158,55 +152,76 @@ namespace Whats4Dinner.ViewModels
 				firstDay = firstDay.AddDays((int)UserData["CurrentWeek"] * 7);
 			}
 
-			// fill the days
-			int i = 0,  // number of days to fill (NumDays days)
-				j = 0;  // UserDays index to iterate
-			while (i < NumDays)
+			// fill the days for WeeklyView or SevenDayView
+			if (pageType == MenuItemType.WeeklyView || pageType == MenuItemType.SevenDayView)
 			{
-				DateTime UserDaysDate, currentDate = firstDay.AddDays(i);
+				ObservableCollection<Day> displayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
+				displayDays.Clear();
+				int i = 0,  // number of days to fill (NumDays days)
+					j = 0;  // UserDays index to iterate
+				while (i < NumDays)
+				{
+					DateTime UserDaysDate, currentDate = firstDay.AddDays(i);
 
-				// prevent j from going out of bounds
-				if (j < UserDays.Count)
-				{
-					UserDaysDate = UserDays[j].ThisDate;
-				}
-				else
-				{
-					UserDaysDate = firstDay.AddDays(NumDays);
-				}
-
-				// if we run out of data from file, fill days with blanks
-				if (j > UserDays.Count - 1 || UserDaysDate > firstDay.AddDays(6))
-				{
-					displayDays.Add(new Day(currentDate, UserData));
-					i++;
-				}
-				// skip until firstDay
-				else if (UserDaysDate < currentDate)
-				{
-					j++;
-				}
-				// use the day if date matches
-				else if (UserDaysDate == currentDate)
-				{
-					displayDays.Add(UserDays[j]);
-					j++;
-					i++;
-				}
-				// fill the between days with empty day
-				else if (UserDaysDate <= firstDay.AddDays(6))
-				{
-					int emptyDays = (UserDaysDate - currentDate).Days;
-					for (int k = 0; k < emptyDays; k++)
+					// prevent j from going out of bounds
+					if (j < UserDays.Count)
 					{
-						displayDays.Add(new Day(currentDate.AddDays(k), UserData));
+						UserDaysDate = UserDays[j].ThisDate;
+					}
+					else
+					{
+						UserDaysDate = firstDay.AddDays(NumDays);
+					}
+
+					// if we run out of data from file, fill days with blanks
+					if (j > UserDays.Count - 1 || UserDaysDate > firstDay.AddDays(6))
+					{
+						displayDays.Add(new Day(currentDate, UserData));
 						i++;
 					}
+					// skip until firstDay
+					else if (UserDaysDate < currentDate)
+					{
+						j++;
+					}
+					// use the day if date matches
+					else if (UserDaysDate == currentDate)
+					{
+						displayDays.Add(UserDays[j]);
+						j++;
+						i++;
+					}
+					// fill the between days with empty day
+					else if (UserDaysDate <= firstDay.AddDays(6))
+					{
+						int emptyDays = (UserDaysDate - currentDate).Days;
+						for (int k = 0; k < emptyDays; k++)
+						{
+							displayDays.Add(new Day(currentDate.AddDays(k), UserData));
+							i++;
+						}
+					}
+					// ignore all dates after the NumDays days
+					else
+					{
+						j = UserDays.Count;
+					}
 				}
-				// ignore all dates after the NumDays days
-				else
+			}
+			// fill the days for MonthlyView
+			else if (pageType == MenuItemType.MonthlyView)
+			{
+				List<List<Day>> displayDays = (List<List<Day>>)UserData["DisplayDaysMonthly"];
+				displayDays.Clear();
+				ObservableCollection<ObservableCollection<DayString>> DayStringList = (ObservableCollection<ObservableCollection<DayString>>)UserData["DayStringList"];
+
+				// TODO:fill each day string with proper number
+				for (int i = 0; i < DayStringList.Count; i++)
 				{
-					j = UserDays.Count;
+					for (int j = 0; j < DayStringList[0].Count; j++)
+					{
+						DayStringList[i][j].Str = i.ToString() + j.ToString();
+					}
 				}
 			}
 		}
