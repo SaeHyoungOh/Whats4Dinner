@@ -34,7 +34,7 @@ namespace Whats4Dinner.ViewModels
 			};
 
 			// initialize commands
-			LoadItemsCommand = new DelegateCommand<Dictionary<string, object>>(LoadItemsExecute);
+			LoadItemsCommand = new DelegateCommand(LoadItemsExecute);
 		}
 	}
 }

@@ -8,6 +8,9 @@ using Whats4Dinner.Models.DataStructure;
 
 namespace Whats4Dinner.ViewModels
 {
+	/// <summary>
+	/// Class object to hold a string so that a list of these objects can be passed by reference
+	/// </summary>
 	public class DayString : BaseModel
 	{
 		// each day to display in View
@@ -19,6 +22,9 @@ namespace Whats4Dinner.ViewModels
 		private string str;
 	}
 
+	/// <summary>
+	/// ViewModel for the MonthlyPage
+	/// </summary>
 	public class MonthlyViewModel : BaseViewModel
 	{
 		// each day to display in View
@@ -295,27 +301,26 @@ namespace Whats4Dinner.ViewModels
 			// assign each DayString object to the collection for processing
 			DayStringList = new ObservableCollection<ObservableCollection<DayString>>
 			{
-				new ObservableCollection<DayString>
-				{
-					Day00, Day01, Day02, Day03, Day04, Day05, Day06
-				},
-				new ObservableCollection<DayString>
-				{
-					Day10, Day11, Day12, Day13, Day14, Day15, Day16
-				},
-				new ObservableCollection<DayString>
-				{
-					Day20, Day21, Day22, Day23, Day24, Day25, Day26
-				},
-				new ObservableCollection<DayString>
-				{
-					Day30, Day31, Day32, Day33, Day34, Day35, Day36
-				},
-				new ObservableCollection<DayString>
-				{
-					Day40, Day41, Day42, Day43, Day44, Day45, Day46
-				}
+				new ObservableCollection<DayString> { Day00, Day01, Day02, Day03, Day04, Day05, Day06 },
+				new ObservableCollection<DayString> { Day10, Day11, Day12, Day13, Day14, Day15, Day16 },
+				new ObservableCollection<DayString> { Day20, Day21, Day22, Day23, Day24, Day25, Day26 },
+				new ObservableCollection<DayString> { Day30, Day31, Day32, Day33, Day34, Day35, Day36 },
+				new ObservableCollection<DayString> { Day40, Day41, Day42, Day43, Day44, Day45, Day46 }
 			};
+		}
+
+		protected override void FillDays(DateTime firstDay)
+		{
+			DisplayDaysMonthly.Clear();
+
+			// TODO:fill each day string with proper number
+			for (int i = 0; i < DayStringList.Count; i++)
+			{
+				for (int j = 0; j < DayStringList[0].Count; j++)
+				{
+					DayStringList[i][j].Str = i.ToString() + j.ToString();
+				}
+			}
 		}
 
 		public MonthlyViewModel(Dictionary<string, object> UserData)
@@ -324,14 +329,10 @@ namespace Whats4Dinner.ViewModels
 			this.UserData = UserData;
 			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
 			Title = "Monthly View";
-			PageType = MenuItemType.MonthlyView;
 			DisplayDaysMonthly = new List<List<Day>>();
-			InitializeDayStringList();
 
-			UserData["PageType"] = PageType;
-			UserData["DisplayDaysMonthly"] = DisplayDaysMonthly;
-			UserData["DayStringList"] = DayStringList;
-			FillDisplayDays(UserData);
+			InitializeDayStringList();
+			FillDisplayDays();
 		}
 	}
 }

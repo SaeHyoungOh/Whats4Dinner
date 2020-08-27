@@ -27,7 +27,7 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
-	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}" CommandParameter="{Binding UserData}">
+	<RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
 		<ListView x:Name="Days"
 				  HasUnevenRows="True"
 				  VerticalOptions="FillAndExpand"

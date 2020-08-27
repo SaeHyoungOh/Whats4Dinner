@@ -78,6 +78,7 @@ namespace Whats4Dinner.Views
 
 			if (newPage != null && Detail != newPage)
 			{
+				// get the ViewModel of the chosen page and fill the DisplayDays upon entering
 				BaseViewModel? viewModel = null;
 				switch (id)
 				{
@@ -90,18 +91,8 @@ namespace Whats4Dinner.Views
 					case MenuItemType.MonthlyView:
 						viewModel = (MonthlyViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
 						break;
-					case MenuItemType.DishDB:
-						viewModel = (DishDBViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
-						break;
-					case MenuItemType.DishCategories:
-						viewModel = (DishCategoriesViewModel)newPage.Navigation.NavigationStack[0].BindingContext;
-						break;
 				}
-				if (viewModel != null)
-				{
-					viewModel.UserData["PageType"] = id;
-					viewModel.FillDisplayDays(viewModel.UserData);
-				}
+				viewModel?.FillDisplayDays();
 
 				Detail = newPage;
 

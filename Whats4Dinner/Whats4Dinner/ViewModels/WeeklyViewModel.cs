@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Whats4Dinner.Models;
 using Whats4Dinner.Models.DataStructure;
@@ -26,7 +27,7 @@ namespace Whats4Dinner.ViewModels
 		/// <summary>
 		/// Counter for keeping track of which week it is currently at. 0 means this week.
 		/// </summary>
-		private int CurrentWeek { get; set; }
+		private int CurrentWeek { get; set; } = 0;
 
 		/// <summary>
 		/// Whether current week is NOT this week. True if NOT this week. Used in View
@@ -67,7 +68,7 @@ namespace Whats4Dinner.ViewModels
 		{
 			CurrentWeek--;
 			UserData["CurrentWeek"] = CurrentWeek;
-			FillDisplayDays(UserData);
+			FillDisplayDays();
 			OnPropertyChanged("IsNotThisWeek");
 		}
 
@@ -78,7 +79,7 @@ namespace Whats4Dinner.ViewModels
 		{
 			CurrentWeek = 0;
 			UserData["CurrentWeek"] = CurrentWeek;
-			FillDisplayDays(UserData);
+			FillDisplayDays();
 			OnPropertyChanged("IsNotThisWeek");
 		}
 
@@ -89,8 +90,50 @@ namespace Whats4Dinner.ViewModels
 		{
 			CurrentWeek++;
 			UserData["CurrentWeek"] = CurrentWeek;
-			FillDisplayDays(UserData);
+			FillDisplayDays();
 			OnPropertyChanged("IsNotThisWeek");
+		}
+
+		/// <summary>
+		/// Overriding virtual method in base class; for WeeklyView, always start on a Sunday
+		/// </summary>
+		/// <param name="today"></param>
+		/// <param name="firstDay"></param>
+		/// <returns></returns>
+		protected override DateTime DetermineFirstDay()
+		{
+			DateTime today = DateTime.Today;
+			DateTime firstDay;
+
+			switch (today.DayOfWeek)
+			{
+				case DayOfWeek.Sunday:
+					firstDay = today;
+					break;
+				case DayOfWeek.Monday:
+					firstDay = today.AddDays(-1);
+					break;
+				case DayOfWeek.Tuesday:
+					firstDay = today.AddDays(-2);
+					break;
+				case DayOfWeek.Wednesday:
+					firstDay = today.AddDays(-3);
+					break;
+				case DayOfWeek.Thursday:
+					firstDay = today.AddDays(-4);
+					break;
+				case DayOfWeek.Friday:
+					firstDay = today.AddDays(-5);
+					break;
+				case DayOfWeek.Saturday:
+					firstDay = today.AddDays(-6);
+					break;
+				default:
+					firstDay = today;
+					break;
+			}
+
+			return firstDay.AddDays(CurrentWeek * 7);
 		}
 
 		/// <summary>
@@ -104,17 +147,13 @@ namespace Whats4Dinner.ViewModels
 			UserDaysIO = new FileIO(userFileName);
 			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
 			if (UserData.ContainsKey("DisplayDays")) DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
-			PageType = MenuItemType.WeeklyView;
-			UserData["PageType"] = PageType;
-			CurrentWeek = 0;
-			UserData["CurrentWeek"] = CurrentWeek;
 
 			// fill the week with days
 			NumDays = 7;
-			FillDisplayDays(UserData);
+			FillDisplayDays();
 
 			// initialize commands
-			LoadItemsCommand = new DelegateCommand<Dictionary<string, object>>(LoadItemsExecute);
+			LoadItemsCommand = new DelegateCommand(LoadItemsExecute);
 			PreviousWeekCommand = new DelegateCommand(PreviousWeekExecute);
 			TodayCommand = new DelegateCommand(TodayExecute);
 			NextWeekCommand = new DelegateCommand(NextWeekExecute);
