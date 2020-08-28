@@ -460,6 +460,9 @@ namespace Whats4Dinner.ViewModels
 					// whether it is current month or day, for Style in View
 					DayStringList[i][j].IsCurrentMonth = today.Month.Equals(currentDay.Month);
 					DayStringList[i][j].IsToday = today.Date.Equals(currentDay.Date);
+
+					// add the Day for navigating to the Day
+					DayStringList[i][j].ThisDay = DisplayDaysMonthly[i][j];
 				}
 			}
 		}

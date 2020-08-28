@@ -111,7 +111,7 @@ namespace Whats4Dinner.Views
 		private async void Day_Tapped(object sender, EventArgs e)
 		{
 			// add the selected day to UserData
-			UserData["SelectedDay"] = (Day)((TapGestureRecognizer)sender).CommandParameter;
+			UserData["SelectedDay"] = ((TapGestureRecognizer)((Grid)sender).GestureRecognizers[0]).CommandParameter as Day;
 
 			// Navigate to the DayPage
 			await Navigation.PushAsync(new DayPage(UserData));
