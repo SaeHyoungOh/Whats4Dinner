@@ -63,7 +63,7 @@
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
-							<StackLayout Margin="10, 5, 5, 5">
+							<StackLayout Margin="10, 12, 5, 15">
 								<Grid>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="4*"/>

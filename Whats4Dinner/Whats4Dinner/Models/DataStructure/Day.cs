@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Xamarin.Forms;
 using static Whats4Dinner.Models.DataStructure.Meal;
 
 namespace Whats4Dinner.Models.DataStructure
@@ -61,6 +62,19 @@ namespace Whats4Dinner.Models.DataStructure
 			set
 			{
 				SetProperty(ref displayDate, value);
+			}
+		}
+
+		public string DisplayDayOfMonth
+		{
+			get
+			{
+				SetProperty(ref displayDayOfMonth, ThisDate.Day.ToString());
+				return displayDayOfMonth;
+			}
+			set
+			{
+				SetProperty(ref displayDayOfMonth, value);
 			}
 		}
 
@@ -326,10 +340,31 @@ namespace Whats4Dinner.Models.DataStructure
 			}
 		}
 
+		public bool IsCurrentMonth
+		{
+			get
+			{
+				SetProperty(ref isCurrentMonth, ThisDate.Month == DateTime.Today.Month);
+				return isCurrentMonth;
+			}
+			set => SetProperty(ref isCurrentMonth, value);
+		}
+
+		public bool IsToday
+		{
+			get
+			{
+				SetProperty(ref isToday, ThisDate == DateTime.Today);
+				return isToday;
+			}
+			set => SetProperty(ref isToday, value);
+		}
+
 		// fields for the properties above
 		private DateTime thisDate;
 		private string displayDayOfWeek;
 		private string displayDate;
+		private string displayDayOfMonth;
 		private ObservableCollection<Meal> meals;
 		private bool breakfastCheck;
 		private bool lunchCheck;
@@ -339,6 +374,8 @@ namespace Whats4Dinner.Models.DataStructure
 		private string displayLunch;
 		private string displayDinner;
 		private string displayOther;
+		private bool isCurrentMonth;
+		private bool isToday;
 
 		/// <summary>
 		/// Parameterless constructor for JSON deserialization

@@ -37,8 +37,10 @@ namespace Whats4Dinner.Views
 			MasterBehavior = MasterBehavior.Popover;
 
 			// the Detail of the MasterDetailPage displays the main content - set as the SevenDayPage
-			Detail = new NavigationPage(new SevenDayPage(ViewModel.UserData));
-			MenuPages.Add(MenuItemType.SevenDayView, (NavigationPage)Detail);
+			Detail = new NavigationPage(new MonthlyPage(ViewModel.UserData));
+			MenuPages.Add(MenuItemType.MonthlyView, (NavigationPage)Detail);
+			//Detail = new NavigationPage(new SevenDayPage(ViewModel.UserData));
+			//MenuPages.Add(MenuItemType.SevenDayView, (NavigationPage)Detail);
 		}
 
 		/// <summary>
