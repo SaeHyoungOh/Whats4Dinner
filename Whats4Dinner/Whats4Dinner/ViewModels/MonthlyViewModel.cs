@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using Whats4Dinner.Models;
 using Whats4Dinner.Models.DataStructure;
+using Xamarin.Forms;
 using Xamarin.Forms.Shapes;
 
 namespace Whats4Dinner.ViewModels
@@ -77,6 +79,36 @@ namespace Whats4Dinner.ViewModels
 		private bool isCurrentMonth;
 		private bool isToday;
 		private Day thisDay;
+	}
+
+	/// <summary>
+	/// 
+	/// reference: https://forums.xamarin.com/discussion/45354/conditional-styling-based-on-data-binding-values
+	/// </summary>
+	public class TodayConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return (bool)value ? Color.FromHex("eefaff") : Color.White;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException("Not implemented.");
+		}
+	}
+
+	public class CurrentMonthConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return (bool)value ? Color.Black : Color.LightGray;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException("Not implemented.");
+		}
 	}
 
 	/// <summary>
@@ -260,6 +292,41 @@ namespace Whats4Dinner.ViewModels
 			get => day46;
 			set => SetProperty(ref day46, value);
 		}
+		public DayString Day50
+		{
+			get => day50;
+			set => SetProperty(ref day50, value);
+		}
+		public DayString Day51
+		{
+			get => day51;
+			set => SetProperty(ref day51, value);
+		}
+		public DayString Day52
+		{
+			get => day52;
+			set => SetProperty(ref day52, value);
+		}
+		public DayString Day53
+		{
+			get => day53;
+			set => SetProperty(ref day53, value);
+		}
+		public DayString Day54
+		{
+			get => day54;
+			set => SetProperty(ref day54, value);
+		}
+		public DayString Day55
+		{
+			get => day55;
+			set => SetProperty(ref day55, value);
+		}
+		public DayString Day56
+		{
+			get => day56;
+			set => SetProperty(ref day56, value);
+		}
 
 		// fields for the properties above
 		private DayString day00 = new DayString();
@@ -297,6 +364,13 @@ namespace Whats4Dinner.ViewModels
 		private DayString day44 = new DayString();
 		private DayString day45 = new DayString();
 		private DayString day46 = new DayString();
+		private DayString day50 = new DayString();
+		private DayString day51 = new DayString();
+		private DayString day52 = new DayString();
+		private DayString day53 = new DayString();
+		private DayString day54 = new DayString();
+		private DayString day55 = new DayString();
+		private DayString day56 = new DayString();
 
 		/// <summary>
 		/// MonthlyPage-specific DisplayDays; 5 x 7 2-dimensional list
@@ -332,7 +406,8 @@ namespace Whats4Dinner.ViewModels
 				new ObservableCollection<DayString> { Day10, Day11, Day12, Day13, Day14, Day15, Day16 },
 				new ObservableCollection<DayString> { Day20, Day21, Day22, Day23, Day24, Day25, Day26 },
 				new ObservableCollection<DayString> { Day30, Day31, Day32, Day33, Day34, Day35, Day36 },
-				new ObservableCollection<DayString> { Day40, Day41, Day42, Day43, Day44, Day45, Day46 }
+				new ObservableCollection<DayString> { Day40, Day41, Day42, Day43, Day44, Day45, Day46 },
+				new ObservableCollection<DayString> { Day50, Day51, Day52, Day53, Day54, Day55, Day56 }
 			};
 		}
 

@@ -13,7 +13,7 @@
 			<Style x:Key="ListItemTextStyle"
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
-				<Setter Property="FontSize" Value="20"/>
+				<Setter Property="FontSize" Value="16"/>
 				<Setter Property="TextColor" Value="White"/>
 				<Setter Property="HorizontalTextAlignment" Value="Center"/>
 				<Setter Property="VerticalTextAlignment" Value="Center"/>
@@ -22,21 +22,21 @@
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
 				<Setter Property="FontSize" Value="14"/>
-				<Setter Property="TextColor" Value="#323232"/>
+				<Setter Property="TextColor" Value="LightGray"/>
 				<Setter Property="HorizontalTextAlignment" Value="Center"/>
 				<Setter Property="VerticalTextAlignment" Value="Start"/>
 			</Style>
 			<Style x:Key="ListItemDetailTextStyle2"
 				   TargetType="Label"
 				   BasedOn="{StaticResource ListItemDetailTextStyle}">
-				<Setter Property="VerticalTextAlignment" Value="Center"/>
-			</Style>
-			<Style TargetType="BoxView">
-				<Setter Property="BackgroundColor" Value="Gray"/>
+				<Setter Property="TextColor" Value="#323232"/>
 			</Style>
 			<Style TargetType="Grid">
 				<Setter Property="Margin" Value="1, 1, 1, 1"/>
 				<Setter Property="BackgroundColor" Value="White"/>
+			</Style>
+			<Style TargetType="BoxView">
+				<Setter Property="BackgroundColor" Value="Gray"/>
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
@@ -50,8 +50,10 @@
 		<StackLayout Grid.Row="0" VerticalOptions="Center">
 			<Label Text="{Binding CurrentMonth}" Style="{DynamicResource ListItemTextStyle}" TextColor="Black" FontSize="30"/>
 		</StackLayout>
+		
 		<Grid Grid.Row="1" x:Name="MonthlyView"/>
-		<StackLayout Grid.Row="2">
+		
+		<StackLayout Grid.Row="2" VerticalOptions="Center">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="1*"/>
