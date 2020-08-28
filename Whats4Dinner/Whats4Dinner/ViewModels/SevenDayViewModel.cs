@@ -64,7 +64,6 @@ namespace Whats4Dinner.ViewModels
 			if (NumDays > 23) CanLoadMore = false;
 
 			// refill the week with changed days
-			DisplayDays.Clear();
 			FillDisplayDays();
 		}
 
@@ -92,7 +91,6 @@ namespace Whats4Dinner.ViewModels
 			if (UserData.ContainsKey("DisplayDays")) DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
 
 			// fill the 7-day with days
-			NumDays = 7;
 			FillDisplayDays();
 
 			// initialize commands

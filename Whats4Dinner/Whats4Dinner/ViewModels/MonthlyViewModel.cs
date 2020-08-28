@@ -5,21 +5,78 @@ using System.Reflection;
 using System.Text;
 using Whats4Dinner.Models;
 using Whats4Dinner.Models.DataStructure;
+using Xamarin.Forms.Shapes;
 
 namespace Whats4Dinner.ViewModels
 {
 	/// <summary>
-	/// Class object to hold a string so that a list of these objects can be passed by reference
+	/// Class object to be bound to View
 	/// </summary>
 	public class DayString : BaseModel
 	{
-		// each day to display in View
-		public string Str
+		/// <summary>
+		/// Date to display in View
+		/// </summary>
+		public string Date
 		{
-			get => str;
-			set => SetProperty(ref str, value);
+			get => date;
+			set => SetProperty(ref date, value);
 		}
-		private string str;
+
+		/// <summary>
+		/// Detail (meals) to display in View
+		/// </summary>
+		public bool Breakfast
+		{
+			get => breakfast;
+			set => SetProperty(ref breakfast, value);
+		}
+		public bool Lunch
+		{
+			get => lunch;
+			set => SetProperty(ref lunch, value);
+		}
+		public bool Dinner
+		{
+			get => dinner;
+			set => SetProperty(ref dinner, value);
+		}
+		public bool Other
+		{
+			get => other;
+			set => SetProperty(ref other, value);
+		}
+
+		/// <summary>
+		/// Whether it is current month
+		/// </summary>
+		public bool IsCurrentMonth
+		{
+			get => isCurrentMonth;
+			set => SetProperty(ref isCurrentMonth, value);
+		}
+
+		public bool IsToday
+		{
+			get => isToday;
+			set => SetProperty(ref isToday, value);
+		}
+
+		public Day ThisDay
+		{
+			get => thisDay;
+			set => SetProperty(ref thisDay, value);
+		}
+
+		// fields for the above properties
+		private string date;
+		private bool breakfast;
+		private bool lunch;
+		private bool dinner;
+		private bool other;
+		private bool isCurrentMonth;
+		private bool isToday;
+		private Day thisDay;
 	}
 
 	/// <summary>
@@ -205,46 +262,46 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		// fields for the properties above
-		private DayString day00;
-		private DayString day01;
-		private DayString day02;
-		private DayString day03;
-		private DayString day04;
-		private DayString day05;
-		private DayString day06;
-		private DayString day10;
-		private DayString day11;
-		private DayString day12;
-		private DayString day13;
-		private DayString day14;
-		private DayString day15;
-		private DayString day16;
-		private DayString day20;
-		private DayString day21;
-		private DayString day22;
-		private DayString day23;
-		private DayString day24;
-		private DayString day25;
-		private DayString day26;
-		private DayString day30;
-		private DayString day31;
-		private DayString day32;
-		private DayString day33;
-		private DayString day34;
-		private DayString day35;
-		private DayString day36;
-		private DayString day40;
-		private DayString day41;
-		private DayString day42;
-		private DayString day43;
-		private DayString day44;
-		private DayString day45;
-		private DayString day46;
+		private DayString day00 = new DayString();
+		private DayString day01 = new DayString();
+		private DayString day02 = new DayString();
+		private DayString day03 = new DayString();
+		private DayString day04 = new DayString();
+		private DayString day05 = new DayString();
+		private DayString day06 = new DayString();
+		private DayString day10 = new DayString();
+		private DayString day11 = new DayString();
+		private DayString day12 = new DayString();
+		private DayString day13 = new DayString();
+		private DayString day14 = new DayString();
+		private DayString day15 = new DayString();
+		private DayString day16 = new DayString();
+		private DayString day20 = new DayString();
+		private DayString day21 = new DayString();
+		private DayString day22 = new DayString();
+		private DayString day23 = new DayString();
+		private DayString day24 = new DayString();
+		private DayString day25 = new DayString();
+		private DayString day26 = new DayString();
+		private DayString day30 = new DayString();
+		private DayString day31 = new DayString();
+		private DayString day32 = new DayString();
+		private DayString day33 = new DayString();
+		private DayString day34 = new DayString();
+		private DayString day35 = new DayString();
+		private DayString day36 = new DayString();
+		private DayString day40 = new DayString();
+		private DayString day41 = new DayString();
+		private DayString day42 = new DayString();
+		private DayString day43 = new DayString();
+		private DayString day44 = new DayString();
+		private DayString day45 = new DayString();
+		private DayString day46 = new DayString();
 
 		/// <summary>
 		/// MonthlyPage-specific DisplayDays; 5 x 7 2-dimensional list
 		/// </summary>
-		private List<List<Day>> DisplayDaysMonthly { get; set; }
+		private ObservableCollection<ObservableCollection<Day>> DisplayDaysMonthly { get; set; }
 
 		/// <summary>
 		/// Collection of the strings used in View for processing; 5 x 7 2-dimensional list
@@ -256,48 +313,18 @@ namespace Whats4Dinner.ViewModels
 		}
 		private ObservableCollection<ObservableCollection<DayString>> dayStringList;
 
+		public string CurrentMonth
+		{
+			get => currentMonth;
+			set => SetProperty(ref currentMonth, value);
+		}
+		private string currentMonth = DateTime.Today.ToString("MMMM yyyy");
+
 		/// <summary>
 		/// Fills DisplayDaysString with the strings used in View for processing later
 		/// </summary>
 		private void InitializeDayStringList()
 		{
-			// instanciate each DayString object
-			Day00 = new DayString();
-			Day01 = new DayString();
-			Day02 = new DayString();
-			Day03 = new DayString();
-			Day04 = new DayString();
-			Day05 = new DayString();
-			Day06 = new DayString();
-			Day10 = new DayString();
-			Day11 = new DayString();
-			Day12 = new DayString();
-			Day13 = new DayString();
-			Day14 = new DayString();
-			Day15 = new DayString();
-			Day16 = new DayString();
-			Day20 = new DayString();
-			Day21 = new DayString();
-			Day22 = new DayString();
-			Day23 = new DayString();
-			Day24 = new DayString();
-			Day25 = new DayString();
-			Day26 = new DayString();
-			Day30 = new DayString();
-			Day31 = new DayString();
-			Day32 = new DayString();
-			Day33 = new DayString();
-			Day34 = new DayString();
-			Day35 = new DayString();
-			Day36 = new DayString();
-			Day40 = new DayString();
-			Day41 = new DayString();
-			Day42 = new DayString();
-			Day43 = new DayString();
-			Day44 = new DayString();
-			Day45 = new DayString();
-			Day46 = new DayString();
-
 			// assign each DayString object to the collection for processing
 			DayStringList = new ObservableCollection<ObservableCollection<DayString>>
 			{
@@ -309,16 +336,55 @@ namespace Whats4Dinner.ViewModels
 			};
 		}
 
-		protected override void FillDays(DateTime firstDay)
+		/// <summary>
+		/// Overriding the virtual method in base class; for Monthly View, always start on the Sunday of the first day of the month.
+		/// </summary>
+		/// <returns></returns>
+		protected override DateTime DetermineFirstDay()
 		{
-			DisplayDaysMonthly.Clear();
+			DateTime today = DateTime.Today;
+			DateTime firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
 
-			// TODO:fill each day string with proper number
+			return firstDayOfMonth.AddDays(DayOfWeek.Sunday - firstDayOfMonth.DayOfWeek);
+		}
+
+		/// <summary>
+		/// Overriding the virtual method in base class; fill the month with Days
+		/// </summary>
+		/// <param name="firstDay"></param>
+		protected override void FillDays(DateTime firstDay, ObservableCollection<Day> DisplayDays = null)
+		{
+			DateTime today = DateTime.Today;
+
+			// initialize DisplayDaysMonthly
+			DisplayDaysMonthly = new ObservableCollection<ObservableCollection<Day>>();
+
 			for (int i = 0; i < DayStringList.Count; i++)
 			{
+				// fill each week of DisplayDaysMonthly
+				if (DisplayDaysMonthly.Count < i + 1)
+				{
+					DisplayDaysMonthly.Add(new ObservableCollection<Day>());
+				}
+				base.FillDays(firstDay.AddDays(i * 7), DisplayDaysMonthly[i]);
+
+				// fill detail of each day in DayStringList
 				for (int j = 0; j < DayStringList[0].Count; j++)
 				{
-					DayStringList[i][j].Str = i.ToString() + j.ToString();
+					DateTime currentDay = firstDay.AddDays((i * 7) + j);
+					
+					// add the date
+					DayStringList[i][j].Date = currentDay.Day.ToString();
+
+					// add each meal's presence
+					DayStringList[i][j].Breakfast = DisplayDaysMonthly[i][j].BreakfastCheck;
+					DayStringList[i][j].Lunch = DisplayDaysMonthly[i][j].LunchCheck;
+					DayStringList[i][j].Dinner = DisplayDaysMonthly[i][j].DinnerCheck;
+					DayStringList[i][j].Other = DisplayDaysMonthly[i][j].OtherCheck;
+
+					// whether it is current month or day, for Style in View
+					DayStringList[i][j].IsCurrentMonth = today.Month.Equals(currentDay.Month);
+					DayStringList[i][j].IsToday = today.Date.Equals(currentDay.Date);
 				}
 			}
 		}
@@ -327,12 +393,14 @@ namespace Whats4Dinner.ViewModels
 		{
 			// initialize properties
 			this.UserData = UserData;
-			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
 			Title = "Monthly View";
-			DisplayDaysMonthly = new List<List<Day>>();
+			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
 
 			InitializeDayStringList();
 			FillDisplayDays();
+
+			UserData["DisplayDaysMonthly"] = DisplayDaysMonthly;
+			UserData["DayStringList"] = DayStringList;
 		}
 	}
 }

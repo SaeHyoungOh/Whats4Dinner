@@ -14,17 +14,29 @@
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
 				<Setter Property="FontSize" Value="20"/>
-				<Setter Property="TextColor" Value="Black"/>
+				<Setter Property="TextColor" Value="White"/>
+				<Setter Property="HorizontalTextAlignment" Value="Center"/>
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
 			</Style>
 			<Style x:Key="ListItemDetailTextStyle"
 				   TargetType="Label"
 				   BasedOn="{StaticResource baseLabelStyle}">
 				<Setter Property="FontSize" Value="14"/>
-				<Setter Property="Margin" Value="10, 0, 0, 0"/>
-				<Setter Property="TextColor" Value="#646464"/>
+				<Setter Property="TextColor" Value="#323232"/>
+				<Setter Property="HorizontalTextAlignment" Value="Center"/>
+				<Setter Property="VerticalTextAlignment" Value="Start"/>
+			</Style>
+			<Style x:Key="ListItemDetailTextStyle2"
+				   TargetType="Label"
+				   BasedOn="{StaticResource ListItemDetailTextStyle}">
+				<Setter Property="VerticalTextAlignment" Value="Center"/>
 			</Style>
 			<Style TargetType="BoxView">
-				<Setter Property="BackgroundColor" Value="LightGray"/>
+				<Setter Property="BackgroundColor" Value="Gray"/>
+			</Style>
+			<Style TargetType="Grid">
+				<Setter Property="Margin" Value="1, 1, 1, 1"/>
+				<Setter Property="BackgroundColor" Value="White"/>
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
@@ -32,90 +44,24 @@
 	<Grid Margin="5, 5, 5, 5">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*"/>
-			<RowDefinition Height="4*"/>
+			<RowDefinition Height="7*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<StackLayout Grid.Row="0">
-			<Label Text="test header"/>
+		<StackLayout Grid.Row="0" VerticalOptions="Center">
+			<Label Text="{Binding CurrentMonth}" Style="{DynamicResource ListItemTextStyle}" TextColor="Black" FontSize="30"/>
 		</StackLayout>
-		<Grid Grid.Row="1">
-			<BoxView Grid.Row="0" Grid.Column="0"/>
-			<Label Grid.Row="0" Grid.Column="0" Text="{Binding Day00.Str}"/>
-			<BoxView Grid.Row="0" Grid.Column="1"/>
-			<Label Grid.Row="0" Grid.Column="1" Text="{Binding Day01.Str}"/>
-			<BoxView Grid.Row="0" Grid.Column="2"/>
-			<Label Grid.Row="0" Grid.Column="2" Text="{Binding Day02.Str}"/>
-			<BoxView Grid.Row="0" Grid.Column="3"/>
-			<Label Grid.Row="0" Grid.Column="3" Text="{Binding Day03.Str}"/>
-			<BoxView Grid.Row="0" Grid.Column="4"/>
-			<Label Grid.Row="0" Grid.Column="4" Text="{Binding Day04.Str}"/>
-			<BoxView Grid.Row="0" Grid.Column="5"/>
-			<Label Grid.Row="0" Grid.Column="5" Text="{Binding Day05.Str}"/>
-			<BoxView Grid.Row="0" Grid.Column="6"/>
-			<Label Grid.Row="0" Grid.Column="6" Text="{Binding Day06.Str}"/>
-		
-			<BoxView Grid.Row="1" Grid.Column="0"/>
-			<Label Grid.Row="1" Grid.Column="0" Text="{Binding Day10.Str}"/>
-			<BoxView Grid.Row="1" Grid.Column="1"/>
-			<Label Grid.Row="1" Grid.Column="1" Text="{Binding Day11.Str}"/>
-			<BoxView Grid.Row="1" Grid.Column="2"/>
-			<Label Grid.Row="1" Grid.Column="2" Text="{Binding Day12.Str}"/>
-			<BoxView Grid.Row="1" Grid.Column="3"/>
-			<Label Grid.Row="1" Grid.Column="3" Text="{Binding Day13.Str}"/>
-			<BoxView Grid.Row="1" Grid.Column="4"/>
-			<Label Grid.Row="1" Grid.Column="4" Text="{Binding Day14.Str}"/>
-			<BoxView Grid.Row="1" Grid.Column="5"/>
-			<Label Grid.Row="1" Grid.Column="5" Text="{Binding Day15.Str}"/>
-			<BoxView Grid.Row="1" Grid.Column="6"/>
-			<Label Grid.Row="1" Grid.Column="6" Text="{Binding Day16.Str}"/>
-		
-			<BoxView Grid.Row="2" Grid.Column="0"/>
-			<Label Grid.Row="2" Grid.Column="0" Text="{Binding Day20.Str}"/>
-			<BoxView Grid.Row="2" Grid.Column="1"/>
-			<Label Grid.Row="2" Grid.Column="1" Text="{Binding Day21.Str}"/>
-			<BoxView Grid.Row="2" Grid.Column="2"/>
-			<Label Grid.Row="2" Grid.Column="2" Text="{Binding Day22.Str}"/>
-			<BoxView Grid.Row="2" Grid.Column="3"/>
-			<Label Grid.Row="2" Grid.Column="3" Text="{Binding Day23.Str}"/>
-			<BoxView Grid.Row="2" Grid.Column="4"/>
-			<Label Grid.Row="2" Grid.Column="4" Text="{Binding Day24.Str}"/>
-			<BoxView Grid.Row="2" Grid.Column="5"/>
-			<Label Grid.Row="2" Grid.Column="5" Text="{Binding Day25.Str}"/>
-			<BoxView Grid.Row="2" Grid.Column="6"/>
-			<Label Grid.Row="2" Grid.Column="6" Text="{Binding Day26.Str}"/>
-		
-			<BoxView Grid.Row="3" Grid.Column="0"/>
-			<Label Grid.Row="3" Grid.Column="0" Text="{Binding Day30.Str}"/>
-			<BoxView Grid.Row="3" Grid.Column="1"/>
-			<Label Grid.Row="3" Grid.Column="1" Text="{Binding Day31.Str}"/>
-			<BoxView Grid.Row="3" Grid.Column="2"/>
-			<Label Grid.Row="3" Grid.Column="2" Text="{Binding Day32.Str}"/>
-			<BoxView Grid.Row="3" Grid.Column="3"/>
-			<Label Grid.Row="3" Grid.Column="3" Text="{Binding Day33.Str}"/>
-			<BoxView Grid.Row="3" Grid.Column="4"/>
-			<Label Grid.Row="3" Grid.Column="4" Text="{Binding Day34.Str}"/>
-			<BoxView Grid.Row="3" Grid.Column="5"/>
-			<Label Grid.Row="3" Grid.Column="5" Text="{Binding Day35.Str}"/>
-			<BoxView Grid.Row="3" Grid.Column="6"/>
-			<Label Grid.Row="3" Grid.Column="6" Text="{Binding Day36.Str}"/>
-		
-			<BoxView Grid.Row="4" Grid.Column="0"/>
-			<Label Grid.Row="4" Grid.Column="0" Text="{Binding Day40.Str}"/>
-			<BoxView Grid.Row="4" Grid.Column="1"/>
-			<Label Grid.Row="4" Grid.Column="1" Text="{Binding Day41.Str}"/>
-			<BoxView Grid.Row="4" Grid.Column="2"/>
-			<Label Grid.Row="4" Grid.Column="2" Text="{Binding Day42.Str}"/>
-			<BoxView Grid.Row="4" Grid.Column="3"/>
-			<Label Grid.Row="4" Grid.Column="3" Text="{Binding Day43.Str}"/>
-			<BoxView Grid.Row="4" Grid.Column="4"/>
-			<Label Grid.Row="4" Grid.Column="4" Text="{Binding Day44.Str}"/>
-			<BoxView Grid.Row="4" Grid.Column="5"/>
-			<Label Grid.Row="4" Grid.Column="5" Text="{Binding Day45.Str}"/>
-			<BoxView Grid.Row="4" Grid.Column="6"/>
-			<Label Grid.Row="4" Grid.Column="6" Text="{Binding Day46.Str}"/>
-		</Grid>
+		<Grid Grid.Row="1" x:Name="MonthlyView"/>
 		<StackLayout Grid.Row="2">
-			<Button Text="testing"/>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="1*"/>
+					<ColumnDefinition Width="1*"/>
+					<ColumnDefinition Width="1*"/>
+				</Grid.ColumnDefinitions>
+				<Button Text="Previous" Grid.Column="0" Command="{Binding PreviousMonthCommand}"/>
+				<Button Text="Today" Grid.Column="1" Command="{Binding TodayCommand}" IsEnabled="{Binding IsNotThisMonth}"/>
+				<Button Text="Next" Grid.Column="2" Command="{Binding NextMonthCommand}"/>
+			</Grid>
 		</StackLayout>
 	</Grid>
 </ContentPage>

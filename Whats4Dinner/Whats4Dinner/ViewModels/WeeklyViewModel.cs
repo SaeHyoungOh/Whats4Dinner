@@ -103,37 +103,8 @@ namespace Whats4Dinner.ViewModels
 		protected override DateTime DetermineFirstDay()
 		{
 			DateTime today = DateTime.Today;
-			DateTime firstDay;
 
-			switch (today.DayOfWeek)
-			{
-				case DayOfWeek.Sunday:
-					firstDay = today;
-					break;
-				case DayOfWeek.Monday:
-					firstDay = today.AddDays(-1);
-					break;
-				case DayOfWeek.Tuesday:
-					firstDay = today.AddDays(-2);
-					break;
-				case DayOfWeek.Wednesday:
-					firstDay = today.AddDays(-3);
-					break;
-				case DayOfWeek.Thursday:
-					firstDay = today.AddDays(-4);
-					break;
-				case DayOfWeek.Friday:
-					firstDay = today.AddDays(-5);
-					break;
-				case DayOfWeek.Saturday:
-					firstDay = today.AddDays(-6);
-					break;
-				default:
-					firstDay = today;
-					break;
-			}
-
-			return firstDay.AddDays(CurrentWeek * 7);
+			return today.AddDays(DayOfWeek.Sunday - today.DayOfWeek);
 		}
 
 		/// <summary>
@@ -149,7 +120,6 @@ namespace Whats4Dinner.ViewModels
 			if (UserData.ContainsKey("DisplayDays")) DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
 
 			// fill the week with days
-			NumDays = 7;
 			FillDisplayDays();
 
 			// initialize commands

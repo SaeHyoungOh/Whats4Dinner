@@ -21,8 +21,9 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishDBPage : ContentPage
 	{
-		private Dictionary<string, object> UserData;
-		private DishDBViewModel viewModel;
+		private Dictionary<string, object> UserData { get; set; }
+
+		private DishDBViewModel ViewModel { get; set; }
 
 		/// <summary>
 		/// Cosntructor for DishDBPage; initializes properties
@@ -34,7 +35,7 @@ namespace Whats4Dinner.Views
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = viewModel = new DishDBViewModel(UserData);
+			BindingContext = ViewModel = new DishDBViewModel(UserData);
 		}
 
 		/// <summary>
@@ -44,7 +45,7 @@ namespace Whats4Dinner.Views
 		/// <param name="e"></param>
 		private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			viewModel.SearchCommand.Execute();
+			ViewModel.SearchCommand.Execute();
 		}
 
 		/// <summary>
@@ -106,9 +107,9 @@ namespace Whats4Dinner.Views
 		private void AddToMealTapped(Dish selectedDish, object sender)
 		{
 			// call the command to add dish to meal
-			if (viewModel.AddDishCommand.CanExecute(selectedDish))
+			if (ViewModel.AddDishCommand.CanExecute(selectedDish))
 			{
-				viewModel.AddDishCommand.Execute(selectedDish);
+				ViewModel.AddDishCommand.Execute(selectedDish);
 
 				// close page
 				Navigation.PopAsync();
@@ -130,9 +131,9 @@ namespace Whats4Dinner.Views
 			if (await DisplayAlert(null, "Delete " + selectedDish.Name + " from the database?", "Delete", "Cancel"))
 			{
 				// call the command to delete dish from the meal
-				if (viewModel.DeleteDishCommand.CanExecute(selectedDish))
+				if (ViewModel.DeleteDishCommand.CanExecute(selectedDish))
 				{
-					viewModel.DeleteDishCommand.Execute(selectedDish);
+					ViewModel.DeleteDishCommand.Execute(selectedDish);
 				}
 			}
 		}

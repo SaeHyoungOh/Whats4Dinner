@@ -18,12 +18,13 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishEditPage : ContentPage
 	{
-		private Dictionary<string, object> UserData;
-		private DishEditViewModel viewModel;
+		private Dictionary<string, object> UserData { get; set; }
+
+		private DishEditViewModel ViewModel { get; set; }
 		/// <summary>
 		/// Whether this page is created from the DishDB
 		/// </summary>
-		bool IsFromDB;
+		bool IsFromDB { get; set; }
 
 		/// <summary>
 		/// Cosntructor for DishEditPage; initializes properties
@@ -42,7 +43,7 @@ namespace Whats4Dinner.Views
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = viewModel = new DishEditViewModel(UserData, IsFromDB);
+			BindingContext = ViewModel = new DishEditViewModel(UserData, IsFromDB);
 		}
 
 		/// <summary>
@@ -60,9 +61,9 @@ namespace Whats4Dinner.Views
 			}
 
 			// call the command to save the Dish and prompt for additional updates
-			if (viewModel.SaveButtonClick.CanExecute())
+			if (ViewModel.SaveButtonClick.CanExecute())
 			{
-				viewModel.SaveButtonClick.Execute();
+				ViewModel.SaveButtonClick.Execute();
 
 				// if added a new dish to the database from a meal view
 				if (UserData.ContainsKey("SelectedMeal") && !UserData.ContainsKey("SelectedDish"))
@@ -94,7 +95,7 @@ namespace Whats4Dinner.Views
 		{
 			if (await DisplayAlert(null, "Also add to your meal?", "Yes", "No"))
 			{
-				viewModel.AddToMealCommand.Execute();
+				ViewModel.AddToMealCommand.Execute();
 				// return to the meal page
 				Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
 			}
@@ -111,9 +112,9 @@ namespace Whats4Dinner.Views
 			{
 				if (await DisplayAlert(null, "Also make changes to all the planned meals?", "Yes", "No"))
 				{
-					if (viewModel.AdditionalEditDishCommand.CanExecute())
+					if (ViewModel.AdditionalEditDishCommand.CanExecute())
 					{
-						viewModel.AdditionalEditDishCommand.Execute();
+						ViewModel.AdditionalEditDishCommand.Execute();
 					}
 				}
 			}
@@ -122,16 +123,16 @@ namespace Whats4Dinner.Views
 			{
 				if (await DisplayAlert(null, "Also make changes to the database?", "Yes", "No"))
 				{
-					if (viewModel.AdditionalEditDishCommand.CanExecute())
+					if (ViewModel.AdditionalEditDishCommand.CanExecute())
 					{
-						viewModel.AdditionalEditDishCommand.Execute();
+						ViewModel.AdditionalEditDishCommand.Execute();
 					}
 					// if the dish no longer exists in the database, prompt to create on in the DishDB
 					else
 					{
 						if (await DisplayAlert(null, "The dish does not exist in the database. Add to the database?", "Yes", "No"))
 						{
-							viewModel.SaveButtonClick.Execute();
+							ViewModel.SaveButtonClick.Execute();
 						}
 					}
 				}

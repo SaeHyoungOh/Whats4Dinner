@@ -18,11 +18,12 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainPage : MasterDetailPage
 	{
-		MainViewModel viewModel;
+		MainViewModel ViewModel { get; set; }
+
 		/// <summary>
 		/// List of Pages user can navigate to from the MenuPage
 		/// </summary>
-		Dictionary<MenuItemType, NavigationPage> MenuPages = new Dictionary<MenuItemType, NavigationPage>();
+		Dictionary<MenuItemType, NavigationPage> MenuPages { get; set; } = new Dictionary<MenuItemType, NavigationPage>();
 
 		/// <summary>
 		/// Constructor for MainPage
@@ -31,12 +32,12 @@ namespace Whats4Dinner.Views
 		{
 			InitializeComponent();
 
-			BindingContext = viewModel = new MainViewModel();
+			BindingContext = ViewModel = new MainViewModel();
 
 			MasterBehavior = MasterBehavior.Popover;
 
 			// the Detail of the MasterDetailPage displays the main content - set as the SevenDayPage
-			Detail = new NavigationPage(new SevenDayPage(viewModel.UserData));
+			Detail = new NavigationPage(new SevenDayPage(ViewModel.UserData));
 			MenuPages.Add(MenuItemType.SevenDayView, (NavigationPage)Detail);
 		}
 
@@ -53,19 +54,19 @@ namespace Whats4Dinner.Views
 				switch (id)
 				{
 					case MenuItemType.SevenDayView:
-						MenuPages.Add(id, new NavigationPage(new SevenDayPage(viewModel.UserData)));
+						MenuPages.Add(id, new NavigationPage(new SevenDayPage(ViewModel.UserData)));
 						break;
 					case MenuItemType.WeeklyView:
-						MenuPages.Add(id, new NavigationPage(new WeeklyPage(viewModel.UserData)));
+						MenuPages.Add(id, new NavigationPage(new WeeklyPage(ViewModel.UserData)));
 						break;
 					case MenuItemType.MonthlyView:
-						MenuPages.Add(id, new NavigationPage(new MonthlyPage(viewModel.UserData)));
+						MenuPages.Add(id, new NavigationPage(new MonthlyPage(ViewModel.UserData)));
 						break;
 					case MenuItemType.DishDB:
-						MenuPages.Add(id, new NavigationPage(new DishDBPage(viewModel.UserData)));
+						MenuPages.Add(id, new NavigationPage(new DishDBPage(ViewModel.UserData)));
 						break;
 					case MenuItemType.DishCategories:
-						MenuPages.Add(id, new NavigationPage(new DishCategoriesPage(viewModel.UserData)));
+						MenuPages.Add(id, new NavigationPage(new DishCategoriesPage(ViewModel.UserData)));
 						break;
 					case MenuItemType.About:
 						MenuPages.Add(id, new NavigationPage(new AboutPage()));

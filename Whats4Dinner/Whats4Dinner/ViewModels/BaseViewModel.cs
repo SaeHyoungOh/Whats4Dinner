@@ -96,7 +96,7 @@ namespace Whats4Dinner.ViewModels
 		// fields for the properties above
 		private string title = string.Empty;
 		private bool isBusy = false;
-		private int numDays = 0;
+		private int numDays = 7;
 		private ObservableCollection<Dish> dishDB;
 
 		/// <summary>
@@ -105,22 +105,33 @@ namespace Whats4Dinner.ViewModels
 		/// <param name="UserDays"></param>
 		public void FillDisplayDays()
 		{
-			//if (UserDays == null || ((ObservableCollection<Day>)UserData["DisplayDays"]).Count == 0) return;
 			if (UserDays == null || NumDays == 0) return;
 
 			// determine the starting day (firstDay) and fill the days
 			FillDays(DetermineFirstDay());
 		}
 
+		/// <summary>
+		/// Determine the first day for the DisplayDays and return it
+		/// </summary>
+		/// <returns></returns>
 		protected virtual DateTime DetermineFirstDay()
 		{
 			return DateTime.Today;
 		}
 
-		protected virtual void FillDays(DateTime firstDay)
+		/// <summary>
+		/// Fill the DisplayDays with appropriate Days from UserDays, and fill the rest with new Days
+		/// </summary>
+		/// <param name="firstDay"></param>
+		protected virtual void FillDays(DateTime firstDay, ObservableCollection<Day> DisplayDays = null)
 		{
-			ObservableCollection<Day> displayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
-			displayDays.Clear();
+			if (DisplayDays == null)
+			{
+				DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
+			}
+			DisplayDays.Clear();
+
 			int i = 0,  // number of days to fill (NumDays days)
 				j = 0;  // UserDays index to iterate
 			while (i < NumDays)
@@ -140,7 +151,7 @@ namespace Whats4Dinner.ViewModels
 				// if we run out of data from file, fill days with blanks
 				if (j > UserDays.Count - 1 || UserDaysDate > firstDay.AddDays(6))
 				{
-					displayDays.Add(new Day(currentDate, UserData));
+					DisplayDays.Add(new Day(currentDate, UserData));
 					i++;
 				}
 				// skip until firstDay
@@ -151,7 +162,7 @@ namespace Whats4Dinner.ViewModels
 				// use the day if date matches
 				else if (UserDaysDate == currentDate)
 				{
-					displayDays.Add(UserDays[j]);
+					DisplayDays.Add(UserDays[j]);
 					j++;
 					i++;
 				}
@@ -161,7 +172,7 @@ namespace Whats4Dinner.ViewModels
 					int emptyDays = (UserDaysDate - currentDate).Days;
 					for (int k = 0; k < emptyDays; k++)
 					{
-						displayDays.Add(new Day(currentDate.AddDays(k), UserData));
+						DisplayDays.Add(new Day(currentDate.AddDays(k), UserData));
 						i++;
 					}
 				}

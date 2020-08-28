@@ -13,7 +13,7 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class WeeklyPage : ContentPage
 	{
-		private Dictionary<string, object> UserData;
+		private Dictionary<string, object> UserData { get; set; }
 
 		public WeeklyPage(Dictionary<string, object> UserData)
 		{

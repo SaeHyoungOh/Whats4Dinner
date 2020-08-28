@@ -15,8 +15,9 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class DishCategoriesPage : ContentPage
 	{
-		private Dictionary<string, object> UserData;
-		private DishCategoriesViewModel viewModel;
+		private Dictionary<string, object> UserData { get; set; }
+
+		private DishCategoriesViewModel ViewModel { get; set; }
 
 		public DishCategoriesPage(Dictionary<string, object> UserData)
 		{
@@ -24,7 +25,7 @@ namespace Whats4Dinner.Views
 
 			// call InitializeComponent() and assign BindingContext
 			InitializeComponent();
-			BindingContext = viewModel = new DishCategoriesViewModel(UserData);
+			BindingContext = ViewModel = new DishCategoriesViewModel(UserData);
 		}
 
 		/// <summary>
@@ -54,23 +55,23 @@ namespace Whats4Dinner.Views
 			// edit the DishCategory
 			if (action == "Edit")
 			{
-				viewModel.Entry = await DisplayPromptAsync("Edit Dish Category" + dishCategory.Key, "(max. length: 5)", "OK", "Cancel", "ex. Grain", 5, null, dishCategory.Value);
-				viewModel.EditCommand.Execute(dishCategory);
+				ViewModel.Entry = await DisplayPromptAsync("Edit Dish Category" + dishCategory.Key, "(max. length: 5)", "OK", "Cancel", "ex. Grain", 5, null, dishCategory.Value);
+				ViewModel.EditCommand.Execute(dishCategory);
 			}
 			// switch index with the previous one
 			else if (action == "Move Up")
 			{
-				if (viewModel.MoveUpCommand.CanExecute(dishCategory))
+				if (ViewModel.MoveUpCommand.CanExecute(dishCategory))
 				{
-					viewModel.MoveUpCommand.Execute(dishCategory);
+					ViewModel.MoveUpCommand.Execute(dishCategory);
 				}
 			}
 			// switch index with the next one
 			else if (action == "Move Down")
 			{
-				if (viewModel.MoveDownCommand.CanExecute(dishCategory))
+				if (ViewModel.MoveDownCommand.CanExecute(dishCategory))
 				{
-					viewModel.MoveDownCommand.Execute(dishCategory);
+					ViewModel.MoveDownCommand.Execute(dishCategory);
 				}
 			}
 

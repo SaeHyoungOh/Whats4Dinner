@@ -18,7 +18,8 @@ namespace Whats4Dinner.Views
 		/// Root page is the MasterDetailPage
 		/// </summary>
 		MainPage RootPage { get => Application.Current.MainPage as MainPage; }
-		MenuViewModel viewModel;
+
+		MenuViewModel ViewModel { get; set; }
 
 		/// <summary>
 		/// Constructor for MenuPage
@@ -27,10 +28,10 @@ namespace Whats4Dinner.Views
 		{
 			InitializeComponent();
 
-			BindingContext = viewModel = new MenuViewModel();
+			BindingContext = ViewModel = new MenuViewModel();
 
 			// start with the 7-Day View when the app starts
-			ListViewMenu.SelectedItem = viewModel.MenuItems[(int)MenuItemType.SevenDayView];
+			ListViewMenu.SelectedItem = ViewModel.MenuItems[(int)MenuItemType.SevenDayView];
 		}
 
 		/// <summary>

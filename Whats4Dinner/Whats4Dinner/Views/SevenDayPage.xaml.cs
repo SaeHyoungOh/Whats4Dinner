@@ -14,7 +14,7 @@ namespace Whats4Dinner.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SevenDayPage : ContentPage
 	{
-		private Dictionary<string, object> UserData;
+		private Dictionary<string, object> UserData { get; set; }
 
 		/// <summary>
 		/// Cosntructor for SevenDayPage
