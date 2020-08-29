@@ -14,51 +14,6 @@ namespace Whats4Dinner.ViewModels
 	/// </summary>
 	class MealViewModel : BaseViewModel
 	{
-
-		/// <summary>
-		/// List of the Dishes in the Meal to display on View, categorized by DishGroup
-		/// </summary>
-		public ObservableCollection<Dish> DisplayDishes
-		{
-			get => displayDishes;
-			set
-			{
-				SetProperty(ref displayDishes, value);
-			}
-		}
-
-		/// <summary>
-		/// Whether this meal has any dishes
-		/// </summary>
-		public bool HasDishes
-		{
-			get
-			{
-				SetProperty(ref hasDishes, DisplayDishes.Count != 0);
-				return hasDishes;
-			}
-			set
-			{
-				SetProperty(ref hasDishes, value);
-			}
-		}
-
-		/// <summary>
-		/// Whether this meal has no dishes
-		/// </summary>
-		public bool NoDishes
-		{
-			get
-			{
-				SetProperty(ref noDishes, DisplayDishes.Count == 0);
-				return noDishes;
-			}
-			set
-			{
-				SetProperty(ref noDishes, value);
-			}
-		}
-
 		/// <summary>
 		/// The currently selected Day that this meal belongs to
 		/// </summary>
@@ -84,9 +39,6 @@ namespace Whats4Dinner.ViewModels
 		}
 
 		// fields for the properties above
-		private ObservableCollection<Dish> displayDishes;
-		private bool hasDishes;
-		private bool noDishes;
 		private Day selectedDay;
 		private Meal selectedMeal;
 
@@ -130,7 +82,6 @@ namespace Whats4Dinner.ViewModels
 			UserDays = (ObservableCollection<Day>)UserData["UserDays"];
 			SelectedDay = (Day)UserData["SelectedDay"];
 			SelectedMeal = (Meal)UserData["SelectedMeal"];
-			DisplayDishes = SelectedMeal.Dishes;
 			Title = SelectedMeal.ThisMealType.ToString() + ", " + SelectedDay.DisplayDayOfWeek + " " + SelectedDay.DisplayDate;
 			UserDaysIO = new FileIO(userFileName);
 

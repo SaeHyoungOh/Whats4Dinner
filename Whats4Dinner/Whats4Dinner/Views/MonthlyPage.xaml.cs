@@ -58,6 +58,7 @@ namespace Whats4Dinner.Views
 
 				// boxview for borders
 				var borderBoxView = new BoxView();
+				borderBoxView.SetBinding(BoxView.MarginProperty, objName + ".IsToday", converter: new TodayConverter());
 				MonthlyView.Children.Add(borderBoxView, column, row + 1);
 
 				// set up the tap gesture recognizer with binding
@@ -67,9 +68,7 @@ namespace Whats4Dinner.Views
 
 				// set up children grids
 				Grid dayGrid = new Grid { GestureRecognizers = { Tap } };			// day grid with gesture recognizer
-				dayGrid.SetBinding(Grid.BackgroundColorProperty, objName + ".IsToday", converter: new TodayConverter());
-				Grid mealGrid = new Grid { Margin = new Thickness(0, 0, 0, 0) };	// meal grid inside day grid
-				mealGrid.SetBinding(Grid.BackgroundColorProperty, objName + ".IsToday", converter: new TodayConverter());
+				Grid mealGrid = new Grid { Margin = new Thickness(0, 0, 0, 0), Padding = new Thickness(5, -5, 5, 6) };	// meal grid inside day grid
 
 				// add date Label with binding to day grid
 				dayGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
@@ -104,59 +103,6 @@ namespace Whats4Dinner.Views
 				MonthlyView.Children.Add(dayGrid, column, row + 1);						// add the day grid to calendar
 			}
 		}
-
-		//private void AddDay(int i)
-		//{
-		//	string objName = "DisplayDaysMonthly[" + i.ToString() + "][" + j.ToString() + "]";
-		//	//string objName = "Day" + i.ToString() + j.ToString();
-
-		//	// boxview for borders
-		//	var borderBoxView = new BoxView();
-		//	MonthlyView.Children.Add(borderBoxView, j, i + 1);
-
-		//	// set up the tap gesture recognizer with binding
-		//	var Tap = new TapGestureRecognizer();
-		//	Tap.SetBinding(TapGestureRecognizer.CommandParameterProperty, objName);
-		//	Tap.Tapped += (sender, e) => Day_Tapped(sender, e);
-
-		//	// set up children grids
-		//	Grid dayGrid = new Grid { GestureRecognizers = { Tap } };           // day grid with gesture recognizer
-		//	dayGrid.SetBinding(Grid.BackgroundColorProperty, objName + ".IsToday", converter: new TodayConverter());
-		//	Grid mealGrid = new Grid { Margin = new Thickness(0, 0, 0, 0) };    // meal grid inside day grid
-		//	mealGrid.SetBinding(Grid.BackgroundColorProperty, objName + ".IsToday", converter: new TodayConverter());
-
-		//	// add date Label with binding to day grid
-		//	dayGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-		//	Label dateLabel = new Label { Style = (Style)Resources["ListItemDetailTextStyle"] };
-		//	dateLabel.SetBinding(Label.TextProperty, objName + ".DisplayDayOfMonth");
-		//	dateLabel.SetBinding(Label.TextColorProperty, objName + ".IsCurrentMonth", converter: new CurrentMonthConverter());
-		//	dayGrid.Children.Add(dateLabel);
-
-		//	dayGrid.Children.Add(mealGrid, 0, 1);                               // add the meal grid to the day grid
-
-		//	// each meal indicator in meal grid
-		//	Label breakfastLabel = new Label { Text = "B", Style = (Style)Resources["ListItemDetailTextStyle"] };   // breakfast
-		//	breakfastLabel.SetBinding(Label.IsVisibleProperty, objName + ".BreakfastCheck");
-		//	breakfastLabel.SetBinding(Label.TextColorProperty, objName + ".IsCurrentMonth", converter: new CurrentMonthConverter());
-		//	mealGrid.Children.Add(breakfastLabel, 0, 0);
-
-		//	Label lunchLabel = new Label { Text = "L", Style = (Style)Resources["ListItemDetailTextStyle"] };       // lunch
-		//	lunchLabel.SetBinding(Label.IsVisibleProperty, objName + ".LunchCheck");
-		//	lunchLabel.SetBinding(Label.TextColorProperty, objName + ".IsCurrentMonth", converter: new CurrentMonthConverter());
-		//	mealGrid.Children.Add(lunchLabel, 1, 0);
-
-		//	Label dinnerLabel = new Label { Text = "D", Style = (Style)Resources["ListItemDetailTextStyle"] };      // dinner
-		//	dinnerLabel.SetBinding(Label.IsVisibleProperty, objName + ".DinnerCheck");
-		//	dinnerLabel.SetBinding(Label.TextColorProperty, objName + ".IsCurrentMonth", converter: new CurrentMonthConverter());
-		//	mealGrid.Children.Add(dinnerLabel, 0, 1);
-
-		//	Label otherLabel = new Label { Text = "O", Style = (Style)Resources["ListItemDetailTextStyle"] };       // other
-		//	otherLabel.SetBinding(Label.IsVisibleProperty, objName + ".OtherCheck");
-		//	otherLabel.SetBinding(Label.TextColorProperty, objName + ".IsCurrentMonth", converter: new CurrentMonthConverter());
-		//	mealGrid.Children.Add(otherLabel, 1, 1);
-
-		//	MonthlyView.Children.Add(dayGrid, j, i + 1);                        // add the day grid to calendar
-		//}
 
 		private async void Day_Tapped(object sender, EventArgs e)
 		{

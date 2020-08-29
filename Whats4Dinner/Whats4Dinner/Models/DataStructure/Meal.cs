@@ -28,10 +28,7 @@ namespace Whats4Dinner.Models.DataStructure
 		public MealType ThisMealType
 		{
 			get => thisMealType;
-			set
-			{
-				SetProperty(ref thisMealType, value);
-			}
+			set => SetProperty(ref thisMealType, value);
 		}
 
 		Dictionary<string, object> UserData;
@@ -42,10 +39,7 @@ namespace Whats4Dinner.Models.DataStructure
 		public ObservableCollection<Dish> Dishes
 		{
 			get => dishes;
-			set
-			{
-				SetProperty(ref dishes, value);
-			}
+			set => SetProperty(ref dishes, value);
 		}
 
 		/// <summary>
@@ -53,15 +47,8 @@ namespace Whats4Dinner.Models.DataStructure
 		/// </summary>
 		public bool HasDishes
 		{
-			get
-			{
-				SetProperty(ref hasDishes, Dishes.Count != 0);
-				return hasDishes;
-			}
-			set
-			{
-				SetProperty(ref hasDishes, value);
-			}
+			get => hasDishes;
+			set =>SetProperty(ref hasDishes, value);
 		}
 
 		/// <summary>
@@ -69,15 +56,8 @@ namespace Whats4Dinner.Models.DataStructure
 		/// </summary>
 		public bool NoDishes
 		{
-			get
-			{
-				SetProperty(ref noDishes, Dishes.Count == 0);
-				return noDishes;
-			}
-			set
-			{
-				SetProperty(ref noDishes, value);
-			}
+			get => noDishes;
+			set => SetProperty(ref noDishes, value);
 		}
 
 		/// <summary>
@@ -127,9 +107,9 @@ namespace Whats4Dinner.Models.DataStructure
 
 		// fields for the properties above
 		private MealType thisMealType;
-		private ObservableCollection<Dish> dishes;
-		private bool hasDishes;
-		private bool noDishes;
+		private ObservableCollection<Dish> dishes = new ObservableCollection<Dish>();
+		private bool hasDishes = false;
+		private bool noDishes = true;
 		private string displayPreviewDishes;
 
 		/// <summary>
@@ -140,16 +120,8 @@ namespace Whats4Dinner.Models.DataStructure
 		public void AddDish(string name, List<string> cat, Dictionary<string, object> UserData)
 		{
 			Dishes.Add(new Dish(name, cat, UserData));
-		}
-
-		/// <summary>
-		/// Add a Dish to the list of Dishes with a provided Dish object
-		/// </summary>
-		/// <param name="dish"></param>
-		public void AddDish(Dish dish)
-		{
-			Dishes.Add(dish);
-			OnPropertyChanged("DisplayPreviewDishes");
+			NoDishes = Dishes.Count == 0;
+			HasDishes = !NoDishes;
 		}
 
 		/// <summary>
@@ -172,7 +144,8 @@ namespace Whats4Dinner.Models.DataStructure
 		public void RemoveDish(Dish selected)
 		{
 			Dishes.Remove(selected);
-			OnPropertyChanged("DisplayPreviewDishes");
+			NoDishes = Dishes.Count == 0;
+			HasDishes = !NoDishes;
 		}
 
 		/// <summary>
@@ -189,7 +162,6 @@ namespace Whats4Dinner.Models.DataStructure
 			// initialize properties
 			this.UserData = UserData;
 			ThisMealType = mealType;
-			Dishes = new ObservableCollection<Dish>();
 		}
 	}
 }

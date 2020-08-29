@@ -18,10 +18,7 @@ namespace Whats4Dinner.Models.DataStructure
 		public DateTime ThisDate
 		{
 			get => thisDate;
-			set
-			{
-				SetProperty(ref thisDate, value);
-			}
+			set => SetProperty(ref thisDate, value);
 		}
 
 		/// <summary>
@@ -84,10 +81,7 @@ namespace Whats4Dinner.Models.DataStructure
 		public ObservableCollection<Meal> Meals
 		{
 			get => meals;
-			set
-			{
-				SetProperty(ref meals, value);
-			}
+			set => SetProperty(ref meals, value);
 		}
 
 		/// <summary>
@@ -342,11 +336,7 @@ namespace Whats4Dinner.Models.DataStructure
 
 		public bool IsCurrentMonth
 		{
-			get
-			{
-				SetProperty(ref isCurrentMonth, ThisDate.Month == DateTime.Today.Month);
-				return isCurrentMonth;
-			}
+			get => isCurrentMonth;
 			set => SetProperty(ref isCurrentMonth, value);
 		}
 
@@ -365,7 +355,7 @@ namespace Whats4Dinner.Models.DataStructure
 		private string displayDayOfWeek;
 		private string displayDate;
 		private string displayDayOfMonth;
-		private ObservableCollection<Meal> meals;
+		private ObservableCollection<Meal> meals = new ObservableCollection<Meal>();
 		private bool breakfastCheck;
 		private bool lunchCheck;
 		private bool dinnerCheck;
@@ -390,7 +380,6 @@ namespace Whats4Dinner.Models.DataStructure
 		{
 			// initialize properties
 			ThisDate = date;
-			Meals = new ObservableCollection<Meal>();
 
 			// add type names to the Meals
 			foreach (MealType mealType in (MealType[])Enum.GetValues(typeof(MealType)))

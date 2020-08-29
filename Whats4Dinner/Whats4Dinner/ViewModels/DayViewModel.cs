@@ -13,19 +13,17 @@ namespace Whats4Dinner.ViewModels
 	class DayViewModel : BaseViewModel
 	{
 		/// <summary>
-		/// List of the Meals in the Day to display on View
+		/// The currently selected Day that this meal belongs to
 		/// </summary>
-		public ObservableCollection<Meal> DisplayMeals
+		public Day SelectedDay
 		{
-			get => displayMeals;
+			get => selectedDay;
 			set
 			{
-				SetProperty(ref displayMeals, value);
+				SetProperty(ref selectedDay, value);
 			}
 		}
-
-		// fields for the properties above
-		private ObservableCollection<Meal> displayMeals;
+		private Day selectedDay;
 
 		/// <summary>
 		/// Constructor for DayViewModel class
@@ -34,9 +32,8 @@ namespace Whats4Dinner.ViewModels
 		{
 			// initialize the properties
 			this.UserData = UserData;
-			Day SelectedDay = (Day)UserData["SelectedDay"];
+			SelectedDay = (Day)UserData["SelectedDay"];
 			Title = SelectedDay.DisplayDayOfWeek + ", " + SelectedDay.DisplayDate;
-			DisplayMeals = SelectedDay.Meals;
 		}
 	}
 }

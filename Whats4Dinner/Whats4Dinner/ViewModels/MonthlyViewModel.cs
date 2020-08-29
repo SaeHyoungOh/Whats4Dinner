@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IX.StandardExtensions;
+using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -19,12 +21,12 @@ namespace Whats4Dinner.ViewModels
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (bool)value ? Color.FromHex("eefaff") : Color.White;
+			return (bool)value ? -2 : 0;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (Color)value == Color.FromHex("eefaff");
+			return (int)value == -2 ? true : false;
 		}
 	}
 
@@ -46,23 +48,101 @@ namespace Whats4Dinner.ViewModels
 	/// </summary>
 	public class MonthlyViewModel : BaseViewModel
 	{
+		/// <summary>
+		/// Command to load the previous month
+		/// </summary>
+		public DelegateCommand PreviousMonthCommand { get; set; }
+
+		/// <summary>
+		/// Command to load this month
+		/// </summary>
+		public DelegateCommand TodayCommand { get; set; }
+
+		/// <summary>
+		/// Command to load the next month
+		/// </summary>
+		public DelegateCommand NextMonthCommand { get; set; }
+
 		public ObservableCollection<Day> DisplayDays
 		{
 			get => displayDays;
 			set => SetProperty(ref displayDays, value);
 		}
-		private ObservableCollection<Day> displayDays;
 
-		public string CurrentMonth
+		public bool IsNotThisMonth
 		{
 			get
 			{
-				SetProperty(ref currentMonth, DateTime.Today.ToString("MMMM yyyy"));
-				return currentMonth;
+				SetProperty(ref isNotThisMonth, CurrentMonth != 0);
+				return isNotThisMonth;
 			}
-			set => SetProperty(ref currentMonth, value);
+			set
+			{
+				SetProperty(ref isNotThisMonth, value);
+			}
 		}
-		private string currentMonth;
+
+		public string CurrentMonthName
+		{
+			get
+			{
+				SetProperty(ref currentMonthName, DateTime.Today.AddMonths(CurrentMonth).ToString("MMMM yyyy"));
+				return currentMonthName;
+			}
+			set => SetProperty(ref currentMonthName, value);
+		}
+
+		// fields for the above properties
+		private ObservableCollection<Day> displayDays;
+		private string currentMonthName;
+		private bool isNotThisMonth;
+
+		private int CurrentMonth { get; set; } = 0;
+
+		/// <summary>
+		/// Fills the DisplayDays with the previous month's days
+		/// </summary>
+		private void PreviousMonthExecute()
+		{
+			CurrentMonth--;
+			FillDisplayDays();
+			NotifyView();
+		}
+
+		/// <summary>
+		/// Fills the DisplayDays with this month's days
+		/// </summary>
+		private void TodayExecute()
+		{
+			CurrentMonth = 0;
+			FillDisplayDays();
+			NotifyView();
+		}
+
+		/// <summary>
+		/// Fills the DisplayDays with the next month's days
+		/// </summary>
+		private void NextMonthExecute()
+		{
+			CurrentMonth++;
+			FillDisplayDays();
+			NotifyView();
+		}
+
+		private void NotifyView()
+		{
+			OnPropertyChanged(nameof(IsNotThisMonth));
+			OnPropertyChanged(nameof(CurrentMonthName));
+			OnPropertyChanged(nameof(DisplayDays));
+		}
+
+		private void SetIsCurrentMonth()
+		{
+			foreach (Day day in DisplayDays)
+			{
+				day.IsCurrentMonth = day.ThisDate.Month == DateTime.Today.AddMonths(CurrentMonth).Month;
+			}
+		}
 
 		/// <summary>
 		/// Overriding the virtual method in base class; for Monthly View, always start on the Sunday of the first day of the month.
@@ -71,9 +151,17 @@ namespace Whats4Dinner.ViewModels
 		protected override DateTime DetermineFirstDay()
 		{
 			DateTime today = DateTime.Today;
-			DateTime firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+			DateTime firstDayOfThisMonth = new DateTime(today.Year, today.Month, 1);
+			DateTime firstDay = firstDayOfThisMonth.AddMonths(CurrentMonth);
 
-			return firstDayOfMonth.AddDays(DayOfWeek.Sunday - firstDayOfMonth.DayOfWeek);
+			return firstDay.AddDays(DayOfWeek.Sunday - firstDay.DayOfWeek);
+		}
+
+		protected override void FillDays(DateTime firstDay)
+		{
+			base.FillDays(firstDay);
+			SetIsCurrentMonth();
+			NotifyView();
 		}
 
 		public MonthlyViewModel(Dictionary<string, object> UserData)
@@ -84,9 +172,18 @@ namespace Whats4Dinner.ViewModels
 			NumDays = 6 * 7;
 			if (UserData.ContainsKey("UserDays")) UserDays = (ObservableCollection<Day>)UserData["UserDays"];
 			if (UserData.ContainsKey("DisplayDays")) DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
-			else DisplayDays = new ObservableCollection<Day>();
+			else
+			{
+				DisplayDays = new ObservableCollection<Day>();
+				UserData["DisplayDays"] = DisplayDays;
+			}
 
 			FillDisplayDays();
+
+			// initialize commands
+			PreviousMonthCommand = new DelegateCommand(PreviousMonthExecute);
+			TodayCommand = new DelegateCommand(TodayExecute);
+			NextMonthCommand = new DelegateCommand(NextMonthExecute);
 		}
 	}
 }

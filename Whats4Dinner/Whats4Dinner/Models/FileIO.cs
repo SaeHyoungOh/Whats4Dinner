@@ -159,10 +159,10 @@ namespace Whats4Dinner.Models
 				result = new Dictionary<string, string>
 				{
 					{ "1", "Grain" },
-					{ "2", "Veggi" },
-					{ "3", "Prote" },
-					{ "4", "Condi" },
-					{ "5", "Drink" }
+					{ "2", "Prote" },
+					{ "3", "Veggi" },
+					{ "4", "Drink" },
+					{ "5", "Other" }
 				};
 			}
 

@@ -33,7 +33,7 @@
 				HasUnevenRows="True"
 				VerticalOptions="FillAndExpand"
 				Margin="5, 5, 5, 5"
-				ItemsSource="{Binding DisplayMeals}"
+				ItemsSource="{Binding SelectedDay.Meals}"
 				ItemTapped="Handle_ItemTapped"
 				CachingStrategy="RecycleElement">
 		<ListView.Header>

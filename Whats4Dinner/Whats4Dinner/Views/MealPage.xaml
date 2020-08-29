@@ -35,22 +35,22 @@
 
 	<StackLayout>
 		<Grid>
-			<Grid Grid.Row="0" IsVisible="{Binding NoDishes}">
+			<Grid Grid.Row="0" IsVisible="{Binding SelectedMeal.NoDishes}">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="2*"/>
 					<RowDefinition Height="3*"/>
 				</Grid.RowDefinitions>
-				<Label Text="(No Dishes to Display)"
-						Grid.Row="1"
-						HorizontalOptions="Center"
-						FontSize="20"/>
+				<Label Text="(No Dishes in the Meal)"
+					   Grid.Row="1"
+					   HorizontalOptions="Center"
+					   FontSize="20"/>
 			</Grid>
 			<ListView x:Name="DishCategories"
 						Grid.Row="0"
 						HasUnevenRows="True"
 						VerticalOptions="FillAndExpand"
 						Margin="5, 5, 5, 5"
-						ItemsSource="{Binding DisplayDishes}"
+						ItemsSource="{Binding SelectedMeal.Dishes}"
 						ItemTapped="DishCategories_ItemTapped"
 						CachingStrategy="RecycleElement">
 				<ListView.Header>

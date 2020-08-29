@@ -60,23 +60,28 @@
 					<CheckBox IsChecked="{Binding DishCategoryCheckBox1}"
 							  Grid.Row="0" Grid.Column="0"/>
 					<Label Text="{Binding DishCategory1}"
-						   Grid.Row="0" Grid.Column="1"/>
+						   Grid.Row="0" Grid.Column="1"
+						   VerticalOptions="Center"/>
 					<CheckBox IsChecked="{Binding DishCategoryCheckBox2}"
 							  Grid.Row="1" Grid.Column="0"/>
 					<Label Text="{Binding DishCategory2}"
-						   Grid.Row="1" Grid.Column="1"/>
+						   Grid.Row="1" Grid.Column="1"
+						   VerticalOptions="Center"/>
 					<CheckBox IsChecked="{Binding DishCategoryCheckBox3}"
 							  Grid.Row="2" Grid.Column="0"/>
 					<Label Text="{Binding DishCategory3}"
-						   Grid.Row="2" Grid.Column="1"/>
+						   Grid.Row="2" Grid.Column="1"
+						   VerticalOptions="Center"/>
 					<CheckBox IsChecked="{Binding DishCategoryCheckBox4}"
 							  Grid.Row="3" Grid.Column="0"/>
 					<Label Text="{Binding DishCategory4}"
-						   Grid.Row="3" Grid.Column="1"/>
+						   Grid.Row="3" Grid.Column="1"
+						   VerticalOptions="Center"/>
 					<CheckBox IsChecked="{Binding DishCategoryCheckBox5}"
 							  Grid.Row="4" Grid.Column="0"/>
 					<Label Text="{Binding DishCategory5}"
-						   Grid.Row="4" Grid.Column="1"/>
+						   Grid.Row="4" Grid.Column="1"
+						   VerticalOptions="Center"/>
 				</Grid>
 			</StackLayout>
 			<Button Text="Save"

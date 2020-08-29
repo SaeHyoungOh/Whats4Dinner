@@ -21,10 +21,7 @@ namespace Whats4Dinner.ViewModels
 		public ObservableCollection<Day> DisplayDays
 		{
 			get => displayDays;
-			set
-			{
-				SetProperty(ref displayDays, value);
-			}
+			set => SetProperty(ref displayDays, value);
 		}
 		private ObservableCollection<Day> displayDays;
 

@@ -124,12 +124,10 @@ namespace Whats4Dinner.ViewModels
 		/// Fill the DisplayDays with appropriate Days from UserDays, and fill the rest with new Days
 		/// </summary>
 		/// <param name="firstDay"></param>
-		protected virtual void FillDays(DateTime firstDay, ObservableCollection<Day> DisplayDays = null)
+		protected virtual void FillDays(DateTime firstDay)
 		{
-			if (DisplayDays == null)
-			{
-				DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
-			}
+			ObservableCollection<Day> DisplayDays = (ObservableCollection<Day>)UserData["DisplayDays"];
+
 			DisplayDays.Clear();
 
 			int i = 0,  // number of days to fill (NumDays days)
@@ -149,7 +147,7 @@ namespace Whats4Dinner.ViewModels
 				}
 
 				// if we run out of data from file, fill days with blanks
-				if (j > UserDays.Count - 1 || UserDaysDate > firstDay.AddDays(6))
+				if (j > UserDays.Count - 1 || UserDaysDate > firstDay.AddDays(NumDays - 1))
 				{
 					DisplayDays.Add(new Day(currentDate, UserData));
 					i++;
@@ -167,7 +165,7 @@ namespace Whats4Dinner.ViewModels
 					i++;
 				}
 				// fill the between days with empty day
-				else if (UserDaysDate <= firstDay.AddDays(6))
+				else if (UserDaysDate <= firstDay.AddDays(NumDays - 1))
 				{
 					int emptyDays = (UserDaysDate - currentDate).Days;
 					for (int k = 0; k < emptyDays; k++)

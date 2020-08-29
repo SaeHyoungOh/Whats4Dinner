@@ -67,7 +67,6 @@ namespace Whats4Dinner.ViewModels
 		private void PreviousWeekExecute()
 		{
 			CurrentWeek--;
-			UserData["CurrentWeek"] = CurrentWeek;
 			FillDisplayDays();
 			OnPropertyChanged("IsNotThisWeek");
 		}
@@ -78,7 +77,6 @@ namespace Whats4Dinner.ViewModels
 		private void TodayExecute()
 		{
 			CurrentWeek = 0;
-			UserData["CurrentWeek"] = CurrentWeek;
 			FillDisplayDays();
 			OnPropertyChanged("IsNotThisWeek");
 		}
@@ -89,7 +87,6 @@ namespace Whats4Dinner.ViewModels
 		private void NextWeekExecute()
 		{
 			CurrentWeek++;
-			UserData["CurrentWeek"] = CurrentWeek;
 			FillDisplayDays();
 			OnPropertyChanged("IsNotThisWeek");
 		}
@@ -103,8 +100,9 @@ namespace Whats4Dinner.ViewModels
 		protected override DateTime DetermineFirstDay()
 		{
 			DateTime today = DateTime.Today;
+			DateTime firstDayOfWeek = today.AddDays(DayOfWeek.Sunday - today.DayOfWeek);
 
-			return today.AddDays(DayOfWeek.Sunday - today.DayOfWeek);
+			return firstDayOfWeek.AddDays(CurrentWeek * 7);
 		}
 
 		/// <summary>
