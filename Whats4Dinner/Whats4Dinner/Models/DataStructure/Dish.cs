@@ -31,68 +31,6 @@ namespace Whats4Dinner.Models.DataStructure
 		/// </summary>
 		public List<string> ThisDishCategories { get; set; }
 
-		// DishCategory for display in View
-		public string DishCategory1
-		{
-			get
-			{
-				SetProperty(ref dishCategory1, DishCategories["1"]);
-				return dishCategory1;
-			}
-			set
-			{
-				SetProperty(ref dishCategory1, value);
-			}
-		}
-		public string DishCategory2
-		{
-			get
-			{
-				SetProperty(ref dishCategory2, DishCategories["2"]);
-				return dishCategory2;
-			}
-			set
-			{
-				SetProperty(ref dishCategory2, value);
-			}
-		}
-		public string DishCategory3
-		{
-			get
-			{
-				SetProperty(ref dishCategory3, DishCategories["3"]);
-				return dishCategory3;
-			}
-			set
-			{
-				SetProperty(ref dishCategory3, value);
-			}
-		}
-		public string DishCategory4
-		{
-			get
-			{
-				SetProperty(ref dishCategory4, DishCategories["4"]);
-				return dishCategory4;
-			}
-			set
-			{
-				SetProperty(ref dishCategory4, value);
-			}
-		}
-		public string DishCategory5
-		{
-			get
-			{
-				SetProperty(ref dishCategory5, DishCategories["5"]);
-				return dishCategory5;
-			}
-			set
-			{
-				SetProperty(ref dishCategory5, value);
-			}
-		}
-
 		// whether DishCategories contains each of the DishCategory, to display in View
 		public bool HasDishCategory1
 		{
@@ -161,11 +99,6 @@ namespace Whats4Dinner.Models.DataStructure
 		}
 
 		// fields for the properties above
-		private string dishCategory1;
-		private string dishCategory2;
-		private string dishCategory3;
-		private string dishCategory4;
-		private string dishCategory5;
 		private bool hasDishCategory1;
 		private bool hasDishCategory2;
 		private bool hasDishCategory3;
