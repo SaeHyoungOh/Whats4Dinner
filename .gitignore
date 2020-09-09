@@ -366,3 +366,4 @@ Whats4Dinner/Whats4Dinner.Web/*
 *.config
 *.csproj
 Properties/
+Whats4Dinner/Whats4Dinner/Models/Settings.json

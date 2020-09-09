@@ -8,7 +8,7 @@ namespace Whats4Dinner.Models
 {
 	public class DBConnect
 	{
-		private string ConnectionString { get; set; } = "DefaultEndpointsProtocol=https;AccountName=76116ea8-0ee0-4-231-b9ee;AccountKey=W5kCTCR67MqOxjzilXBPlSQ9dyOgvh2kxCabeY5v7tGY7ch0wPL3g1oeLzI2jBecMDEpPxBxmJGubKvpapkvqQ==;TableEndpoint=https://76116ea8-0ee0-4-231-b9ee.table.cosmos.azure.com:443/;";
+		private string ConnectionString { get; set; } = AppSettings.LoadAppSettings().StorageConnectionString;
 
 		private CloudTable Table { get; set; }
 
@@ -48,6 +48,11 @@ namespace Whats4Dinner.Models
 				Console.ReadLine();
 				throw;
 			}
+		}
+
+		public DBConnect()
+		{
+			
 		}
 	}
 }
